@@ -1,5 +1,5 @@
 /* ============================================================================
-   NEON FIBER SYSTEMS — site interactions (vanilla JS, no deps)
+   NEON FIBER SYSTEMS site interactions (vanilla JS, no deps)
    ========================================================================== */
 (function () {
   'use strict';
@@ -87,7 +87,7 @@
         flipDoor.classList.add('is-live');
         pill.className = 'pill live'; pill.textContent = 'LIVE ✓';
         if (meta) meta.textContent = 'Fiber confirmed ON · sell today';
-        if (foot) foot.textContent = 'Flip detected — area pushed to the sales team’s live-door list';
+        if (foot) foot.textContent = 'Flip detected. Area pushed to the sales team’s live-door list.';
       } else {
         flipDoor.classList.remove('is-live');
         pill.className = 'pill watch'; pill.textContent = 'WATCHING';
@@ -105,7 +105,7 @@
       ev.preventDefault();
       var f = form.elements;
       var to = 'chad@neonfibersystems.com';
-      var subj = 'Pilot request — ' + (f.company.value || 'Fiber sales team');
+      var subj = 'Pilot request from ' + (f.company.value || 'a fiber sales team');
       var lines = [
         'Name: ' + (f.name.value || ''),
         'Company: ' + (f.company.value || ''),
