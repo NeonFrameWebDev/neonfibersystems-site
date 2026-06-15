@@ -124,104 +124,111 @@
     });
   }
 
-  /* ---- hero fiber canvas: light pulses traveling along strands ---------- */
+  /* ---- hero fiber canvas: light flowing along strands into a node -------
+     Time-based + smooth fade envelopes (no teleport "pop"); rebuilds ONLY on a
+     real width change, so iOS Safari's address-bar resize no longer re-randomizes
+     and "hops" the field. Calmer + subtler on mobile so the headline stays clean. */
   var canvas = document.getElementById('fiber-canvas');
   if (canvas && !reduce) {
     var ctx = canvas.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var W = 0, H = 0, strands = [], pulses = [], node = { x: 0, y: 0 };
+    var W = 0, H = 0, mobile = false, alpha = 0.9, strands = [], node = { x: 0, y: 0 };
 
     function rand(a, b) { return a + Math.random() * (b - a); }
+    function smooth(t) { return t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t); }
 
     function build() {
       var r = canvas.getBoundingClientRect();
       W = r.width; H = r.height;
-      canvas.width = Math.max(1, W * dpr); canvas.height = Math.max(1, H * dpr);
+      canvas.width = Math.max(1, Math.round(W * dpr));
+      canvas.height = Math.max(1, Math.round(H * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // convergence node sits to the right side on wide screens, center on narrow
-      node.x = W > 900 ? W * 0.72 : W * 0.5;
-      node.y = W > 900 ? H * 0.46 : H * 0.34;
+      mobile = W < 760;
+      alpha = mobile ? 0.55 : 0.9;
+      node.x = mobile ? W * 0.80 : W * 0.70;
+      node.y = mobile ? H * 0.15 : H * 0.44;
+      var n = mobile ? 7 : 14, far = Math.max(W, H);
       strands = [];
-      var n = W < 700 ? 9 : 16;
       for (var i = 0; i < n; i++) {
-        var ang = (Math.PI * 2 * i) / n + rand(-0.18, 0.18);
-        var len = rand(W * 0.28, W * 0.62);
+        var ang = (Math.PI * 2 * i) / n + rand(-0.22, 0.22);
+        var len = rand(far * 0.45, far * 0.95);
         var sx = node.x + Math.cos(ang) * len;
         var sy = node.y + Math.sin(ang) * len;
-        // control point for a gentle curve
-        var mx = (sx + node.x) / 2 + rand(-60, 60);
-        var my = (sy + node.y) / 2 + rand(-60, 60);
-        strands.push({ sx: sx, sy: sy, mx: mx, my: my, ex: node.x, ey: node.y });
-      }
-      pulses = [];
-      for (var j = 0; j < strands.length; j++) {
-        // one or two pulses per strand, staggered
-        pulses.push({ s: j, t: Math.random(), v: rand(0.0016, 0.0036) });
-        if (Math.random() > 0.5) pulses.push({ s: j, t: Math.random(), v: rand(0.0016, 0.0034) });
+        var mx = (sx + node.x) / 2 + rand(-70, 70);
+        var my = (sy + node.y) / 2 + rand(-70, 70);
+        var pulses = [{ off: Math.random(), spd: rand(0.05, 0.11) }];
+        if (Math.random() < 0.5) pulses.push({ off: Math.random(), spd: rand(0.05, 0.11) });
+        strands.push({ sx: sx, sy: sy, mx: mx, my: my, ex: node.x, ey: node.y, pulses: pulses });
       }
     }
 
     function bez(p, a) {
       var u = 1 - p;
-      return {
-        x: u * u * a.sx + 2 * u * p * a.mx + p * p * a.ex,
-        y: u * u * a.sy + 2 * u * p * a.my + p * p * a.ey
-      };
+      return { x: u * u * a.sx + 2 * u * p * a.mx + p * p * a.ex,
+               y: u * u * a.sy + 2 * u * p * a.my + p * p * a.ey };
     }
 
-    var grad;
-    function makeGrad() {
-      grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, 'rgba(34,211,238,0.5)');
-      grad.addColorStop(0.55, 'rgba(59,130,246,0.42)');
-      grad.addColorStop(1, 'rgba(167,139,250,0.46)');
-    }
-
-    function frame() {
+    function frame(ts) {
+      var t = (ts || 0) / 1000;
       ctx.clearRect(0, 0, W, H);
-      // faint strands
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(120,150,200,0.10)';
-      strands.forEach(function (a) {
+      ctx.globalAlpha = alpha;
+
+      // faint strand lines
+      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(120,150,200,0.07)';
+      for (var i = 0; i < strands.length; i++) {
+        var a = strands[i];
         ctx.beginPath(); ctx.moveTo(a.sx, a.sy);
         ctx.quadraticCurveTo(a.mx, a.my, a.ex, a.ey); ctx.stroke();
-      });
-      // node glow
-      var ng = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 60);
-      ng.addColorStop(0, 'rgba(234,251,255,0.9)');
-      ng.addColorStop(0.25, 'rgba(34,211,238,0.55)');
+      }
+
+      // convergence node — gentle breathing glow
+      var breathe = 0.85 + 0.15 * Math.sin(t * 1.3);
+      var R = (mobile ? 46 : 66) * breathe;
+      var ng = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, R);
+      ng.addColorStop(0, 'rgba(234,251,255,' + (0.8 * breathe).toFixed(3) + ')');
+      ng.addColorStop(0.28, 'rgba(34,211,238,0.45)');
       ng.addColorStop(1, 'rgba(34,211,238,0)');
       ctx.fillStyle = ng;
-      ctx.beginPath(); ctx.arc(node.x, node.y, 60, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(242,254,255,0.95)';
-      ctx.beginPath(); ctx.arc(node.x, node.y, 4.2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(node.x, node.y, R, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(242,254,255,0.92)';
+      ctx.beginPath(); ctx.arc(node.x, node.y, 3.2, 0, Math.PI * 2); ctx.fill();
 
-      // traveling pulses (move from outer end inward to the node)
-      pulses.forEach(function (p) {
-        p.t += p.v; if (p.t > 1) p.t = 0;
-        var a = strands[p.s];
-        var pos = bez(1 - p.t, a); // 1->0 so it heads toward node as t grows
-        var glow = 7 * (0.4 + 0.6 * (1 - p.t));
-        var pg = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, glow);
-        pg.addColorStop(0, 'rgba(234,251,255,0.95)');
-        pg.addColorStop(0.4, 'rgba(34,211,238,0.6)');
-        pg.addColorStop(1, 'rgba(34,211,238,0)');
-        ctx.fillStyle = pg;
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, glow, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.9)';
-        ctx.beginPath(); ctx.arc(pos.x, pos.y, 1.5, 0, Math.PI * 2); ctx.fill();
-      });
+      // pulses: travel source(0) -> node(1); fade in at spawn AND out at the node
+      for (var s = 0; s < strands.length; s++) {
+        var st = strands[s];
+        for (var j = 0; j < st.pulses.length; j++) {
+          var pl = st.pulses[j];
+          var f = (t * pl.spd + pl.off) % 1;
+          var env = smooth(f / 0.18) * smooth((1 - f) / 0.18);
+          if (env < 0.02) continue;
+          var pos = bez(f, st);
+          var g = (mobile ? 5 : 6.5) * env + 1.2;
+          var pg = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, g);
+          pg.addColorStop(0, 'rgba(236,252,255,' + (0.95 * env).toFixed(3) + ')');
+          pg.addColorStop(0.4, 'rgba(34,211,238,' + (0.6 * env).toFixed(3) + ')');
+          pg.addColorStop(1, 'rgba(34,211,238,0)');
+          ctx.fillStyle = pg;
+          ctx.beginPath(); ctx.arc(pos.x, pos.y, g, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
       raf = requestAnimationFrame(frame);
     }
 
-    var raf, playing = false;
-    function play() { if (playing || document.hidden) return; playing = true; cancelAnimationFrame(raf); frame(); }
+    var raf, playing = false, lastW = 0;
+    function play() { if (playing || document.hidden) return; playing = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); }
     function pause() { playing = false; cancelAnimationFrame(raf); }
-    function start() { build(); makeGrad(); if (playing) { cancelAnimationFrame(raf); frame(); } }
+    function init() { build(); lastW = W; }
     var rt;
-    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(start, 180); }, { passive: true });
-    build(); makeGrad(); play();          // initial draw + run
-    // pause when tab hidden OR the hero is scrolled out of view (saves battery / CPU)
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        // rebuild ONLY on a real width change — ignore iOS URL-bar height-only resizes
+        if (Math.abs(canvas.getBoundingClientRect().width - lastW) < 4) return;
+        init();
+      }, 220);
+    }, { passive: true });
+    init(); play();
     document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else play(); });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
