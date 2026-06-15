@@ -144,7 +144,7 @@
       canvas.height = Math.max(1, Math.round(H * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       mobile = W < 760;
-      alpha = mobile ? 0.55 : 0.9;
+      alpha = mobile ? 0.7 : 0.85;
       node.x = mobile ? W * 0.80 : W * 0.70;
       node.y = mobile ? H * 0.15 : H * 0.44;
       var n = mobile ? 7 : 14, far = Math.max(W, H);
