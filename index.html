@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Fiber Systems — Knock the day fiber goes live</title>
+<meta name="description" content="Neon Fiber finds where carriers are building fiber, watches every address, and catches the exact day it goes live — so your sales team knocks the moment it's sellable. Arizona, Colorado & Michigan.">
+<link rel="canonical" href="https://neonfibersystems.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neon Fiber Systems">
+<meta property="og:title" content="Neon Fiber — knock the day fiber goes live">
+<meta property="og:description" content="We catch the exact day a carrier turns fiber ON at an address, and hand your reps a precise live-door list. Permit-anchored, never fabricated.">
+<meta property="og:url" content="https://neonfibersystems.com/">
+<meta property="og:image" content="https://neonfibersystems.com/assets/brand/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/" aria-label="Neon Fiber Systems home">
+      <img src="/assets/brand/logo-lockup.svg" alt="Neon Fiber">
+    </a>
+    <nav class="nav-links">
+      <a href="/how-it-works/">How it works</a>
+      <a href="/for-sales/">For sales teams</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/company/">Company</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-login" href="https://neonfiber.online">Client login</a>
+      <a class="btn btn-primary btn-sm nav-keep" href="/contact/">Book a pilot</a>
+      <button class="nav-toggle" data-menu-open aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="scrim" id="scrim"></div>
+<aside class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" data-menu-close aria-label="Close menu">&times;</button>
+  <a href="/how-it-works/">How it works</a>
+  <a href="/for-sales/">For sales teams</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/company/">Company</a>
+  <a href="https://neonfiber.online">Client login</a>
+  <a class="btn btn-primary mm-cta" href="/contact/">Book a pilot</a>
+</aside>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <canvas id="fiber-canvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-badge"><span class="pulse"></span> Fiber buildout intelligence · AZ · CO · MI</span>
+        <h1>Knock the <span class="grad-text">day fiber goes&nbsp;live</span> — not a day late.</h1>
+        <p class="hero-sub">Neon Fiber finds where carriers are building fiber, watches every address on an
+          escalating schedule, and catches the <b>exact day service turns ON</b>. Your reps get a precise,
+          sell-today door list — often before the carrier even announces.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/contact/">Book a free pilot <span class="arrow">→</span></a>
+          <a class="btn btn-ghost btn-lg" href="/how-it-works/">See how it works</a>
+        </div>
+        <div class="hero-trust">
+          <span><span class="ck">✓</span> Every lead anchored to a real permit</span>
+          <span><span class="ck">✓</span> Go-live flip, 100%-confirmed</span>
+          <span><span class="ck">✓</span> Street-level, ready for D2D</span>
+        </div>
+      </div>
+
+      <!-- live flip-card: the product in one glance -->
+      <div class="flipcard reveal">
+        <div class="flipcard-top">
+          <span class="ttl">Watched address</span>
+          <span class="schedule">Chandler, AZ</span>
+        </div>
+        <div class="door is-live" id="flip-door">
+          <div class="addr">
+            <div class="a">2841 W Vineyard Ave</div>
+            <div class="m">Fiber confirmed ON · sell today</div>
+          </div>
+          <span class="pill live">LIVE ✓</span>
+        </div>
+        <div class="door">
+          <div class="addr"><div class="a">2849 W Vineyard Ave</div><div class="m">Permit nearby · go-live estimated soon</div></div>
+          <span class="pill watch">WATCHING</span>
+        </div>
+        <div class="door">
+          <div class="addr"><div class="a">915 S Cooper Rd</div><div class="m">Permit nearby · go-live estimated soon</div></div>
+          <span class="pill watch">WATCHING</span>
+        </div>
+        <div class="flipcard-foot"><span class="dot"></span><span id="flip-foot-text">Flip detected — area pushed to the sales team’s live-door list</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CARRIER STRIP ============================ -->
+<div class="strip">
+  <div class="wrap">
+    <span class="lab">Tracking builds from</span>
+    <span class="chip">AT&amp;T Fiber</span>
+    <span class="chip">Quantum Fiber</span>
+    <span class="chip">Google Fiber</span>
+    <span class="chip">Metronet</span>
+    <span class="chip">Wyyerd</span>
+    <span class="chip">Lumos</span>
+  </div>
+</div>
+
+<!-- ============================ THE INSIGHT ============================ -->
+<section class="section">
+  <div class="wrap center">
+    <span class="eyebrow center-eb">The whole game is one day</span>
+    <h2 class="h2 reveal">The day before, it’s not sellable.<br>The day after, it is.</h2>
+    <p class="lede reveal" data-d="1">Fiber doesn’t roll out all at once — a carrier turns it ON neighborhood by
+      neighborhood, address by address. Miss the flip and you’re knocking dead doors or showing up after the
+      competition. Catch it, and you’re the first rep on the street the day it can actually be sold.</p>
+    <div class="grid g-3" style="margin-top:42px;text-align:left">
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 13h2l2-7 4 14 3-9 2 4h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Find the build early</h3>
+        <p>We scan city construction permits and dig-locate signals daily, so we see fiber going into the ground months before the carrier’s own sales team shows up.</p>
+      </div>
+      <div class="card reveal" data-d="1">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Watch every address</h3>
+        <p>Each address near a fresh fiber permit goes on an escalating check schedule — checked more and more often as its estimated go-live approaches.</p>
+      </div>
+      <div class="card reveal" data-d="2">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12l4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Catch the flip</h3>
+        <p>The moment a door goes not-live → live, we confirm it and hammer the whole neighborhood — then hand your reps a precise, sell-today door list.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THE FLIP / SCHEDULE ============================ -->
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="flip-feature">
+      <div>
+        <span class="eyebrow">The escalating watch</span>
+        <h2 class="h2 reveal">We don’t guess the go-live date.<br>We <span class="grad-text">watch until it happens.</span></h2>
+        <p class="lede reveal" data-d="1" style="margin-top:14px">Go-live dates are estimates — so we treat them
+          as estimates. Every address is re-checked on a schedule that tightens as the build matures, until the
+          real, observed flip. No fabricated “fiber coming” flags, ever — only checks we actually ran.</p>
+        <ul class="flip-list reveal" data-d="2">
+          <li><span class="k">✓</span><span><b>Permit-anchored.</b> Every lead sits within ~400&nbsp;m of a real, recent fiber construction permit — not a whole-city guess.</span></li>
+          <li><span class="k">✓</span><span><b>Honest by design.</b> A serviceability verdict is only ever recorded from a real, observed check. Estimates are labeled as estimates.</span></li>
+          <li><span class="k">✓</span><span><b>Flip-confirmed.</b> The sell-today signal is the observed not-live → live transition — the strongest signal there is.</span></li>
+        </ul>
+      </div>
+      <div class="card reveal" data-d="1" style="padding:28px">
+        <div class="timeline">
+          <div class="tl-row"><div class="tl-when">−120 d</div><div class="tl-what"><b>Build found.</b> Fiber permit pulled on the block; nearby doors enter the watch list.</div></div>
+          <div class="tl-row"><div class="tl-when">−60 d</div><div class="tl-what"><b>Estimate set.</b> Go-live estimated; checks begin at a steady cadence.</div></div>
+          <div class="tl-row"><div class="tl-when">−14 d</div><div class="tl-what"><b>Cadence tightens.</b> Dig-locate &amp; field signals appear; checks accelerate.</div></div>
+          <div class="tl-row flip"><div class="tl-when">DAY 0</div><div class="tl-what"><b>FLIP detected.</b> Fiber confirmed ON. 100%-confirmed, sell-today.</div></div>
+          <div class="tl-row"><div class="tl-when">+1 d</div><div class="tl-what"><b>Neighborhood hammered.</b> Every live door mapped → CSV to your sales team.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow center-eb">How it works</span>
+      <h2 class="h2 reveal">From permit to a knock-ready door</h2>
+    </div>
+    <div class="steps" style="margin-top:40px">
+      <div class="step reveal"><div class="n">1</div><h4>Find the build</h4><p>Daily scans of city permits and dig-locate tickets surface fiber going into the ground.</p></div>
+      <div class="step reveal" data-d="1"><div class="n">2</div><h4>Map the doors</h4><p>Every single-family home near the build is pinned and tied to the carrier and permit.</p></div>
+      <div class="step reveal" data-d="2"><div class="n">3</div><h4>Watch &amp; detect</h4><p>Addresses are re-checked on an escalating schedule until the real go-live flip.</p></div>
+      <div class="step reveal" data-d="3"><div class="n">4</div><h4>Deliver doors</h4><p>The day it flips, your reps get a precise, sell-today live-door list for the area.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STATS ============================ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="card" style="padding:34px 26px">
+      <div class="stats">
+        <div class="stat reveal"><div class="v"><span data-count="6">6</span>+</div><div class="l">Carriers live-checked</div></div>
+        <div class="stat reveal" data-d="1"><div class="v"><span data-count="3">3</span></div><div class="l">Focus states · AZ&nbsp;·&nbsp;CO&nbsp;·&nbsp;MI</div></div>
+        <div class="stat reveal" data-d="2"><div class="v"><span data-count="100">100</span>%</div><div class="l">Leads anchored to a real permit</div></div>
+        <div class="stat reveal" data-d="3"><div class="v">Daily</div><div class="l">Permit &amp; signal scans</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COVERAGE ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow center-eb">Where we’re focused</span>
+      <h2 class="h2 reveal">Built around your markets</h2>
+      <p class="lede reveal" data-d="1">We collect builds nationwide, and go deep where our clients sell. Arizona is our first market.</p>
+    </div>
+    <div class="state-cards" style="margin-top:38px">
+      <div class="state reveal">
+        <div class="abbr">AZ</div><div class="nm">Arizona</div>
+        <p>Phoenix metro and Tucson — AT&amp;T, Quantum, Wyyerd &amp; Metronet builds tracked street-by-street.</p>
+        <span class="lead-tag">First market</span>
+      </div>
+      <div class="state reveal" data-d="1">
+        <div class="abbr">CO</div><div class="nm">Colorado</div>
+        <p>Front Range buildouts — Quantum / Lumen and Google Fiber footprints watched for the flip.</p>
+      </div>
+      <div class="state reveal" data-d="2">
+        <div class="abbr">MI</div><div class="nm">Michigan</div>
+        <p>Metronet and partner builds, with public dig-locate signals feeding earlier go-live estimates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PRICING TEASER ============================ -->
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow center-eb">Pricing</span>
+      <h2 class="h2 reveal">Start with a free pilot</h2>
+      <p class="lede reveal" data-d="1">Prove it on a real territory before you pay a cent. Then scale spend only as doors convert.</p>
+    </div>
+    <div class="price-grid" style="margin-top:38px">
+      <div class="price reveal">
+        <div class="pn">Pilot</div>
+        <div class="amt">Free</div>
+        <div class="desc">A sample territory, on us — so you can see the flip detection and door quality first-hand.</div>
+        <ul>
+          <li>One focus area, live</li>
+          <li>Sample live-door list (CSV)</li>
+          <li>No card, no commitment</li>
+        </ul>
+        <a class="btn btn-ghost" href="/contact/">Request a pilot</a>
+      </div>
+      <div class="price feat reveal" data-d="1">
+        <div class="pn">Territory</div>
+        <div class="amt">from $300<small>/mo</small></div>
+        <div class="desc">Ongoing coverage of your markets — continuous watch, flip alerts, and refreshed door lists.</div>
+        <ul>
+          <li>Continuous flip detection</li>
+          <li>Per-area live-door CSVs</li>
+          <li>New-build alerts in your area</li>
+        </ul>
+        <a class="btn btn-primary" href="/contact/">Book a pilot</a>
+      </div>
+      <div class="price reveal" data-d="2">
+        <div class="pn">Success fee</div>
+        <div class="amt">$40–75<small>/install</small></div>
+        <div class="desc">Optional performance pricing — pay more on conversion, less up front. We win when you win.</div>
+        <ul>
+          <li>Lower monthly base</li>
+          <li>Aligned to installs</li>
+          <li>Custom to your team</li>
+        </ul>
+        <a class="btn btn-ghost" href="/pricing/">See pricing detail</a>
+      </div>
+    </div>
+    <p class="price-note">Honest pricing: a cold door is a real, sellable address — not a warm lead. We price it that way.</p>
+  </div>
+</section>
+
+<!-- ============================ FOUNDER QUOTE ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="quote reveal">
+      <p>“Sales teams were burning days knocking neighborhoods that weren’t sellable yet —
+        or showing up after the build was done. We exist to catch the <span class="grad-text">one day that
+        matters</span>, and hand your reps the doors.”</p>
+      <div class="by">— Chad Jahnke, Founder &amp; CEO, Neon Fiber Systems</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA BAND ============================ -->
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>See the flip on your own territory.</h2>
+      <p>Tell us where your team sells. We’ll stand up a free pilot area and show you live, sell-today doors.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="/contact/">Book a free pilot <span class="arrow">→</span></a>
+        <a class="btn btn-ghost btn-lg" href="/for-sales/">For sales teams</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <a class="brand" href="/"><img src="/assets/brand/logo-lockup.svg" alt="Neon Fiber"></a>
+        <p class="blurb">Fiber buildout intelligence. We catch the day fiber goes live and deliver sell-today doors to fiber sales teams.</p>
+        <a class="mail" href="mailto:chad@neonfibersystems.com">✉ chad@neonfibersystems.com</a>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a class="fl" href="/how-it-works/">How it works</a></li>
+          <li><a class="fl" href="/for-sales/">For sales teams</a></li>
+          <li><a class="fl" href="/pricing/">Pricing</a></li>
+          <li><a class="fl" href="https://neonfiber.online">Client login</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a class="fl" href="/company/">About</a></li>
+          <li><a class="fl" href="/contact/">Contact</a></li>
+          <li><a class="fl" href="/contact/?topic=invest">For investors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Get started</h5>
+        <ul>
+          <li><a class="fl" href="/contact/">Book a free pilot</a></li>
+          <li><a class="fl" href="mailto:chad@neonfibersystems.com">Email us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© <span data-year>2026</span> Neon Fiber Systems. All rights reserved.</span>
+      <span>Arizona, USA · Neon Fiber™ buildout intelligence</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

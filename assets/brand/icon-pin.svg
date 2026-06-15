@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NEON FIBER — Concept 1: "Convergence Node" icon
+     Fiber strands converge into a glowing location-pin core.
+     Self-contained. Transparent bg; also reads on #07090F. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="NEON FIBER icon">
+  <defs>
+    <!-- cyan -> blue -> violet -->
+    <linearGradient id="c1-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.55" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <radialGradient id="c1-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#EAFBFF"/>
+      <stop offset="0.35" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </radialGradient>
+    <radialGradient id="c1-halo" cx="50%" cy="46%" r="55%">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#3B82F6" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <!-- tasteful neon glow: tight, not muddy -->
+    <filter id="c1-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ambient halo (helps on near-black; invisible-ish on transparent) -->
+  <circle cx="64" cy="58" r="56" fill="url(#c1-halo)"/>
+
+  <!-- Location pin silhouette built from light. Pin: teardrop. -->
+  <g filter="url(#c1-glow)">
+    <!-- outer pin stroke -->
+    <path d="M64 14
+             C42 14 26 30 26 52
+             C26 78 64 112 64 112
+             C64 112 102 78 102 52
+             C102 30 86 14 64 14 Z"
+          fill="none" stroke="url(#c1-grad)" stroke-width="6" stroke-linejoin="round"/>
+
+    <!-- converging fiber strands feeding the core -->
+    <g fill="none" stroke="url(#c1-grad)" stroke-width="3.4" stroke-linecap="round">
+      <path d="M64 16 C58 30 58 40 64 50"/>
+      <path d="M30 50 C44 50 54 50 64 52" opacity="0.9"/>
+      <path d="M98 50 C84 50 74 50 64 52" opacity="0.9"/>
+      <path d="M40 28 C50 38 56 44 63 50" opacity="0.8"/>
+      <path d="M88 28 C78 38 72 44 65 50" opacity="0.8"/>
+    </g>
+  </g>
+
+  <!-- glowing core node where strands converge (kept crisp for 32px legibility) -->
+  <circle cx="64" cy="52" r="13" fill="url(#c1-core)" filter="url(#c1-glow)"/>
+  <circle cx="64" cy="52" r="5.4" fill="#F2FEFF"/>
+
+  <!-- light pulses traveling in along strands -->
+  <g fill="#EAFBFF">
+    <circle cx="64" cy="30" r="2.1"/>
+    <circle cx="42" cy="50" r="1.9" opacity="0.9"/>
+    <circle cx="86" cy="50" r="1.9" opacity="0.9"/>
+  </g>
+</svg>
