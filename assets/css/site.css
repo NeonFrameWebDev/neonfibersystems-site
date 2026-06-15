@@ -128,7 +128,7 @@ h2.h2{font-size:clamp(28px,4.4vw,46px);margin:.5rem 0 .8rem;letter-spacing:-.03e
   border-bottom:1px solid var(--line);
 }
 .brand{display:flex;align-items:center;gap:11px;margin-right:auto}
-.brand img{height:34px;width:auto}
+.brand img{height:40px;width:auto;aspect-ratio:575/160}
 .brand .bt{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.14em}
 .brand .bt b{color:var(--text)} .brand .bt span{color:var(--muted)}
 .nav-links{display:flex;align-items:center;gap:4px}
@@ -343,7 +343,7 @@ h2.h2{font-size:clamp(28px,4.4vw,46px);margin:.5rem 0 .8rem;letter-spacing:-.03e
 /* ---- footer ------------------------------------------------------------- */
 .foot{border-top:1px solid var(--line);background:rgba(6,8,13,.6);margin-top:30px}
 .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;padding:56px 0 40px}
-.foot .brand img{height:36px}
+.foot .brand img{height:44px;width:auto;aspect-ratio:575/160}
 .foot .blurb{color:var(--muted);font-size:14px;max-width:34ch;margin-top:14px}
 .foot .mail{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:var(--cyan);font-weight:600;font-size:14.5px}
 .foot h5{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px;font-family:var(--font-display);font-weight:600}

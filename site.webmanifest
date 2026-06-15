@@ -1,0 +1,14 @@
+{
+  "name": "Neon Fiber Systems",
+  "short_name": "Neon Fiber",
+  "description": "Fiber buildout intelligence. We catch the day fiber goes live and deliver sell-today doors to fiber sales teams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07090F",
+  "theme_color": "#07090F",
+  "icons": [
+    { "src": "/assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/brand/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

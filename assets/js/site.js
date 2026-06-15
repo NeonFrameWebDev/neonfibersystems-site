@@ -214,14 +214,19 @@
       raf = requestAnimationFrame(frame);
     }
 
-    var raf;
-    function start() { build(); makeGrad(); cancelAnimationFrame(raf); frame(); }
+    var raf, playing = false;
+    function play() { if (playing || document.hidden) return; playing = true; cancelAnimationFrame(raf); frame(); }
+    function pause() { playing = false; cancelAnimationFrame(raf); }
+    function start() { build(); makeGrad(); if (playing) { cancelAnimationFrame(raf); frame(); } }
     var rt;
     window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(start, 180); }, { passive: true });
-    start();
-    // pause when tab hidden (battery / CPU)
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) cancelAnimationFrame(raf); else frame();
-    });
+    build(); makeGrad(); play();          // initial draw + run
+    // pause when tab hidden OR the hero is scrolled out of view (saves battery / CPU)
+    document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else play(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) play(); else pause(); });
+      }, { threshold: 0 }).observe(canvas);
+    }
   }
 })();
