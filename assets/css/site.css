@@ -424,3 +424,70 @@ h2.h2{font-size:clamp(28px,4.4vw,46px);margin:.5rem 0 .8rem;letter-spacing:-.03e
   .reveal{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* ======================================================================== */
+/* GLOWUP 2026-08: the network at real scale + the live door field          */
+/* ======================================================================== */
+
+/* ---- carrier inventory at scale ---------------------------------------- */
+.cscale{display:grid;gap:0;margin-top:38px;border:1px solid var(--line);
+  border-radius:var(--radius-lg);overflow:hidden;
+  background:linear-gradient(180deg,rgba(14,18,32,.55),rgba(10,13,22,.55))}
+.crow{display:grid;grid-template-columns:200px 1fr 132px;align-items:center;gap:24px;
+  padding:20px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05)}
+.crow:last-child{border-bottom:0}
+.crow::before{content:"";position:absolute;inset:0;background:var(--grad-soft);opacity:0;
+  transition:opacity .45s var(--ease);pointer-events:none}
+.crow:hover::before{opacity:.55}
+.cname{display:flex;flex-direction:column;gap:4px;position:relative;z-index:1;
+  font-weight:650;font-size:16.5px;color:var(--text);letter-spacing:-.01em}
+.cname .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+  font-family:var(--font-display);font-weight:600}
+.ctrack{height:14px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden;
+  position:relative;z-index:1;box-shadow:inset 0 1px 3px rgba(0,0,0,.45)}
+.crow .fill{box-shadow:0 0 24px -5px rgba(34,211,238,.8);transition-delay:var(--d,0s)}
+.cnum{text-align:right;position:relative;z-index:1;font-family:var(--font-display);font-weight:700;
+  font-size:19px;color:var(--white-hot);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.crow.is-watch .ctrack{background:repeating-linear-gradient(90deg,
+  rgba(255,255,255,.09) 0 7px,transparent 7px 14px)}
+.crow.is-watch .cnum{font-family:var(--font-body);font-size:11.5px;font-weight:600;color:var(--muted-2);
+  letter-spacing:.13em;text-transform:uppercase}
+.cscale-foot{margin-top:14px;font-size:12.5px;color:var(--muted-2);text-align:right}
+
+/* ---- the stat band ------------------------------------------------------ */
+.statband{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-top:8px}
+.sb{position:relative;overflow:hidden;padding:30px 20px;background:var(--panel)}
+.sb::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--grad);
+  transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease) var(--d,0s)}
+.sb.in::after{transform:scaleX(1)}
+.sb .v{font-family:var(--font-display);font-weight:700;font-size:clamp(19px,2.25vw,27px);
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sb .l{color:var(--text);font-size:14px;margin-top:10px;font-weight:600;line-height:1.4}
+.sb .sub{color:var(--muted-2);font-size:11.5px;margin-top:7px;font-family:var(--font-display);
+  font-weight:600;letter-spacing:.11em;text-transform:uppercase;line-height:1.5}
+
+/* ---- the live door field ----------------------------------------------- */
+.doorfield-wrap{position:relative;margin-top:38px;border:1px solid var(--line);
+  border-radius:var(--radius-lg);overflow:hidden;
+  background:radial-gradient(120% 150% at 50% 0%,rgba(34,211,238,.08),transparent 62%),var(--panel)}
+#doorfield{display:block;width:100%;height:clamp(250px,32vw,370px)}
+.df-legend{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;justify-content:center;
+  padding:14px 22px;border-top:1px solid var(--line);background:rgba(7,9,15,.55)}
+.df-key{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted)}
+.df-key i{width:9px;height:9px;border-radius:50%;flex:none}
+.df-key .k-watch{background:rgba(148,163,184,.5)}
+.df-key .k-live{background:var(--white-hot);box-shadow:0 0 12px 2px rgba(34,211,238,.85)}
+
+@media (max-width:1000px){
+  .statband{grid-template-columns:repeat(2,1fr)}
+  .crow{grid-template-columns:170px 1fr 118px;gap:18px;padding:18px 20px}
+}
+@media (max-width:760px){
+  .statband{grid-template-columns:1fr}
+  .crow{grid-template-columns:1fr auto;gap:5px 14px;padding:17px 18px}
+  .cname{grid-column:1}
+  .cnum{grid-column:2;font-size:17px}
+  .ctrack{grid-column:1/-1;margin-top:8px}
+}

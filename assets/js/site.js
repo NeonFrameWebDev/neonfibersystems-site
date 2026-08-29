@@ -236,4 +236,124 @@
       }, { threshold: 0 }).observe(canvas);
     }
   }
+
+  /* ---- national door field: watched doors, and the moment they flip -----
+     A live picture of the product: dim dots are addresses on the watch list,
+     each expanding wave is a build coming online. Time-based, so a dropped
+     frame never teleports the field, and it rebuilds only on a REAL width
+     change so iOS Safari's address-bar resize cannot re-randomise it (same
+     discipline as the hero canvas above). Glow is an additive circle rather
+     than shadowBlur: at ~1000 dots a frame that is the difference between
+     60fps and a slideshow. */
+  var df = document.getElementById('doorfield');
+  if (df) {
+    var dctx = df.getContext('2d');
+    var ddpr = Math.min(window.devicePixelRatio || 1, 2);
+    var DW = 0, DH = 0, ddots = [], dwaves = [], dLastW = -1, draf = 0, dPrev = 0, dNext = 0, dEl = 0;
+
+    function drand(a, b) { return a + Math.random() * (b - a); }
+
+    function dbuild() {
+      var r = df.getBoundingClientRect();
+      DW = r.width; DH = r.height;
+      df.width = Math.max(1, Math.round(DW * ddpr));
+      df.height = Math.max(1, Math.round(DH * ddpr));
+      dctx.setTransform(ddpr, 0, 0, ddpr, 0, 0);
+      var gap = DW < 560 ? 17 : 21;
+      var cols = Math.max(2, Math.floor(DW / gap));
+      var rows = Math.max(2, Math.floor(DH / gap));
+      var ox = (DW - (cols - 1) * gap) / 2, oy = (DH - (rows - 1) * gap) / 2;
+      ddots = [];
+      for (var y = 0; y < rows; y++) {
+        for (var x = 0; x < cols; x++) {
+          ddots.push({ x: ox + x * gap + drand(-2.5, 2.5),
+                       y: oy + y * gap + drand(-2.5, 2.5), lit: 0, flash: 0 });
+        }
+      }
+    }
+
+    function ddraw() {
+      dctx.clearRect(0, 0, DW, DH);
+      var i, d, a, rad, g;
+      dctx.globalCompositeOperation = 'lighter';
+      for (i = 0; i < ddots.length; i++) {
+        d = ddots[i];
+        g = d.lit * 0.5 + d.flash * 0.9;
+        if (g < 0.03) continue;
+        dctx.globalAlpha = Math.min(0.20, g * 0.13);
+        dctx.fillStyle = d.flash > 0.45 ? '#BFF3FF' : '#22D3EE';
+        dctx.beginPath(); dctx.arc(d.x, d.y, 2 + g * 4.5, 0, 6.2832); dctx.fill();
+      }
+      dctx.globalCompositeOperation = 'source-over';
+      dctx.globalAlpha = 1;
+      for (i = 0; i < ddots.length; i++) {
+        d = ddots[i];
+        if (d.flash > 0.06) {
+          a = 0.55 + d.flash * 0.45;
+          dctx.fillStyle = 'rgba(234,251,255,' + Math.min(1, a) + ')';
+          rad = 1.6 + d.flash * 2.2;
+        } else if (d.lit > 0.02) {
+          a = 0.22 + d.lit * 0.6;
+          dctx.fillStyle = 'rgba(34,211,238,' + Math.min(1, a) + ')';
+          rad = 1.5 + d.lit * 1.1;
+        } else {
+          dctx.fillStyle = 'rgba(148,163,184,.22)';
+          rad = 1.5;
+        }
+        dctx.beginPath(); dctx.arc(d.x, d.y, rad, 0, 6.2832); dctx.fill();
+      }
+    }
+
+    function dtick(ts) {
+      if (!dPrev) dPrev = ts;
+      var dt = Math.min((ts - dPrev) / 1000, 0.05);
+      dPrev = ts; dEl += dt;
+      if (dEl > dNext) {
+        dwaves.push({ x: drand(0, DW), y: drand(0, DH), r: 0,
+                      max: Math.max(DW, DH) * drand(0.3, 0.65) });
+        dNext = dEl + drand(1.3, 3.0);
+      }
+      var k, i, d, w, dx, dy, dist;
+      for (k = dwaves.length - 1; k >= 0; k--) {
+        dwaves[k].r += 145 * dt;
+        if (dwaves[k].r > dwaves[k].max) dwaves.splice(k, 1);
+      }
+      for (i = 0; i < ddots.length; i++) {
+        d = ddots[i];
+        for (k = 0; k < dwaves.length; k++) {
+          w = dwaves[k];
+          dx = d.x - w.x; dy = d.y - w.y;
+          dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < w.r && dist > w.r - 20) { d.flash = 1; d.lit = 1; }
+        }
+        d.flash *= Math.pow(0.08, dt);
+        d.lit *= Math.pow(0.5, dt);
+      }
+      ddraw();
+      draf = requestAnimationFrame(dtick);
+    }
+
+    function dplay() { if (!draf) { dPrev = 0; draf = requestAnimationFrame(dtick); } }
+    function dpause() { if (draf) { cancelAnimationFrame(draf); draf = 0; } }
+
+    dbuild();
+    dLastW = Math.round(DW);
+
+    if (reduce) {
+      for (var q = 0; q < ddots.length; q++) {
+        if (Math.random() < 0.14) { ddots[q].lit = drand(0.4, 1); }
+      }
+      ddraw();
+    } else {
+      window.addEventListener('resize', function () {
+        var w2 = Math.round(df.getBoundingClientRect().width);
+        if (w2 !== dLastW) { dLastW = w2; dbuild(); }
+      });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) dplay(); else dpause(); });
+        }, { threshold: 0 }).observe(df);
+      } else { dplay(); }
+    }
+  }
 })();
