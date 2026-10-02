@@ -519,13 +519,21 @@ function renderResult(data, addrLabel){
       + '<p>Optimum fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
       + 'Lock in your offer and our team takes it from there.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
-      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>';
+      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
+      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
+      + '<a href="#" onclick="openChat();return false" style="color:#0084D6;font-weight:800">Chat with us</a> or '
+      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#0084D6;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>Let\'s confirm it for you</h3>'
-      + '<p>We couldn\'t instantly confirm <span class="addr">'+esc(addrLabel)+'</span>, but that doesn\'t mean no — '
-      + 'our team can check it directly. Leave your info and we\'ll get right back to you.</p>'
-      + '<button class="btn btn-blue" style="width:100%;margin-top:12px" onclick="toLead()">HAVE US CHECK IT →</button>';
+    el.innerHTML = '<h3>Let\'s check it for you 👀</h3>'
+      + '<p>We couldn\'t <em>instantly</em> confirm <span class="addr">'+esc(addrLabel)+'</span> in our system — '
+      + 'but that often just means it\'s a newer address. <strong>No problem — our team will look it up '
+      + 'manually for you right now.</strong></p>'
+      + '<button class="btn btn-orange" style="width:100%;margin-top:12px" onclick="openChat()">💬 CHAT NOW — WE\'LL CHECK IT LIVE</button>'
+      + '<div style="display:flex;gap:10px;margin-top:10px">'
+      +   '<a class="btn btn-blue" style="flex:1;text-decoration:none" href="tel:'+CONFIG.PHONE_TEL+'">📞 CALL US</a>'
+      +   '<button class="btn btn-blue" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
+      + '</div>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
