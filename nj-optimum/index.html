@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Optimum New Jersey | Authorized Dealer — Check Fiber Availability</title>
+<title>Optimum New Jersey | Authorized Dealer | Check Fiber Availability</title>
 <meta name="description" content="Authorized Optimum dealer. Check Optimum Internet & Fiber availability at your New Jersey address, see current offers, and get signed up fast.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="keywords" content="Optimum fiber New Jersey, Optimum internet NJ, fiber availability New Jersey, Optimum authorized dealer, Optimum fiber deals NJ">
@@ -14,18 +14,18 @@
 <link rel="apple-touch-icon" href="https://neonfibersystems.com/assets/brand/apple-touch-icon.png">
 <!-- Open Graph (Facebook/LinkedIn share previews) -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Neon Fiber — Authorized Optimum Dealer">
-<meta property="og:title" content="Optimum Fiber in New Jersey — Check Availability at Your Address">
+<meta property="og:site_name" content="Neon Fiber, Authorized Optimum Dealer">
+<meta property="og:title" content="Optimum Fiber in New Jersey: Check Availability at Your Address">
 <meta property="og:description" content="See if Optimum Fiber is available at your New Jersey home and get signed up fast. Independent authorized Optimum dealer.">
 <meta property="og:url" content="https://neonfibersystems.com/nj-optimum/">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://neonfibersystems.com/assets/brand/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Neon Fiber — Authorized Optimum Dealer">
+<meta property="og:image:alt" content="Neon Fiber, Authorized Optimum Dealer">
 <!-- Twitter card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Optimum Fiber in New Jersey — Check Your Address">
+<meta name="twitter:title" content="Optimum Fiber in New Jersey: Check Your Address">
 <meta name="twitter:description" content="Check Optimum Fiber availability at your NJ address and get signed up fast.">
 <meta name="twitter:image" content="https://neonfibersystems.com/assets/brand/og.png">
 <!-- Structured data: FAQ (rich results) + Service -->
@@ -34,7 +34,7 @@
   "@context":"https://schema.org",
   "@graph":[
     {"@type":"Service","serviceType":"Optimum Fiber Internet sign-up","areaServed":{"@type":"State","name":"New Jersey"},
-     "provider":{"@type":"Organization","name":"Neon Fiber — Authorized Optimum Dealer","url":"https://neonfibersystems.com/"},
+     "provider":{"@type":"Organization","name":"Neon Fiber, Authorized Optimum Dealer","url":"https://neonfibersystems.com/"},
      "description":"Independent authorized Optimum dealer helping New Jersey residents check fiber availability and sign up for Optimum Internet."},
     {"@type":"FAQPage","mainEntity":[
       {"@type":"Question","name":"Are you Optimum?","acceptedAnswer":{"@type":"Answer","text":"We are an independent, authorized Optimum dealer. We help New Jersey residents check availability and get signed up for Optimum service."}},
@@ -108,6 +108,17 @@ input:focus,select:focus{outline:2px solid rgba(0,132,214,.18);border-color:var(
 .disclaimer{font-size:10px;color:#75808a;text-align:center;margin:11px 0 0}
 .consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12px;color:#5f6b76}
 .consent input{width:17px;height:17px;margin-top:2px;flex:0 0 auto}
+/* address autocomplete */
+.ac-wrap{position:relative}
+.ac-list{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:40;background:#fff;border:1px solid #cfd9df;border-radius:8px;box-shadow:0 14px 36px rgba(0,55,90,.18);max-height:286px;overflow:auto}
+.ac-item{display:flex;flex-direction:column;gap:1px;padding:10px 13px;cursor:pointer;border-bottom:1px solid #eef2f5}
+.ac-item:last-child{border-bottom:0}
+.ac-item.on,.ac-item:hover{background:#eef6fe}
+.ac-item .ac-a{font-weight:800;font-size:15px;color:#101820}
+.ac-item .ac-c{font-size:12px;color:#6b7686}
+.row3{display:grid;grid-template-columns:1.4fr .7fr .9fr;gap:12px}
+.result .maybe-steps{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 2px}
+.result .maybe-steps span{background:#fff;border:1px solid #ffd9a3;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;color:#8a5a12}
 /* availability result */
 .result{display:none;margin-top:18px;border-radius:12px;padding:20px;border:1px solid var(--line)}
 .result.show{display:block;animation:pop .25s ease}
@@ -209,7 +220,7 @@ footer strong{color:#fff;font-size:15px}
  .hero{padding:46px 0}
  h1{font-size:40px}
  section{padding:50px 0}
- .row,.offer-grid,.benefit-grid,.bundle-grid{grid-template-columns:1fr !important}
+ .row,.row3,.offer-grid,.benefit-grid,.bundle-grid{grid-template-columns:1fr !important}
  .section-head h2,.cta h2{font-size:32px}
 }
 </style>
@@ -242,7 +253,7 @@ footer strong{color:#fff;font-size:15px}
     <div>
       <div class="kicker">New Jersey • Authorized Optimum Dealer</div>
       <h1>OPTIMUM FIBER IN NEW JERSEY STARTS HERE.</h1>
-      <p>Check your exact home address for Optimum Fiber availability, current offers and speeds — then our team gets you signed up, fast.</p>
+      <p>Check your exact home address for Optimum Fiber availability, current offers and speeds, then our team gets you signed up fast.</p>
       <div class="hero-points">
         <span>Up to 8 Gig Fiber</span>
         <span>No data caps</span>
@@ -256,11 +267,15 @@ footer strong{color:#fff;font-size:15px}
       <p class="muted">Enter your New Jersey address to see if we can get you fiber.</p>
       <div id="availForm">
         <label>Street Address</label>
-        <input id="av_addr" placeholder="123 Main Street" autocomplete="address-line1">
+        <div class="ac-wrap">
+          <input id="av_addr" placeholder="Start typing your address..." autocomplete="off" autocapitalize="words" aria-autocomplete="list">
+          <div class="ac-list" id="ac_list"></div>
+        </div>
         <label>Apt / Unit <span style="font-weight:400;color:#89939b">(optional)</span></label>
         <input id="av_unit" placeholder="Apartment, suite, etc." autocomplete="address-line2">
-        <div class="row">
+        <div class="row3">
           <div><label>City</label><input id="av_city" placeholder="Newark" autocomplete="address-level2"></div>
+          <div><label>State</label><input id="av_state" value="NJ" placeholder="NJ" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase"></div>
           <div><label>ZIP Code</label><input id="av_zip" placeholder="07001" inputmode="numeric" autocomplete="postal-code"></div>
         </div>
         <button class="btn btn-blue" id="av_btn" onclick="checkAvailability()">CHECK AVAILABILITY →</button>
@@ -276,7 +291,7 @@ footer strong{color:#fff;font-size:15px}
     <div class="section-head">
       <div class="kicker">Current Fiber plans</div>
       <h2>NEW JERSEY: CHOOSE THE SPEED THAT FITS YOUR HOME.</h2>
-      <p>Gig fiber starting at <strong>$55/mo.</strong> Your exact plans and pricing are confirmed by your address — these are starting prices, so you'll never be surprised.</p>
+      <p>Gig fiber starting at <strong>$55/mo.</strong> Your exact plans and pricing are confirmed by your address. These are starting prices, so you'll never be surprised.</p>
     </div>
     <div class="offer-grid">
       <article class="offer">
@@ -295,7 +310,7 @@ footer strong{color:#fff;font-size:15px}
         <div class="pill">MOST POPULAR</div>
         <h3>1 Gig Fiber</h3>
         <div class="price"><small>from</small> $55<small>/mo.</small></div>
-        <p class="desc">Power your whole connected home — with eligible $10 Auto Pay + Paperless Bill discount, plus a 1-year price guarantee.</p>
+        <p class="desc">Power your whole connected home, with eligible $10 Auto Pay + Paperless Bill discount, plus a 1-year price guarantee.</p>
         <button class="btn btn-orange" onclick="pickPlan('1 Gig Fiber')">CHECK ADDRESS</button>
       </article>
       <article class="offer">
@@ -345,8 +360,8 @@ footer strong{color:#fff;font-size:15px}
     </div>
     <div>
       <div class="kicker">New Jersey availability</div>
-      <h2>Check the exact address—not just the town.</h2>
-      <p style="color:var(--gray)">Availability varies by neighborhood. The same community can have different service technologies and plans from one address to another — so we check your exact home.</p>
+      <h2>Check the exact address, not just the town.</h2>
+      <p style="color:var(--gray)">Availability varies by neighborhood. The same community can have different service technologies and plans from one address to another, so we check your exact home.</p>
       <div class="checklist">
         <div class="check"><b>01</b><span><strong>Enter your address.</strong><br>We check the exact location against live availability.</span></div>
         <div class="check"><b>02</b><span><strong>See your plans.</strong><br>Review the speeds and current offers for your address.</span></div>
@@ -386,7 +401,7 @@ footer strong{color:#fff;font-size:15px}
     <div>
       <div class="kicker" style="color:#89d2ff">Get signed up</div>
       <h2>Ready to get connected?</h2>
-      <p>Drop your details and the package you want. Our team confirms availability, locks in your offer, and walks you through the order — no hold music, no runaround.</p>
+      <p>Drop your details and the package you want. Our team confirms availability, locks in your offer, and walks you through the order. No hold music, no runaround.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
         <a href="tel:+10000000000" id="ctaCall">📞 Call us</a>
@@ -408,12 +423,12 @@ footer strong{color:#fff;font-size:15px}
         <label>Email</label><input id="ld_email" type="email" required>
         <label>Package you're interested in</label>
         <select id="ld_plan">
-          <option value="">Not sure yet — help me pick</option>
-          <option>300 Mbps Fiber — from $35/mo.</option>
-          <option>500 Mbps Fiber — from $45/mo.</option>
-          <option>1 Gig Fiber — from $55/mo.</option>
-          <option>2 Gig Fiber — from $65/mo.</option>
-          <option>8 Gig Fiber — from $90/mo.</option>
+          <option value="">Not sure yet (help me pick)</option>
+          <option>300 Mbps Fiber, from $35/mo.</option>
+          <option>500 Mbps Fiber, from $45/mo.</option>
+          <option>1 Gig Fiber, from $55/mo.</option>
+          <option>2 Gig Fiber, from $65/mo.</option>
+          <option>8 Gig Fiber, from $90/mo.</option>
           <option>Internet + Mobile bundle</option>
           <option>Internet + Mobile + TV bundle</option>
         </select>
@@ -426,7 +441,7 @@ footer strong{color:#fff;font-size:15px}
       <div class="success" id="leadSuccess">
         <div class="big">🎉</div>
         <h3>You're in!</h3>
-        <p id="leadSuccessMsg">Thanks — we've got your info. We'll confirm your Optimum options and reach out shortly.</p>
+        <p id="leadSuccessMsg">Thanks! We've got your info. We'll confirm your Optimum options and reach out shortly.</p>
       </div>
     </div>
   </div>
@@ -439,7 +454,7 @@ footer strong{color:#fff;font-size:15px}
     <details><summary>Is Optimum Fiber available throughout New Jersey?</summary><p>Optimum offers Internet service throughout New Jersey, but Fiber availability varies by neighborhood and individual address.</p></details>
     <details><summary>What is the fastest Optimum Fiber speed?</summary><p>Optimum currently advertises Fiber speeds up to 8 Gig in select areas.</p></details>
     <details><summary>Does Optimum Fiber have data caps?</summary><p>Optimum says its Fiber plans include unlimited data.</p></details>
-    <details><summary>How do I get signed up?</summary><p>Check your exact address above or send us your details — our team confirms what's available, locks in your offer, and places the order with you.</p></details>
+    <details><summary>How do I get signed up?</summary><p>Check your exact address above or send us your details and our team confirms what's available, locks in your offer, and places the order with you.</p></details>
   </div>
 </section>
 </main>
@@ -454,8 +469,8 @@ footer strong{color:#fff;font-size:15px}
   </div>
 </footer>
 
-<!-- ===== Live chat (Tawk.to — FREE). In the morning: create a free tawk.to account, then
-     Admin > Channels > Chat Widget gives you the Property ID + Widget ID — paste them below.
+<!-- ===== Live chat (Tawk.to, FREE). In the morning: create a free tawk.to account, then
+     Admin > Channels > Chat Widget gives you the Property ID + Widget ID, paste them below.
      In Tawk dashboard, turn ON "Pre-chat Form" and add fields Name, Phone, Address, so every
      chat arrives with that info. Install the Tawk phone app to answer on the go. Until the IDs
      are set, no widget loads (safe) and the "Chat now" button falls back to calling you. ===== -->
@@ -474,7 +489,7 @@ var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 
 <script>
 /* =========================================================================
-   CONFIG — set these for production. Leave API_BASE empty to run in DEMO mode
+   CONFIG: set these for production. Leave API_BASE empty to run in DEMO mode
    (everything works visually; no real backend calls). Wire API_BASE to the
    backend endpoint Gus builds next (availability = our data, lead = our CRM,
    chat = Claude-powered agent).
@@ -496,7 +511,7 @@ const CONFIG = {
 
 /* ---- availability check (calls backend; demo fallback) ---- */
 async function checkAvailability(){
-  const addr = val('av_addr'), city = val('av_city'), zip = val('av_zip');
+  const addr = val('av_addr'), city = val('av_city'), zip = val('av_zip'), state = val('av_state')||CONFIG.STATE;
   if(!addr || (!city && !zip)){ alert('Please enter at least your street address and city or ZIP.'); return; }
   const btn = document.getElementById('av_btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Checking…';
@@ -505,7 +520,7 @@ async function checkAvailability(){
     if(CONFIG.API_BASE){
       const r = await fetch(CONFIG.API_BASE + '/api/availability', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({address:addr, unit:val('av_unit'), city:city, zip:zip, carrier:CONFIG.CARRIER})
+        body: JSON.stringify({address:addr, unit:val('av_unit'), city:city, state:state, zip:zip, carrier:CONFIG.CARRIER})
       });
       data = await r.json();
     } else {
@@ -515,7 +530,7 @@ async function checkAvailability(){
     }
   }catch(e){ data = { signable:true, carrier:'Optimum', plans:[] }; }
   btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →';
-  renderResult(data, addr + (city? ', '+city : '') + (zip? ' '+zip : ''));
+  renderResult(data, addr + (city? ', '+city : '') + (state? ' '+state : '') + (zip? ' '+zip : ''));
 }
 
 function renderResult(data, addrLabel){
@@ -523,7 +538,7 @@ function renderResult(data, addrLabel){
   if(data && data.signable){
     const plans = (data.plans||[]).map(p=>'<span class="plan">'+esc(p)+'</span>').join('');
     el.className = 'result yes show';
-    el.innerHTML = '<h3>✅ Great news — we can get you fiber here!</h3>'
+    el.innerHTML = '<h3>✅ Great news! We can get you fiber here!</h3>'
       + '<p>Optimum fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
       + 'Lock in your offer and our team takes it from there.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
@@ -533,15 +548,19 @@ function renderResult(data, addrLabel){
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#0084D6;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>Let\'s check it for you 👀</h3>'
-      + '<p>We couldn\'t <em>instantly</em> confirm <span class="addr">'+esc(addrLabel)+'</span> in our system — '
-      + 'but that often just means it\'s a newer address. <strong>No problem — our team will look it up '
-      + 'manually for you right now.</strong></p>'
-      + '<button class="btn btn-orange" style="width:100%;margin-top:12px" onclick="openChat()">💬 CHAT NOW — WE\'LL CHECK IT LIVE</button>'
+    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span> 🔎</h3>'
+      + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
+      + 'wired streets, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
+      + 'it live and lock in your best pricing.</p>'
+      + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
+      +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
+      +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
+      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="openChat()">💬 CHAT NOW &amp; GET A LIVE ANSWER</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
-      +   '<a class="btn btn-blue" style="flex:1;text-decoration:none" href="tel:'+CONFIG.PHONE_TEL+'">📞 CALL US</a>'
+      +   '<a class="btn btn-blue" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">📞 '+CONFIG.PHONE_DISPLAY+'</a>'
       +   '<button class="btn btn-blue" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
-      + '</div>';
+      + '</div>'
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
@@ -553,7 +572,7 @@ function toLead(){
 }
 function pickPlan(name){
   const sel = document.getElementById('ld_plan');
-  for(const o of sel.options){ if(o.text.indexOf(name.split(' —')[0])===0 || o.text===name){ sel.value=o.value||o.text; break; } }
+  for(const o of sel.options){ if(o.text.indexOf(name.split(',')[0])===0 || o.text===name){ sel.value=o.value||o.text; break; } }
   document.getElementById('availability').scrollIntoView({behavior:'smooth'});
 }
 
@@ -590,6 +609,54 @@ function val(id){ return (document.getElementById(id).value||'').trim(); }
 function copy(a,b){ const x=document.getElementById(a), y=document.getElementById(b); if(x&&y&&x.value) y.value=x.value; }
 function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+/* ---- address autocomplete: suggests ONLY addresses in our system, so a pick always resolves ---- */
+(function(){
+  const inp=document.getElementById('av_addr'); if(!inp) return;
+  const box=document.getElementById('ac_list');
+  let items=[], active=-1, timer=null;
+  function hide(){ box.style.display='none'; box.innerHTML=''; items=[]; active=-1; }
+  function fill(it){
+    inp.value=it.address;
+    if(it.city){ const c=document.getElementById('av_city'); if(c) c.value=it.city; }
+    if(it.state){ const st=document.getElementById('av_state'); if(st) st.value=it.state; }
+    hide();
+    const z=document.getElementById('av_zip'); if(z && !z.value) z.focus();
+  }
+  function render(){
+    box.innerHTML=items.map((it,i)=>'<div class="ac-item'+(i===active?' on':'')+'" data-i="'+i+'">'
+      +'<span class="ac-a">'+esc(it.address)+'</span>'
+      +'<span class="ac-c">'+esc([it.city,it.state].filter(Boolean).join(', '))+'</span></div>').join('');
+    box.style.display = items.length? 'block':'none';
+  }
+  async function query(q){
+    if(!CONFIG.API_BASE){ hide(); return; }
+    try{
+      const st=(document.getElementById('av_state')||{}).value||CONFIG.STATE;
+      const r=await fetch(CONFIG.API_BASE+'/api/address-suggest?carrier='+encodeURIComponent(CONFIG.CARRIER)+'&state='+encodeURIComponent(st)+'&q='+encodeURIComponent(q));
+      const d=await r.json();
+      if((inp.value||'').trim()!==q){ return; }   /* stale response */
+      items=(d.suggestions||[]).slice(0,8); active=-1; render();
+    }catch(e){ hide(); }
+  }
+  inp.addEventListener('input',function(){
+    const q=inp.value.trim();
+    if(q.length<3){ hide(); return; }
+    clearTimeout(timer); timer=setTimeout(function(){ query(q); },160);
+  });
+  inp.addEventListener('keydown',function(e){
+    if(box.style.display!=='block'||!items.length) return;
+    if(e.key==='ArrowDown'){ active=Math.min(active+1,items.length-1); render(); e.preventDefault(); }
+    else if(e.key==='ArrowUp'){ active=Math.max(active-1,0); render(); e.preventDefault(); }
+    else if(e.key==='Enter'){ if(active>=0){ fill(items[active]); e.preventDefault(); } }
+    else if(e.key==='Escape'){ hide(); }
+  });
+  box.addEventListener('mousedown',function(e){
+    const t=e.target.closest('.ac-item'); if(!t) return;
+    e.preventDefault(); fill(items[+t.dataset.i]);
+  });
+  document.addEventListener('click',function(e){ if(!e.target.closest('.ac-wrap')) hide(); });
+})();
 </script>
 </body>
 </html>
