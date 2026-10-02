@@ -266,18 +266,16 @@ footer strong{color:#fff;font-size:15px}
       <h2>Check availability</h2>
       <p class="muted">Enter your New Jersey address to see if we can get you fiber.</p>
       <div id="availForm">
-        <label>Street Address</label>
+        <label>Your address</label>
         <div class="ac-wrap">
           <input id="av_addr" placeholder="Start typing your address..." autocomplete="off" autocapitalize="words" aria-autocomplete="list">
           <div class="ac-list" id="ac_list"></div>
         </div>
-        <label>Apt / Unit <span style="font-weight:400;color:#89939b">(optional)</span></label>
-        <input id="av_unit" placeholder="Apartment, suite, etc." autocomplete="address-line2">
-        <div class="row3">
-          <div><label>City</label><input id="av_city" placeholder="Newark" autocomplete="address-level2"></div>
-          <div><label>State</label><input id="av_state" value="NJ" placeholder="NJ" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase"></div>
-          <div><label>ZIP Code</label><input id="av_zip" placeholder="07001" inputmode="numeric" autocomplete="postal-code"></div>
-        </div>
+        <input type="hidden" id="av_street">
+        <input type="hidden" id="av_city">
+        <input type="hidden" id="av_state" value="NJ">
+        <input type="hidden" id="av_unit">
+        <input type="hidden" id="av_zip">
         <button class="btn btn-blue" id="av_btn" onclick="checkAvailability()">CHECK AVAILABILITY →</button>
         <p class="disclaimer">Availability, pricing, speeds and promotional eligibility vary by address.</p>
       </div>
@@ -511,8 +509,11 @@ const CONFIG = {
 
 /* ---- availability check (calls backend; demo fallback) ---- */
 async function checkAvailability(){
-  const addr = val('av_addr'), city = val('av_city'), zip = val('av_zip'), state = val('av_state')||CONFIG.STATE;
-  if(!addr || (!city && !zip)){ alert('Please enter at least your street address and city or ZIP.'); return; }
+  // single search box: av_street/av_city are filled when the user picks a suggestion;
+  // if they typed freely without picking, fall back to the raw text (city blank -> backend soft-matches).
+  const typed = val('av_addr'), street = val('av_street') || typed,
+        city = val('av_city'), state = val('av_state')||CONFIG.STATE;
+  if(!typed){ alert('Please enter your address.'); return; }
   const btn = document.getElementById('av_btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Checking…';
   let data;
@@ -520,7 +521,7 @@ async function checkAvailability(){
     if(CONFIG.API_BASE){
       const r = await fetch(CONFIG.API_BASE + '/api/availability', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({address:addr, unit:val('av_unit'), city:city, state:state, zip:zip, carrier:CONFIG.CARRIER})
+        body: JSON.stringify({address:street, unit:'', city:city, state:state, zip:'', carrier:CONFIG.CARRIER})
       });
       data = await r.json();
     } else {
@@ -530,7 +531,7 @@ async function checkAvailability(){
     }
   }catch(e){ data = { signable:true, carrier:'Optimum', plans:[] }; }
   btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →';
-  renderResult(data, addr + (city? ', '+city : '') + (state? ' '+state : '') + (zip? ' '+zip : ''));
+  renderResult(data, typed);
 }
 
 function renderResult(data, addrLabel){
@@ -566,8 +567,10 @@ function renderResult(data, addrLabel){
 }
 
 function toLead(){
-  // carry the address into the signup form
-  copy('av_addr','ld_addr'); copy('av_city','ld_city'); copy('av_zip','ld_zip');
+  // carry the address into the signup form (street-only if a suggestion was picked, else the raw text)
+  const street = val('av_street') || val('av_addr');
+  const la = document.getElementById('ld_addr'); if(la && street) la.value = street;
+  copy('av_city','ld_city'); copy('av_zip','ld_zip');
   document.getElementById('signup').scrollIntoView({behavior:'smooth'});
 }
 function pickPlan(name){
@@ -616,12 +619,15 @@ function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
   const box=document.getElementById('ac_list');
   let items=[], active=-1, timer=null;
   function hide(){ box.style.display='none'; box.innerHTML=''; items=[]; active=-1; }
+  function setH(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
   function fill(it){
-    inp.value=it.address;
-    if(it.city){ const c=document.getElementById('av_city'); if(c) c.value=it.city; }
-    if(it.state){ const st=document.getElementById('av_state'); if(st) st.value=it.state; }
+    // show the full address in the one box, keep the parts the check needs in hidden fields
+    inp.value=[it.address, it.city, it.state].filter(Boolean).join(', ');
+    setH('av_street', it.address||'');
+    setH('av_city', it.city||'');
+    setH('av_state', it.state||'NJ');
     hide();
-    const z=document.getElementById('av_zip'); if(z && !z.value) z.focus();
+    const btn=document.getElementById('av_btn'); if(btn) btn.focus();
   }
   function render(){
     box.innerHTML=items.map((it,i)=>'<div class="ac-item'+(i===active?' on':'')+'" data-i="'+i+'">'
@@ -640,6 +646,7 @@ function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
     }catch(e){ hide(); }
   }
   inp.addEventListener('input',function(){
+    setH('av_street',''); setH('av_city','');   /* typing invalidates a prior pick */
     const q=inp.value.trim();
     if(q.length<3){ hide(); return; }
     clearTimeout(timer); timer=setTimeout(function(){ query(q); },160);
