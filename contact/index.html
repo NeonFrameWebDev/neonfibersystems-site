@@ -71,6 +71,10 @@
         <select id="topic" name="topic"><option value="pilot">A free pilot</option><option value="pricing">Plans &amp; territories</option><option value="invest">Investing</option><option value="other">Something else</option></select>
       </div>
       <div class="field"><label for="message">Anything else?</label><textarea id="message" name="message" placeholder="Carriers you care about, timing, questions…"></textarea></div>
+      <div class="field" style="display:flex;flex-direction:row;align-items:flex-start;gap:10px">
+        <input id="sms_consent" name="sms_consent" type="checkbox" style="width:18px;height:18px;margin-top:3px;flex:0 0 auto">
+        <label for="sms_consent" style="font-size:13px;line-height:1.5;color:var(--muted);font-weight:400">By providing my phone number and checking this box, I agree to receive text messages from Neon Fiber (an independent authorized dealer) about internet service and my inquiry, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" style="color:var(--cyan)">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" style="color:var(--cyan)">Terms of Service</a>.</label>
+      </div>
       <button class="btn btn-primary btn-lg" type="submit">Send &amp; book my pilot <span class="arrow">→</span></button>
       <p id="form-note" hidden style="color:var(--muted);font-size:14px;margin-top:4px">Your email app should open with everything filled in, so just hit send. If it didn’t, email <a href="mailto:chad@neonfibersystems.com" style="color:var(--cyan)">chad@neonfibersystems.com</a> directly.</p>
     </form>
