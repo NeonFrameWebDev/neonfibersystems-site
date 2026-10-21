@@ -7,11 +7,14 @@
 <meta name="description" content="Authorized Fidium Fiber dealer. Check Fidium Fiber availability at your Sacramento-area address, compare with your current internet bill, and get signed up fast.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="keywords" content="Fidium Fiber Sacramento, fiber internet Sacramento, Fidium availability, switch internet Sacramento, Fidium authorized dealer, Elk Grove fiber, Roseville fiber">
-<meta name="theme-color" content="#5B2D8E">
+<meta name="theme-color" content="#1a0b2e">
 <link rel="canonical" href="https://neonfibersystems.com/sacramento-fidium/">
 <link rel="icon" type="image/png" sizes="32x32" href="https://neonfibersystems.com/assets/brand/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="https://neonfibersystems.com/assets/brand/favicon-16.png">
 <link rel="apple-touch-icon" href="https://neonfibersystems.com/assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <!-- Open Graph (Facebook/LinkedIn share previews) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Neon Fiber, Authorized Fidium Dealer">
@@ -48,174 +51,294 @@
 </script>
 <style>
 :root{
-  --fid-purple:#5B2D8E;
-  --fid-purple-dark:#43216b;
-  --fid-lilac:#CBA9F1;
-  --fid-lime:#A4D233;
+  --purple:#6d28d9;
+  --purple-deep:#5B2D8E;
+  --purple-dark:#43216b;
+  --purple-ink:#1a0b2e;
+  --lilac:#CBA9F1;
+  --lime:#b8e62e;
+  --lime-dark:#213300;
   --ink:#1b1430;
   --gray:#5f6b76;
-  --light:#f6f4fa;
-  --line:#e2dcec;
+  --light:#faf7ff;
+  --line:#e6def2;
   --white:#fff;
   --ok:#1b9e5a;
+  --grad:linear-gradient(100deg,#7c3aed,#a855f7 55%,#c084fc);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.5}
+body{margin:0;font-family:'Outfit',Arial,Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.5}
 .container{width:min(1180px,92%);margin:auto}
 a{color:inherit;text-decoration:none}
-header{height:76px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+[id]{scroll-margin-top:84px}
+
+/* ===== header ===== */
+header{height:74px;background:rgba(26,11,46,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,.08)}
 .nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.logo{font-size:32px;font-weight:900;letter-spacing:-1.4px;color:var(--fid-purple)}
-.logo .dealer{display:block;font-size:10px;font-weight:800;letter-spacing:1px;color:var(--gray);margin-top:-4px}
-.navlinks{display:flex;gap:28px;font-size:15px;font-weight:800}
-.navlinks a:hover{color:var(--fid-purple)}
-.nav-right{display:flex;align-items:center;gap:12px}
-.callbtn{display:inline-flex;align-items:center;gap:7px;font-weight:900;font-size:15px;color:var(--fid-purple-dark)}
-.callbtn .ico{font-size:18px}
-.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:5px;padding:16px 24px;font-weight:900;font-size:16px;border:0;cursor:pointer;transition:.15s}
-.btn-purple{background:var(--fid-purple);color:#fff}
-.btn-purple:hover{background:var(--fid-purple-dark)}
-.btn-lime{background:var(--fid-lime);color:#1d2a00}
-.btn-lime:hover{filter:brightness(.94)}
-.btn:disabled{opacity:.6;cursor:default}
-.hero{
-  background:
-    radial-gradient(circle at 85% 20%,rgba(203,169,241,.5),transparent 28%),
-    linear-gradient(120deg,#f3ecfc 0%,#fff 55%,#f8f5fd 100%);
-  padding:64px 0 72px;
-}
-.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:54px;align-items:center}
-.kicker{font-size:15px;font-weight:900;letter-spacing:1.4px;color:var(--fid-purple);text-transform:uppercase}
-h1{font-size:clamp(44px,5.6vw,72px);line-height:1.02;letter-spacing:-2.6px;margin:10px 0 20px}
-.hero p{font-size:22px;color:#443a5c;max-width:650px;margin:0 0 24px}
-.hero-points{display:flex;gap:20px;flex-wrap:wrap;font-size:15px;font-weight:900}
-.hero-points span:before{content:"✓";color:var(--fid-purple);margin-right:7px}
-.trust{margin-top:26px;display:inline-flex;align-items:center;gap:10px;background:#fff;color:#2a1744;border-radius:8px;padding:12px 16px;font-size:14px;font-weight:900;box-shadow:0 8px 25px rgba(60,20,110,.12)}
-.availability{
-  background:#fff;border-radius:14px;padding:28px;
-  box-shadow:0 20px 55px rgba(60,20,110,.16);
-  border:1px solid rgba(91,45,142,.12)
-}
-.availability h2{font-size:29px;margin:0 0 6px}
-.muted{color:var(--gray);font-size:16px;margin:0 0 18px}
-label{display:block;font-size:14px;font-weight:900;margin:13px 0 6px}
-input,select{width:100%;padding:14px 13px;border:1px solid #d5cde2;border-radius:5px;font-size:17px;background:#fff;font-family:inherit}
-input:focus,select:focus{outline:2px solid rgba(91,45,142,.18);border-color:var(--fid-purple)}
+.logo{font-size:30px;font-weight:900;letter-spacing:-1.2px;color:#fff}
+.logo em{font-style:normal;background:linear-gradient(90deg,#c084fc,#b8e62e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo .dealer{display:block;font-size:9px;font-weight:700;letter-spacing:2.2px;color:#b9a8d6;margin-top:-5px;text-transform:uppercase}
+.navlinks{display:flex;gap:26px;font-size:15px;font-weight:700;color:#d9cdf0}
+.navlinks a:hover{color:#fff}
+.nav-right{display:flex;align-items:center;gap:14px}
+.callbtn{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:15px;color:#fff}
+.callbtn .ico{font-size:17px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;padding:16px 26px;font-weight:800;font-size:16px;border:0;cursor:pointer;transition:.18s;font-family:inherit;letter-spacing:.2px}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-purple{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(124,58,237,.35)}
+.btn-purple:hover{box-shadow:0 12px 30px rgba(124,58,237,.5)}
+.btn-lime{background:linear-gradient(100deg,#b8e62e,#d4f163);color:var(--lime-dark);box-shadow:0 8px 24px rgba(184,230,46,.35)}
+.btn-lime:hover{box-shadow:0 12px 30px rgba(184,230,46,.5)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn-ghost:hover{background:rgba(255,255,255,.18)}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+
+/* ===== announce strip ===== */
+.announce{background:linear-gradient(90deg,#2a1744,#43216b 50%,#2a1744);color:#fff;text-align:center;padding:12px 18px;font-weight:700;font-size:15px;letter-spacing:.3px}
+.announce b{color:var(--lime)}
+
+/* ===== hero ===== */
+.hero{position:relative;background:var(--purple-ink);color:#fff;padding:88px 0 110px;overflow:hidden;isolation:isolate}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(90px);z-index:-1}
+.hero:before{width:620px;height:620px;left:-180px;top:-240px;background:radial-gradient(circle,rgba(124,58,237,.55),transparent 65%);animation:drift 14s ease-in-out infinite alternate}
+.hero:after{width:560px;height:560px;right:-160px;bottom:-260px;background:radial-gradient(circle,rgba(184,230,46,.18),transparent 65%);animation:drift 18s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.12)}}
+.hero .grid-lines{position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:52px 52px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 20%,#000 30%,transparent 75%)}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:1.8px;color:var(--lilac);text-transform:uppercase}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-size:clamp(44px,5.6vw,76px);line-height:1.0;letter-spacing:-2.6px;margin:16px 0 22px;font-weight:900}
+h1 .hl{background:linear-gradient(95deg,#c084fc 10%,#b8e62e 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{font-size:21px;color:#cfc3e6;max-width:600px;margin:0 0 26px;font-weight:400}
+.hero p.sub b{color:#fff}
+.hero-points{display:flex;gap:10px;flex-wrap:wrap;font-size:14px;font-weight:700}
+.hero-points span{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:9px 16px}
+.hero-points span:before{content:"✓";color:var(--lime);font-weight:900}
+.price-flash{margin-top:30px;display:inline-flex;align-items:baseline;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px 22px;backdrop-filter:blur(6px)}
+.price-flash .old{font-size:22px;color:#9d8cc0;text-decoration:line-through;text-decoration-color:#f87171;text-decoration-thickness:3px}
+.price-flash .new{font-size:44px;font-weight:900;letter-spacing:-2px;color:var(--lime);line-height:1}
+.price-flash .new small{font-size:15px;font-weight:700;color:#d6e9a0;letter-spacing:0}
+.price-flash .tag{font-size:12px;font-weight:700;color:#cfc3e6;max-width:150px;line-height:1.3}
+
+/* ===== availability card ===== */
+.availability{position:relative;background:#fff;border-radius:22px;padding:30px;color:var(--ink);
+  box-shadow:0 30px 80px rgba(10,0,30,.55);border:1px solid rgba(255,255,255,.4)}
+.availability:before{content:"";position:absolute;inset:-2px;border-radius:24px;z-index:-1;
+  background:linear-gradient(140deg,#a855f7,#b8e62e 60%,#7c3aed);opacity:.9}
+.availability h2{font-size:27px;margin:0 0 6px;font-weight:900;letter-spacing:-.8px}
+.availability h2 .zap{color:var(--purple)}
+.muted{color:var(--gray);font-size:15px;margin:0 0 16px}
+label{display:block;font-size:13px;font-weight:800;margin:13px 0 6px;letter-spacing:.3px}
+input,select{width:100%;padding:15px 14px;border:1.5px solid #d9cfe8;border-radius:10px;font-size:16px;background:#fff;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:0;border-color:var(--purple);box-shadow:0 0 0 4px rgba(124,58,237,.14)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.availability .btn{width:100%;margin-top:16px}
+.availability .btn{width:100%;margin-top:16px;font-size:17px;padding:17px}
 .disclaimer{font-size:10px;color:#75808a;text-align:center;margin:11px 0 0}
 .consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12px;color:#5f6b76}
 .consent input{width:17px;height:17px;margin-top:2px;flex:0 0 auto}
+
 /* address autocomplete */
 .ac-wrap{position:relative}
-.ac-list{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:40;background:#fff;border:1px solid #d5cde2;border-radius:8px;box-shadow:0 14px 36px rgba(60,20,110,.18);max-height:286px;overflow:auto}
-.ac-item{display:flex;flex-direction:column;gap:1px;padding:10px 13px;cursor:pointer;border-bottom:1px solid #f1edf7}
+.ac-list{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:40;background:#fff;border:1px solid #d9cfe8;border-radius:12px;box-shadow:0 18px 44px rgba(40,10,90,.22);max-height:286px;overflow:auto}
+.ac-item{display:flex;flex-direction:column;gap:1px;padding:11px 14px;cursor:pointer;border-bottom:1px solid #f1edf7}
 .ac-item:last-child{border-bottom:0}
 .ac-item.on,.ac-item:hover{background:#f4edfc}
-.ac-item .ac-a{font-weight:800;font-size:15px;color:#1b1430}
+.ac-item .ac-a{font-weight:700;font-size:15px;color:#1b1430}
 .ac-item .ac-c{font-size:12px;color:#6b7686}
-.result .maybe-steps{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 2px}
-.result .maybe-steps span{background:#fff;border:1px solid #ffd9a3;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;color:#8a5a12}
+
 /* availability result */
-.result{display:none;margin-top:18px;border-radius:12px;padding:20px;border:1px solid var(--line)}
-.result.show{display:block;animation:pop .25s ease}
-@keyframes pop{from{transform:scale(.97);opacity:0}to{transform:scale(1);opacity:1}}
+.result{display:none;margin-top:18px;border-radius:14px;padding:20px;border:1px solid var(--line)}
+.result.show{display:block;animation:pop .3s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
 .result.yes{background:#eafaf1;border-color:#b7e4c9}
 .result.maybe{background:#fff6e9;border-color:#ffd9a3}
-.result h3{margin:0 0 6px;font-size:22px}
+.result h3{margin:0 0 6px;font-size:21px}
 .result.yes h3{color:var(--ok)}
-.result .addr{font-weight:900}
+.result .addr{font-weight:800}
 .result .plans{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
-.result .plan{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 11px;font-size:13px;font-weight:800}
+.result .plan{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:700}
+.result .maybe-steps{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 2px}
+.result .maybe-steps span{background:#fff;border:1px solid #ffd9a3;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:#8a5a12}
 .spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
-section{padding:68px 0}
-.section-head{text-align:center;max-width:760px;margin:0 auto 38px}
-.section-head h2{font-size:44px;line-height:1.05;letter-spacing:-1.4px;margin:7px 0 12px}
-.section-head p{color:var(--gray);margin:0}
-/* ===== comparison table (the switch sell) ===== */
-.compare{background:var(--light)}
-.cmp-wrap{max-width:860px;margin:auto;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(60,20,110,.09)}
+
+/* ===== shared section bits ===== */
+section{padding:84px 0}
+.section-head{text-align:center;max-width:780px;margin:0 auto 46px}
+.section-head h2{font-size:clamp(32px,4vw,48px);line-height:1.04;letter-spacing:-1.6px;margin:10px 0 14px;font-weight:900}
+.section-head p{color:var(--gray);margin:0;font-size:17px}
+.k2{color:var(--purple);font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .hero:before,.hero:after,.kicker .dot{animation:none}
+}
+
+/* ===== comparison ===== */
+.compare{background:
+  radial-gradient(900px 400px at 85% 0%,rgba(124,58,237,.07),transparent),
+  var(--light)}
+.cmp-cards{display:grid;grid-template-columns:1fr auto 1fr;gap:0;max-width:880px;margin:0 auto 30px;align-items:stretch}
+.bill{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 28px;text-align:center;position:relative}
+.bill.fid{border:0;background:linear-gradient(165deg,#2a1744,#43216b);color:#fff;box-shadow:0 24px 60px rgba(67,33,107,.35);transform:scale(1.04);z-index:2;border-radius:20px}
+.bill .who{font-size:14px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray)}
+.bill.fid .who{color:var(--lilac)}
+.bill .speed{font-size:20px;font-weight:800;margin:8px 0 2px}
+.bill .amt{font-size:64px;font-weight:900;letter-spacing:-3px;line-height:1.05;margin:10px 0 2px}
+.bill.fid .amt{background:linear-gradient(95deg,#d4f163,#b8e62e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bill .per{font-size:13px;color:var(--gray);font-weight:600}
+.bill.fid .per{color:#cfc3e6}
+.bill ul{list-style:none;margin:18px 0 0;padding:0;font-size:14px;display:grid;gap:9px;text-align:left}
+.bill ul li{display:flex;gap:9px;align-items:flex-start}
+.bill ul li:before{content:"✗";color:#e05252;font-weight:900;flex:0 0 auto}
+.bill.fid ul li:before{content:"✓";color:var(--lime)}
+.bill .ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(100deg,#b8e62e,#d4f163);color:var(--lime-dark);font-size:11px;font-weight:900;letter-spacing:1.4px;padding:7px 16px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px rgba(184,230,46,.4)}
+.vs{align-self:center;z-index:3;width:54px;height:54px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:var(--purple-deep);box-shadow:0 10px 26px rgba(40,10,90,.18);margin:0 -14px}
+.cmp-wrap{max-width:880px;margin:34px auto 0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 16px 44px rgba(60,20,110,.08)}
 table.cmp{width:100%;border-collapse:collapse;font-size:16px}
 .cmp th,.cmp td{padding:16px 18px;text-align:center;border-bottom:1px solid var(--line)}
-.cmp th{font-size:15px}
-.cmp td:first-child,.cmp th:first-child{text-align:left;font-weight:800}
-.cmp .col-fid{background:#f6effe;font-weight:900;color:var(--fid-purple-dark)}
-.cmp th.col-fid{background:var(--fid-purple);color:#fff;font-size:17px}
+.cmp th{font-size:14px;letter-spacing:.6px;text-transform:uppercase}
+.cmp td:first-child,.cmp th:first-child{text-align:left;font-weight:700}
+.cmp .col-fid{background:#f8f3fe;font-weight:800;color:var(--purple-dark)}
+.cmp th.col-fid{background:var(--grad);color:#fff;font-size:15px}
 .cmp .win{color:var(--ok);font-weight:900}
 .cmp tr:last-child td{border-bottom:0}
-.cmp-note{font-size:11px;color:#74808a;margin:14px auto 0;max-width:860px;text-align:center}
-.savings-banner{max-width:860px;margin:22px auto 0;background:var(--fid-purple);color:#fff;border-radius:12px;padding:20px 24px;text-align:center;font-size:19px;font-weight:900}
-.savings-banner small{display:block;font-weight:400;font-size:13px;color:#e3d4f7;margin-top:5px}
+.cmp-note{font-size:11px;color:#74808a;margin:16px auto 0;max-width:880px;text-align:center;line-height:1.6}
+.savings-banner{max-width:880px;margin:30px auto 0;background:linear-gradient(120deg,#43216b,#6d28d9 70%,#7c3aed);color:#fff;border-radius:18px;padding:30px 28px;text-align:center;font-size:21px;font-weight:800;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(109,40,217,.3)}
+.savings-banner:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(184,230,46,.25),transparent 70%);right:-80px;top:-120px}
+.savings-banner .big-save{display:block;font-size:clamp(46px,6vw,72px);font-weight:900;letter-spacing:-3px;line-height:1.1;background:linear-gradient(95deg,#d4f163,#b8e62e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.savings-banner small{display:block;font-weight:400;font-size:13px;color:#d9cdf0;margin-top:10px}
+
+/* ===== speed bars ===== */
+.speeds{max-width:880px;margin:56px auto 0}
+.speeds h3{text-align:center;font-size:22px;font-weight:800;letter-spacing:-.5px;margin:0 0 24px}
+.sbar{margin-bottom:18px}
+.sbar .lab{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:7px}
+.sbar .lab span:last-child{color:var(--gray);font-weight:600}
+.sbar .track{height:16px;border-radius:999px;background:#ece5f6;overflow:hidden}
+.sbar .fill{height:100%;width:0;border-radius:999px;background:var(--grad);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.sbar.lime .fill{background:linear-gradient(90deg,#86b911,#b8e62e)}
+.sbar.gray .fill{background:#b9b2c9}
+.speeds.in .f300{width:15%}.speeds.in .f1000{width:50%}.speeds.in .f2000{width:100%}
+
+/* ===== offers ===== */
 .offers{background:#fff}
-.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:980px;margin:auto}
-.offer{border:1px solid var(--line);border-radius:12px;padding:26px;background:#fff;position:relative}
-.offer.featured{border:2px solid var(--fid-purple);box-shadow:0 12px 35px rgba(91,45,142,.13);padding-top:48px}
-.offer.featured .pill{left:50%;right:auto;transform:translateX(-50%);top:14px;white-space:nowrap}
-.pill{position:absolute;right:16px;top:16px;background:#f0e5fd;color:var(--fid-purple-dark);font-size:10px;font-weight:900;padding:5px 8px;border-radius:20px}
-.offer h3{font-size:23px;margin:0 0 10px}
-.price{font-size:48px;line-height:1;font-weight:900;letter-spacing:-2px}
-.price small{font-size:14px;letter-spacing:0}
-.offer .desc{font-size:15px;color:var(--gray);min-height:66px}
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1020px;margin:auto}
+.offer{border:1px solid var(--line);border-radius:20px;padding:30px 28px;background:#fff;position:relative;transition:transform .2s,box-shadow .2s;overflow:hidden}
+.offer:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,#d9cfe8,#cbb8e6)}
+.offer:hover{transform:translateY(-6px);box-shadow:0 22px 54px rgba(60,20,110,.14)}
+.offer.featured{border:2px solid transparent;background:
+  linear-gradient(#fff,#fff) padding-box,
+  linear-gradient(140deg,#a855f7,#b8e62e) border-box;
+  box-shadow:0 18px 50px rgba(124,58,237,.18);padding-top:52px}
+.offer.featured:before{display:none}
+.offer.featured .pill{left:50%;right:auto;transform:translateX(-50%);top:16px;white-space:nowrap}
+.pill{position:absolute;right:16px;top:16px;background:linear-gradient(100deg,#b8e62e,#d4f163);color:var(--lime-dark);font-size:10px;font-weight:900;letter-spacing:1px;padding:6px 12px;border-radius:20px}
+.offer h3{font-size:22px;margin:0 0 12px;font-weight:800;letter-spacing:-.5px}
+.price{font-size:54px;line-height:1;font-weight:900;letter-spacing:-2.6px}
+.price small{font-size:14px;letter-spacing:0;font-weight:700;color:var(--gray)}
+.offer .desc{font-size:15px;color:var(--gray);min-height:66px;margin:12px 0 0}
 .offer .after{font-size:12px;color:#74808a;margin:8px 0 0}
-.offer .btn{width:100%;margin-top:12px}
-.benefits{background:var(--light)}
+.offer .btn{width:100%;margin-top:16px}
+.offer ul.feats{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px dashed var(--line);font-size:13.5px;display:grid;gap:8px;color:#3d3356}
+.offer ul.feats li:before{content:"✓ ";color:var(--purple);font-weight:900}
+
+/* ===== benefits ===== */
+.benefits{background:
+  radial-gradient(700px 300px at 10% 100%,rgba(184,230,46,.08),transparent),
+  var(--light)}
 .benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.benefit{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px}
-.benefit-icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f0e5fd;color:var(--fid-purple);font-size:23px;font-weight:900;margin-bottom:15px}
-.benefit h3{margin:0 0 7px;font-size:19px}
-.benefit p{margin:0;color:var(--gray);font-size:15px}
+.benefit{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .2s,box-shadow .2s}
+.benefit:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(60,20,110,.12)}
+.benefit-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#f0e5fd,#e3d1fa);color:var(--purple);font-size:25px;margin-bottom:16px}
+.benefit h3{margin:0 0 7px;font-size:18px;font-weight:800}
+.benefit p{margin:0;color:var(--gray);font-size:14.5px}
+
+/* ===== sacramento ===== */
 .sac{background:#fff}
-.sac-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
-.sac-art{min-height:420px;border-radius:18px;background:
- radial-gradient(circle at 55% 35%,rgba(203,169,241,.85),transparent 24%),
- linear-gradient(145deg,#6b36a5,#341a54);
- position:relative;overflow:hidden;color:#fff;padding:36px}
-.sac-art:after{content:"SACRAMENTO";position:absolute;right:-24px;bottom:-15px;font-size:66px;font-weight:900;letter-spacing:-5px;opacity:.12}
-.sac-art h3{font-size:40px;margin:0 0 14px}
-.sac-art p{color:#efe4fb}
-.market-list{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
-.market{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);border-radius:20px;padding:7px 11px;font-size:12px}
-.checklist{display:grid;gap:17px;margin-top:26px}
-.check{display:flex;gap:13px}
-.check b{color:var(--fid-purple);font-size:21px}
-.check span{color:var(--gray);font-size:16px}
-.cta{background:var(--fid-purple);color:#fff}
-.cta-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
-.cta h2{font-size:48px;line-height:1.05;letter-spacing:-1.5px;margin:0 0 15px}
-.cta p{color:#eadcfa}
-.cta .orstrip{margin-top:22px;display:flex;align-items:center;gap:12px;font-weight:900;font-size:17px}
-.cta .orstrip a{background:#fff;color:var(--fid-purple-dark);border-radius:7px;padding:11px 16px}
-.lead-card{background:#fff;color:var(--ink);border-radius:13px;padding:26px}
+.sac-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+.sac-art{min-height:440px;border-radius:24px;background:
+ radial-gradient(circle at 70% 20%,rgba(184,230,46,.2),transparent 32%),
+ radial-gradient(circle at 25% 65%,rgba(203,169,241,.5),transparent 36%),
+ linear-gradient(150deg,#6b36a5,#2a1744);
+ position:relative;overflow:hidden;color:#fff;padding:38px;box-shadow:0 26px 60px rgba(42,23,68,.35)}
+.sac-art:after{content:"SACRAMENTO";position:absolute;right:-26px;bottom:-16px;font-size:70px;font-weight:900;letter-spacing:-5px;opacity:.1}
+.sac-art h3{font-size:38px;margin:0 0 14px;font-weight:900;letter-spacing:-1.4px}
+.sac-art p{color:#e5d9f6;font-size:16px}
+.sac-art .stat{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px 20px;margin-top:10px}
+.sac-art .stat b{display:block;font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--lime)}
+.sac-art .stat span{font-size:12px;color:#d9cdf0;font-weight:600}
+.market-list{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.market{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);border-radius:20px;padding:8px 13px;font-size:12.5px;font-weight:600}
+.market:before{content:"📍 "}
+.checklist{display:grid;gap:18px;margin-top:28px}
+.check{display:flex;gap:16px;background:var(--light);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.check b{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900}
+.check span{color:var(--gray);font-size:15px}
+.check span strong{color:var(--ink)}
+
+/* ===== cta ===== */
+.cta{position:relative;background:var(--purple-ink);color:#fff;overflow:hidden;isolation:isolate}
+.cta:before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;filter:blur(100px);background:radial-gradient(circle,rgba(124,58,237,.5),transparent 65%);left:-200px;top:-200px;z-index:-1}
+.cta:after{content:"";position:absolute;width:480px;height:480px;border-radius:50%;filter:blur(90px);background:radial-gradient(circle,rgba(184,230,46,.14),transparent 65%);right:-140px;bottom:-200px;z-index:-1}
+.cta-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:52px;align-items:start}
+.cta h2{font-size:clamp(34px,4.4vw,52px);line-height:1.03;letter-spacing:-1.8px;margin:0 0 16px;font-weight:900}
+.cta h2 .hl{background:linear-gradient(95deg,#c084fc,#b8e62e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta p{color:#cfc3e6;font-size:17px}
+.cta .orstrip{margin-top:24px;display:flex;align-items:center;gap:12px;font-weight:800;font-size:16px;flex-wrap:wrap}
+.cta .orstrip a{background:#fff;color:var(--purple-dark);border-radius:10px;padding:12px 18px;transition:.15s}
+.cta .orstrip a:hover{transform:translateY(-2px)}
+.lead-card{background:#fff;color:var(--ink);border-radius:20px;padding:30px;box-shadow:0 30px 80px rgba(5,0,20,.5)}
 .lead-card .btn{width:100%;margin-top:16px}
 .success{display:none;text-align:center;padding:24px 10px}
 .success.show{display:block}
 .success .big{font-size:52px}
 .success h3{color:var(--ok);font-size:26px;margin:8px 0}
 .success p{color:#2b3642;font-size:16px;line-height:1.55;max-width:460px;margin:0 auto}
+
+/* ===== faq ===== */
 .faq{background:#fff}
-details{border-bottom:1px solid var(--line);padding:18px 0}
-summary{font-weight:800;cursor:pointer}
-details p{color:var(--gray);font-size:14px;max-width:900px}
-footer{background:#1b1430;color:#b2abc4;padding:30px 0;font-size:11px}
-footer strong{color:#fff;font-size:15px}
+details{border:1px solid var(--line);border-radius:14px;padding:0;margin-bottom:12px;overflow:hidden;transition:box-shadow .2s}
+details[open]{box-shadow:0 10px 30px rgba(60,20,110,.08)}
+summary{font-weight:800;cursor:pointer;padding:19px 22px;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:24px;font-weight:700;color:var(--purple);transition:transform .2s;flex:0 0 auto}
+details[open] summary:after{transform:rotate(45deg)}
+details p{color:var(--gray);font-size:15px;max-width:900px;margin:0;padding:0 22px 20px}
+
+footer{background:#140b24;color:#b2abc4;padding:36px 0;font-size:11px;line-height:1.7}
+footer strong{color:#fff;font-size:16px}
+
 @media(max-width:900px){
  .hero-grid,.sac-grid,.cta-grid{grid-template-columns:1fr}
+ .hero{padding:60px 0 72px}
  .offer-grid{grid-template-columns:1fr 1fr !important}
  .benefit-grid{grid-template-columns:1fr 1fr}
  .navlinks{display:none}
  .cmp th,.cmp td{padding:12px 8px;font-size:14px}
+ .cmp-cards{grid-template-columns:1fr;gap:26px}
+ .vs{margin:-38px auto}
+ .bill.fid{transform:none}
 }
 @media(max-width:600px){
- header{height:66px}
+ header{height:64px}
  .logo{font-size:23px}
- .hero{padding:46px 0}
- h1{font-size:38px}
- section{padding:50px 0}
+ h1{font-size:40px;letter-spacing:-1.6px}
+ section{padding:56px 0}
  .row,.offer-grid,.benefit-grid{grid-template-columns:1fr !important}
- .section-head h2,.cta h2{font-size:32px}
+ .price-flash .new{font-size:34px}
  .cmp th,.cmp td{padding:10px 6px;font-size:12px}
+ .callbtn span:last-child{display:none}
 }
 </style>
 </head>
@@ -223,7 +346,7 @@ footer strong{color:#fff;font-size:15px}
 
 <header>
   <div class="container nav">
-    <div class="logo">fidium<span class="dealer">Authorized Dealer</span></div>
+    <div class="logo">fidium<em>.</em><span class="dealer">Authorized Dealer</span></div>
     <nav class="navlinks">
       <a href="#compare">Compare</a>
       <a href="#offers">Plans</a>
@@ -232,32 +355,38 @@ footer strong{color:#fff;font-size:15px}
     </nav>
     <div class="nav-right">
       <a class="callbtn" id="headerCall" href="tel:+10000000000"><span class="ico">📞</span><span id="headerPhone">Call us</span></a>
-      <a class="btn btn-purple" href="#availability">CHECK ADDRESS</a>
+      <a class="btn btn-lime" style="padding:13px 20px;font-size:15px" href="#availability">CHECK ADDRESS</a>
     </div>
   </div>
 </header>
 
 <main>
-<div style="background:#2a1744;color:#fff;text-align:center;padding:14px 18px;font-weight:900;font-size:16px;letter-spacing:.3px">
-  🌉 <span style="color:#cba9f1">SACRAMENTO AREA:</span> Fidium Fiber is here. Check your exact address for availability &amp; current offers.
+<div class="announce">
+  🌉 <b>SACRAMENTO AREA:</b> Fidium Fiber is here. 1 Gig from $30/mo. for year one, first month free.
 </div>
 
 <section class="hero" id="availability">
+  <div class="grid-lines"></div>
   <div class="container hero-grid">
     <div>
-      <div class="kicker">Sacramento • Authorized Fidium Dealer</div>
-      <h1>PAYING TOO MUCH FOR INTERNET IN SACRAMENTO?</h1>
-      <p>Fidium Fiber Gig service starts at a fraction of what most Sacramento homes pay today. Check your exact address, see your real offer, and our team handles the switch.</p>
+      <div class="kicker"><span class="dot"></span> Sacramento • Authorized Fidium Dealer</div>
+      <h1>PAYING TOO MUCH FOR INTERNET? <span class="hl">SACRAMENTO, MEET FIDIUM.</span></h1>
+      <p class="sub">100% fiber, gig speed, <b>$30 a month for your first year</b>. That's less than half what most Sacramento homes pay today. Check your address, see your real offer, and we handle the whole switch.</p>
       <div class="hero-points">
-        <span>Gig speeds, small bill</span>
+        <span>1 month free</span>
         <span>No data caps</span>
         <span>No annual contract</span>
+        <span>Year-one price lock</span>
       </div>
-      <div class="trust"><span style="font-size:20px">✅</span> Real humans. We handle your order and the switch, start to finish.</div>
+      <div class="price-flash">
+        <span class="old">$70/mo.</span>
+        <span class="new">$30<small>/mo.</small></span>
+        <span class="tag">1 Gig fiber for year one, vs the typical $70 gig bill here. Then $65/mo.</span>
+      </div>
     </div>
 
     <div class="availability">
-      <h2>Check availability</h2>
+      <h2><span class="zap">⚡</span> Check availability</h2>
       <p class="muted">Enter your Sacramento-area address to see if we can get you fiber.</p>
       <div id="availForm">
         <label>Your address</label>
@@ -280,87 +409,132 @@ footer strong{color:#fff;font-size:15px}
 
 <section class="compare" id="compare">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">Side by side</div>
-      <h2>SAME HOUSE. SAME GIG SPEED. VERY DIFFERENT BILL.</h2>
+    <div class="section-head rv">
+      <div class="k2">Side by side</div>
+      <h2>SAME HOUSE. SAME GIG SPEED.<br>VERY DIFFERENT BILL.</h2>
       <p>We checked current advertised offers at Sacramento addresses. Here's what gig-speed fiber actually costs.</p>
     </div>
-    <div class="cmp-wrap">
+
+    <div class="cmp-cards rv">
+      <div class="bill fid">
+        <div class="ribbon">⭐ THE SWITCH</div>
+        <div class="who">Fidium Fiber</div>
+        <div class="speed">1 Gig</div>
+        <div class="amt">$30</div>
+        <div class="per">/mo. first year • then $65/mo.</div>
+        <ul>
+          <li>First month free</li>
+          <li>Price locked for year one</li>
+          <li>Symmetrical upload &amp; download</li>
+          <li>No data caps, no annual contract</li>
+        </ul>
+      </div>
+      <div class="vs">VS</div>
+      <div class="bill">
+        <div class="who">Other Fiber Carriers</div>
+        <div class="speed">1 Gig</div>
+        <div class="amt">$70</div>
+        <div class="per">/mo. typical advertised rate</div>
+        <ul>
+          <li>No free month</li>
+          <li>No first-year price lock</li>
+          <li style="visibility:hidden">spacer</li>
+          <li style="visibility:hidden">spacer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cmp-wrap rv">
       <table class="cmp">
-        <tr><th></th><th class="col-fid">Fidium Fiber</th><th>AT&amp;T Fiber</th></tr>
-        <tr><td>1 Gig price</td><td class="col-fid">$30/mo. first year</td><td>$70/mo.</td></tr>
-        <tr><td>2 Gig price</td><td class="col-fid">$40/mo. first year</td><td>—</td></tr>
-        <tr><td>300 Mbps price</td><td class="col-fid">$30/mo.</td><td>$50/mo.</td></tr>
+        <tr><th></th><th class="col-fid">Fidium Fiber</th><th>Other Fiber Carriers</th></tr>
+        <tr><td>1 Gig, year one</td><td class="col-fid">$30/mo.</td><td>$70/mo.</td></tr>
+        <tr><td>1 Gig, after year one</td><td class="col-fid">$65/mo.</td><td>$70/mo.</td></tr>
+        <tr><td>2 Gig, year one</td><td class="col-fid">$40/mo.</td><td>Often not offered</td></tr>
+        <tr><td>300 Mbps</td><td class="col-fid">$30/mo.</td><td>$50/mo.</td></tr>
         <tr><td>Free month offer</td><td class="col-fid"><span class="win">✓ 1 month free</span> (1 Gig &amp; 2 Gig)</td><td>✗</td></tr>
         <tr><td>First-year price lock</td><td class="col-fid"><span class="win">✓</span></td><td>✗</td></tr>
-        <tr><td>Data caps</td><td class="col-fid">None</td><td>None</td></tr>
-        <tr><td>Annual contract</td><td class="col-fid">None</td><td>None</td></tr>
+        <tr><td>Data caps</td><td class="col-fid">None</td><td>Varies</td></tr>
+        <tr><td>Annual contract</td><td class="col-fid">None</td><td>Varies</td></tr>
       </table>
     </div>
-    <p class="cmp-note">Comparison based on each provider's advertised new-customer online offers checked at Sacramento, CA addresses in October 2026, with autopay/paperless discounts applied where offered; excludes taxes and fees. Prices and promotions vary by address and change over time; your exact offer is confirmed when we check your address. Fidium 1 Gig $30/mo. promotional first-year rate, then $65/mo.; 2 Gig $40/mo. first year, then $75/mo. AT&amp;T and AT&amp;T Fiber are trademarks of AT&amp;T Intellectual Property. This site is not affiliated with or endorsed by AT&amp;T.</p>
-    <div class="savings-banner">
-      Gig for $30 instead of $70 = <u>$480 saved in year one</u> — and it's still cheaper after that.
+    <p class="cmp-note">"Other fiber carriers" figures are based on competing fiber providers' advertised new-customer online offers for comparable speeds, checked at Sacramento, CA addresses in October 2026, with autopay/paperless discounts applied where offered; excludes taxes and fees. Prices and promotions vary by provider and address and change over time; your exact Fidium offer is confirmed when we check your address. Fidium 1 Gig $30/mo. promotional first-year rate, then $65/mo.; 2 Gig $40/mo. first year, then $75/mo.</p>
+
+    <div class="savings-banner rv">
+      Gig for $30 instead of $70 =
+      <span class="big-save"><span id="saveCount">$480</span> saved in year one</span>
+      and it's still cheaper after that.
       <small>Based on the advertised Sacramento offers above. Your exact savings depend on your current plan and address.</small>
+    </div>
+
+    <div class="speeds rv" id="speedBars">
+      <h3>How much speed is that, really?</h3>
+      <div class="sbar gray"><div class="lab"><span>300 Mbps: browsing, streaming, smart home</span><span>$30/mo.</span></div><div class="track"><div class="fill f300"></div></div></div>
+      <div class="sbar"><div class="lab"><span>1 Gig: the whole family, all at once</span><span>$30/mo. first year</span></div><div class="track"><div class="fill f1000"></div></div></div>
+      <div class="sbar lime"><div class="lab"><span>2 Gig: creators, gamers, heavy households</span><span>$40/mo. first year</span></div><div class="track"><div class="fill f2000"></div></div></div>
     </div>
   </div>
 </section>
 
 <section class="offers" id="offers">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">Current Fidium Fiber plans</div>
+    <div class="section-head rv">
+      <div class="k2">Current Fidium Fiber plans</div>
       <h2>SACRAMENTO: PICK YOUR SPEED.</h2>
       <p>Straightforward pricing with a first-year price lock. Your exact offer is confirmed by your address, so you'll never be surprised.</p>
     </div>
     <div class="offer-grid">
-      <article class="offer">
+      <article class="offer rv">
         <h3>300 Mbps Fiber</h3>
         <div class="price"><small>from</small> $30<small>/mo.</small></div>
         <p class="desc">Plenty for browsing, streaming and everyday connected devices.</p>
+        <ul class="feats"><li>Symmetrical 300 Mbps</li><li>Unlimited data</li><li>No annual contract</li></ul>
         <button class="btn btn-purple" onclick="pickPlan('300 Mbps Fiber')">CHECK ADDRESS</button>
       </article>
-      <article class="offer featured">
+      <article class="offer featured rv d1">
         <div class="pill">MOST POPULAR • 1 MONTH FREE</div>
         <h3>1 Gig Fiber</h3>
         <div class="price"><small>from</small> $30<small>/mo. first year</small></div>
         <p class="desc">Whole-home gig speed for streaming, gaming and work from home, with your first month free.</p>
         <p class="after">$65/mo. after the first year. Price locked for year one.</p>
+        <ul class="feats"><li>Symmetrical 1 Gig</li><li>First month free</li><li>Year-one price lock</li></ul>
         <button class="btn btn-lime" onclick="pickPlan('1 Gig Fiber')">CHECK ADDRESS</button>
       </article>
-      <article class="offer">
+      <article class="offer rv d2">
         <h3>2 Gig Fiber</h3>
         <div class="price"><small>from</small> $40<small>/mo. first year</small></div>
         <p class="desc">Serious speed for demanding households, creators and heavy usage, first month free.</p>
         <p class="after">$75/mo. after the first year. Price locked for year one.</p>
+        <ul class="feats"><li>Symmetrical 2 Gig</li><li>First month free</li><li>Year-one price lock</li></ul>
         <button class="btn btn-purple" onclick="pickPlan('2 Gig Fiber')">CHECK ADDRESS</button>
       </article>
     </div>
-    <p style="font-size:11px;color:#74808a;margin-top:20px;text-align:center">Prices shown are <strong>starting</strong> prices for new residential customers; promotional first-year rates on 1 Gig and 2 Gig step up to $65/mo. and $75/mo. respectively after 12 months. One free month applies to 1 Gig and 2 Gig plans. Taxes and fees extra. Pricing, speeds, promotional eligibility and availability vary by address and are confirmed when we check your location; offers and terms are subject to change.</p>
+    <p style="font-size:11px;color:#74808a;margin-top:22px;text-align:center">Prices shown are <strong>starting</strong> prices for new residential customers; promotional first-year rates on 1 Gig and 2 Gig step up to $65/mo. and $75/mo. respectively after 12 months. One free month applies to 1 Gig and 2 Gig plans. Taxes and fees extra. Pricing, speeds, promotional eligibility and availability vary by address and are confirmed when we check your location; offers and terms are subject to change.</p>
   </div>
 </section>
 
 <section class="benefits" id="fiber">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">The Fidium Fiber difference</div>
+    <div class="section-head rv">
+      <div class="k2">The Fidium Fiber difference</div>
       <h2>WHY SACRAMENTO HOMES ARE SWITCHING.</h2>
       <p>100% fiber to your home, built for streaming, gaming, video calls and everything else at once.</p>
     </div>
     <div class="benefit-grid">
-      <div class="benefit"><div class="benefit-icon">⚡</div><h3>Up to 2 Gig</h3><p>Fast enough for every device in the house, all at the same time.</p></div>
-      <div class="benefit"><div class="benefit-icon">↕</div><h3>Symmetrical Speeds</h3><p>Uploads as fast as downloads, so video calls and cloud backups fly.</p></div>
-      <div class="benefit"><div class="benefit-icon">∞</div><h3>No Data Caps</h3><p>Unlimited data. Stream, download and game without overage fees.</p></div>
-      <div class="benefit"><div class="benefit-icon">🔓</div><h3>No Annual Contract</h3><p>No long-term commitment, with a first-year price lock on your rate.</p></div>
+      <div class="benefit rv"><div class="benefit-icon">⚡</div><h3>Up to 2 Gig</h3><p>Fast enough for every device in the house, all at the same time.</p></div>
+      <div class="benefit rv d1"><div class="benefit-icon">↕️</div><h3>Symmetrical Speeds</h3><p>Uploads as fast as downloads, so video calls and cloud backups fly.</p></div>
+      <div class="benefit rv d2"><div class="benefit-icon">∞</div><h3>No Data Caps</h3><p>Unlimited data. Stream, download and game without overage fees.</p></div>
+      <div class="benefit rv d3"><div class="benefit-icon">🔓</div><h3>No Annual Contract</h3><p>No long-term commitment, with a first-year price lock on your rate.</p></div>
     </div>
   </div>
 </section>
 
 <section class="sac">
   <div class="container sac-grid">
-    <div class="sac-art">
-      <div class="kicker" style="color:#cba9f1">Fidium Fiber • Sacramento area</div>
+    <div class="sac-art rv">
+      <div class="kicker" style="color:#cba9f1"><span class="dot"></span> Fidium Fiber • Sacramento area</div>
       <h3>Fiber is live across the Sacramento area.</h3>
       <p>Fidium's 100% fiber network now reaches tens of thousands of homes across Sacramento and the surrounding communities.</p>
+      <div class="stat"><b>90,000+</b><span>Sacramento-area addresses in our availability check</span></div>
       <div class="market-list">
         <span class="market">Sacramento</span><span class="market">Elk Grove</span><span class="market">Roseville</span>
         <span class="market">Carmichael</span><span class="market">Antelope</span><span class="market">Lincoln</span>
@@ -368,15 +542,15 @@ footer strong{color:#fff;font-size:15px}
       </div>
     </div>
     <div>
-      <div class="kicker">Sacramento availability</div>
-      <h2>Check the exact address, not just the ZIP.</h2>
+      <div class="k2">Sacramento availability</div>
+      <h2 style="font-size:clamp(30px,3.6vw,42px);letter-spacing:-1.4px;font-weight:900">Check the exact address, not just the ZIP.</h2>
       <p style="color:var(--gray)">Availability varies street by street. The same neighborhood can have fiber on one block and not the next, so we check your exact home.</p>
       <div class="checklist">
-        <div class="check"><b>01</b><span><strong>Enter your address.</strong><br>We check the exact location against live availability.</span></div>
-        <div class="check"><b>02</b><span><strong>See your plans.</strong><br>Review the speeds and current offers for your address.</span></div>
-        <div class="check"><b>03</b><span><strong>We handle the switch.</strong><br>Our team places the order, schedules install, and you cancel your old service only once fiber is up.</span></div>
+        <div class="check rv"><b>1</b><span><strong>Enter your address.</strong><br>We check the exact location against live availability.</span></div>
+        <div class="check rv d1"><b>2</b><span><strong>See your plans.</strong><br>Review the speeds and current offers for your address.</span></div>
+        <div class="check rv d2"><b>3</b><span><strong>We handle the switch.</strong><br>Our team places the order, schedules install, and you cancel your old service only once fiber is up.</span></div>
       </div>
-      <a class="btn btn-purple" style="margin-top:26px" href="#availability">CHECK MY ADDRESS →</a>
+      <a class="btn btn-purple" style="margin-top:28px" href="#availability">CHECK MY ADDRESS →</a>
     </div>
   </div>
 </section>
@@ -384,13 +558,13 @@ footer strong{color:#fff;font-size:15px}
 <section class="cta" id="signup">
   <div class="container cta-grid">
     <div>
-      <div class="kicker" style="color:#cba9f1">Get signed up</div>
-      <h2>Ready to stop overpaying?</h2>
+      <div class="kicker"><span class="dot"></span> Get signed up</div>
+      <h2>Ready to stop <span class="hl">overpaying?</span></h2>
       <p>Drop your details and the plan you want. Our team confirms availability, locks in your offer, and walks you through the switch. No hold music, no runaround.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
         <a href="tel:+10000000000" id="ctaCall">📞 Call us</a>
-        <button style="border:0;background:#fff;color:var(--fid-purple-dark);border-radius:7px;padding:11px 16px;font-weight:900;cursor:pointer;font-size:17px" onclick="openChat()">💬 Chat now</button>
+        <button style="border:0;background:#fff;color:var(--purple-dark);border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;font-size:16px;font-family:inherit" onclick="openChat()">💬 Chat now</button>
       </div>
     </div>
     <div class="lead-card">
@@ -414,7 +588,7 @@ footer strong{color:#fff;font-size:15px}
           <option>2 Gig Fiber, from $40/mo. first year</option>
         </select>
         <label class="consent"><input type="checkbox" id="ld_consent" required>
-          <span>By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#5B2D8E;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#5B2D8E;font-weight:800">Terms of Service</a>.</span>
+          <span>By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Terms of Service</a>.</span>
         </label>
         <button class="btn btn-purple" type="submit" id="ld_btn">GET MY FIDIUM OPTIONS →</button>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
@@ -430,7 +604,7 @@ footer strong{color:#fff;font-size:15px}
 
 <section class="faq" id="faq">
   <div class="container">
-    <div class="section-head"><div class="kicker">FAQ</div><h2>Fidium Fiber in Sacramento</h2></div>
+    <div class="section-head rv"><div class="k2">FAQ</div><h2>Fidium Fiber in Sacramento</h2></div>
     <details><summary>Are you Fidium?</summary><p>We are an independent, authorized Fidium dealer. We help Sacramento-area residents check availability and get signed up for Fidium Fiber service.</p></details>
     <details><summary>Is Fidium Fiber available throughout Sacramento?</summary><p>Fidium Fiber serves many neighborhoods in Sacramento, Elk Grove, Roseville and nearby communities, but availability varies by individual address. Check yours above for a real answer.</p></details>
     <details><summary>I already have internet. How does switching work?</summary><p>Easy: we confirm fiber at your address, place your Fidium order, and you keep your current service until Fidium is installed and running. Then you cancel the old service. With no annual contract on Fidium, you're never locked in.</p></details>
@@ -444,16 +618,18 @@ footer strong{color:#fff;font-size:15px}
 <footer>
   <div class="container">
     <strong>fidium</strong><br><br>
-    <div style="display:inline-block;background:#5B2D8E;color:#fff;padding:11px 16px;border-radius:4px;font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:18px;">
+    <div style="display:inline-block;background:linear-gradient(100deg,#6d28d9,#a855f7);color:#fff;padding:11px 16px;border-radius:8px;font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:18px;">
       INDEPENDENT AUTHORIZED FIDIUM DEALER
     </div><br>
-    This page is operated by an independent authorized Fidium dealer and is not Fidium or Consolidated Communications itself. Fidium service availability, pricing, promotions, speeds, equipment, taxes, fees and terms are subject to applicable Fidium terms and may change. Fidium name, trademarks and promotional materials are the property of their respective owners and are used in accordance with applicable dealer authorization and brand guidelines. AT&amp;T and AT&amp;T Fiber are registered trademarks of AT&amp;T Intellectual Property; all comparisons are based on publicly advertised offers and this site is not affiliated with, sponsored or endorsed by AT&amp;T.
+    This page is operated by an independent authorized Fidium dealer and is not Fidium or Consolidated Communications itself. Fidium service availability, pricing, promotions, speeds, equipment, taxes, fees and terms are subject to applicable Fidium terms and may change. Fidium name, trademarks and promotional materials are the property of their respective owners and are used in accordance with applicable dealer authorization and brand guidelines. Competitor comparisons are based on other providers' publicly advertised offers for comparable speeds at Sacramento-area addresses; all third-party names and marks are the property of their respective owners, and this site is not affiliated with, sponsored or endorsed by any other provider.
   </div>
 </footer>
 
-<!-- ===== Live chat (Tawk.to) — same property as the other campaign pages ===== -->
+<!-- ===== Live chat (Tawk.to): same property as the other campaign pages ===== -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+/* keep the chat bubble off the screen edge (desktop and mobile) */
+Tawk_API.customStyle={visibility:{desktop:{position:'br',xOffset:28,yOffset:28},mobile:{position:'br',xOffset:14,yOffset:18}}};
 (function(){
   var TAWK_PROPERTY_ID="6abeafc4ea9b9434430b88aa";   // Tawk.to property (Neon Fiber)
   var TAWK_WIDGET_ID="1k3sdt62k";                     // Tawk.to widget
@@ -467,7 +643,7 @@ var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 
 <script>
 /* =========================================================================
-   CONFIG — same backend as the other campaign pages (Oracle box, Caddy HTTPS).
+   CONFIG: same backend as the other campaign pages (Oracle box, Caddy HTTPS).
    ========================================================================= */
 const CONFIG = {
   API_BASE: "https://leads.neonfibersystems.com",
@@ -522,8 +698,8 @@ function renderResult(data, addrLabel){
       + (plans? '<div class="plans">'+plans+'</div>' : '')
       + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
       + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
-      + '<a href="#" onclick="openChat();return false" style="color:#5B2D8E;font-weight:800">Chat with us</a> or '
-      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#5B2D8E;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
+      + '<a href="#" onclick="openChat();return false" style="color:#6d28d9;font-weight:800">Chat with us</a> or '
+      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#6d28d9;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
     el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span> 🔎</h3>'
@@ -589,6 +765,19 @@ function val(id){ return (document.getElementById(id).value||'').trim(); }
 function copy(a,b){ const x=document.getElementById(a), y=document.getElementById(b); if(x&&y&&x.value) y.value=x.value; }
 function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+/* ---- scroll-reveal + speed bars (decorative; page is fully readable without JS) ---- */
+(function(){
+  if(!('IntersectionObserver' in window)){ document.querySelectorAll('.rv').forEach(e=>e.classList.add('in')); return; }
+  const io=new IntersectionObserver(function(ents){
+    ents.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  },{threshold:.15});
+  document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+  const sp=document.getElementById('speedBars');
+  if(sp){ const io2=new IntersectionObserver(function(ents){
+    ents.forEach(function(en){ if(en.isIntersecting){ sp.classList.add('in'); io2.unobserve(sp); } });
+  },{threshold:.3}); io2.observe(sp); }
+})();
 
 /* ---- address autocomplete: suggests ONLY addresses in our system, so a pick always resolves ---- */
 (function(){
