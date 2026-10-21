@@ -94,6 +94,7 @@ header{height:74px;background:rgba(26,11,46,.82);backdrop-filter:blur(14px);-web
 .btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
 .btn-ghost:hover{background:rgba(255,255,255,.18)}
 .btn:disabled{opacity:.6;cursor:default;transform:none}
+.hdr-cta{padding:13px 20px;font-size:15px;white-space:nowrap}
 
 /* ===== announce strip ===== */
 .announce{background:linear-gradient(90deg,#2a1744,#43216b 50%,#2a1744);color:#fff;text-align:center;padding:12px 18px;font-weight:700;font-size:15px;letter-spacing:.3px}
@@ -223,7 +224,7 @@ table.cmp{width:100%;min-width:430px;border-collapse:collapse;font-size:16px}
 .speeds{max-width:880px;margin:56px auto 0}
 .speeds h3{text-align:center;font-size:22px;font-weight:800;letter-spacing:-.5px;margin:0 0 24px}
 .sbar{margin-bottom:18px}
-.sbar .lab{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:7px}
+.sbar .lab{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;font-weight:700;margin-bottom:7px}
 .sbar .lab span:last-child{color:var(--gray);font-weight:600}
 .sbar .track{height:16px;border-radius:999px;background:#ece5f6;overflow:hidden}
 .sbar .fill{height:100%;width:0;border-radius:999px;background:var(--grad);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
@@ -331,13 +332,18 @@ footer strong{color:#fff;font-size:16px}
  .bill.fid{transform:none}
 }
 @media(max-width:600px){
- header{height:64px}
- .logo{font-size:23px}
+ header{height:60px}
+ .logo{font-size:21px}
+ .logo .dealer{font-size:8px;letter-spacing:1.6px}
+ .hdr-cta{padding:10px 13px;font-size:12.5px;border-radius:8px}
  h1{font-size:40px;letter-spacing:-1.6px}
  section{padding:56px 0}
  .row,.offer-grid,.benefit-grid{grid-template-columns:1fr !important}
  .price-flash .new{font-size:34px}
- .cmp th,.cmp td{padding:10px 6px;font-size:12px}
+ table.cmp{min-width:0}
+ .cmp th,.cmp td{padding:10px 5px;font-size:11.5px}
+ .cmp th{font-size:10.5px;letter-spacing:.2px}
+ .cmp td:first-child,.cmp th:first-child{width:32%}
  .callbtn span:last-child{display:none}
 }
 </style>
@@ -355,7 +361,7 @@ footer strong{color:#fff;font-size:16px}
     </nav>
     <div class="nav-right">
       <a class="callbtn" id="headerCall" href="tel:+10000000000"><span class="ico">📞</span><span id="headerPhone">Call us</span></a>
-      <a class="btn btn-lime" style="padding:13px 20px;font-size:15px" href="#availability">CHECK ADDRESS</a>
+      <a class="btn btn-lime hdr-cta" href="#availability">CHECK ADDRESS</a>
     </div>
   </div>
 </header>
