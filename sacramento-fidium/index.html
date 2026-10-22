@@ -728,7 +728,10 @@ const CONFIG = {
    it loads on first interaction (or after 3.5s), never blocking first paint.
    ========================================================================= */
 var Tawk_API = Tawk_API || {}, Tawk_LoadStart;
-Tawk_API.customStyle = {visibility:{desktop:{position:'br',xOffset:28,yOffset:28},mobile:{position:'br',xOffset:14,yOffset:86}}};
+/* any width that shows the sticky bottom bar (<=900px) needs the chat bubble lifted above it,
+   whether Tawk classifies the device as desktop or mobile */
+var tawkLift = window.matchMedia && window.matchMedia('(max-width:900px)').matches;
+Tawk_API.customStyle = {visibility:{desktop:{position:'br',xOffset:28,yOffset:tawkLift?96:28},mobile:{position:'br',xOffset:14,yOffset:96}}};
 var tawkLoaded = false;
 function loadTawk(){
   if(tawkLoaded) return; tawkLoaded = true;
