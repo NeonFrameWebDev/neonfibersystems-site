@@ -415,7 +415,7 @@ footer strong{color:#fff;font-size:16px}
     </nav>
     <div class="nav-right">
       <a class="callbtn" id="headerCall" href="tel:+10000000000"><span class="ico">📞</span><span id="headerPhone">Call us</span></a>
-      <a class="btn btn-lime hdr-cta" href="#availability">CHECK ADDRESS</a>
+      <a class="btn btn-lime hdr-cta" href="#checker">CHECK ADDRESS</a>
     </div>
   </div>
 </header>
@@ -446,7 +446,7 @@ footer strong{color:#fff;font-size:16px}
       </div>
     </div>
 
-    <div class="availability">
+    <div class="availability" id="checker">
       <h2><span class="zap">⚡</span> Check availability</h2>
       <p class="muted">Enter your New Hampshire address to see if we can get you fiber.</p>
       <div id="availForm">
@@ -626,7 +626,7 @@ footer strong{color:#fff;font-size:16px}
         <div class="check rv d1"><b>2</b><span><strong>See your plans.</strong><br>Review the speeds and current offers for your address.</span></div>
         <div class="check rv d2"><b>3</b><span><strong>We handle the switch.</strong><br>Our team places the order, schedules install, and you cancel cable only once fiber is up.</span></div>
       </div>
-      <a class="btn btn-purple" style="margin-top:28px" href="#availability">CHECK MY ADDRESS →</a>
+      <a class="btn btn-purple" style="margin-top:28px" href="#checker">CHECK MY ADDRESS →</a>
     </div>
   </div>
 </section>
@@ -706,7 +706,7 @@ footer strong{color:#fff;font-size:16px}
 <!-- sticky mobile CTA (appears after the hero scrolls away) -->
 <div class="mcta" id="mcta" role="complementary" aria-label="Quick availability check">
   <div class="mcta-txt"><b>2 Gig from $40/mo.</b><span>first year • 1 month free</span></div>
-  <a class="btn btn-lime" href="#availability">CHECK ADDRESS</a>
+  <a class="btn btn-lime" href="#checker">CHECK ADDRESS</a>
 </div>
 
 <script>
@@ -830,7 +830,7 @@ function toLead(){
 function pickPlan(name){
   const sel = document.getElementById('ld_plan');
   for(const o of sel.options){ if(o.text.indexOf(name.split(',')[0])===0 || o.text===name){ sel.value=o.value||o.text; break; } }
-  document.getElementById('availability').scrollIntoView({behavior:'smooth'});
+  document.getElementById('checker').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ---- lead submit (calls backend; demo fallback) ---- */
