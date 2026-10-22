@@ -96,6 +96,14 @@ header{height:74px;background:rgba(5,15,33,.78);backdrop-filter:blur(16px) satur
 .callbtn{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:15px;color:#fff}
 .callbtn .ico{display:flex}
 .callbtn .ico svg.ic{width:17px;height:17px}
+.fidlock{display:inline-flex;align-items:center;background:#fff;border-radius:12px;padding:5px;gap:9px;box-shadow:0 3px 12px rgba(10,26,48,.18)}
+.fidlock .fl-img{height:30px;width:auto;display:block;margin-left:7px}
+.fidlock .fl-ad{background:#1b3f94;color:#fff;font-size:10.5px;font-weight:700;line-height:1.2;padding:7px 10px;border-radius:8px;text-align:left;letter-spacing:.2px}
+.fidlock.fid-sm{padding:4px;border-radius:9px;gap:7px}
+.fidlock.fid-sm .fl-img{height:21px;margin-left:5px}
+.fidlock.fid-sm .fl-ad{font-size:8.5px;padding:5px 7px;border-radius:6px}
+.fidlock.fid-lg .fl-img{height:40px}
+@media(max-width:600px){.fidlock .fl-img{height:23px}.fidlock .fl-ad{font-size:9px;padding:6px 8px}}
 @keyframes callPulse{0%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,.55)}70%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 12px rgba(184,230,46,0)}100%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,0)}}
 @keyframes callRing{0%,86%,100%{transform:rotate(0)}88%{transform:rotate(-16deg)}91%{transform:rotate(12deg)}94%{transform:rotate(-8deg)}97%{transform:rotate(4deg)}}
 .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:16px 26px;font-weight:800;font-size:16px;border:0;cursor:pointer;transition:transform .18s,box-shadow .18s;font-family:inherit;letter-spacing:.2px}
@@ -136,6 +144,7 @@ header{height:74px;background:rgba(5,15,33,.78);backdrop-filter:blur(16px) satur
 .fid-mini i{font-style:normal;color:#8fc415}
 .fid-mini span{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#9aa3ad}
 .bill .who b{font-size:22px;font-weight:900;letter-spacing:-.8px;text-transform:none}
+.bill .amt small{font-size:15px;font-weight:700;opacity:.85;letter-spacing:0}
 .bill.fid .who b i{font-style:normal;color:var(--lime)}
 .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center}
 .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:1.8px;color:var(--lilac);text-transform:uppercase}
@@ -439,7 +448,7 @@ footer strong{color:#fff;font-size:16px}
 
 <header>
   <div class="container nav">
-    <div class="logo">fidium<em>.</em><span class="dealer">Authorized Dealer</span></div>
+    <span class="fidlock"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
     <nav class="navlinks">
       <a href="#compare">Compare</a>
       <a href="#offers">Plans</a>
@@ -465,7 +474,7 @@ footer strong{color:#fff;font-size:16px}
     <div>
       <div class="kicker"><span class="dot"></span> Sacramento • Authorized Fidium Dealer</div>
       <h1>PAYING TOO MUCH FOR INTERNET? <span class="hl">SACRAMENTO, MEET FIDIUM.</span></h1>
-      <p class="sub">100% fiber, gig speed, <b>$30 a month for your first year</b>. That's less than half what most Sacramento homes pay today. Check your address, see your real offer, and we handle the whole switch.</p>
+      <p class="sub">100% fiber, gig speed, <b>from $30 a month for your first year</b>. That's less than half what most Sacramento homes pay today. Check your address, see your real offer, and we handle the whole switch.</p>
       <div class="hero-points">
         <span>1 month free</span>
         <span>No data caps</span>
@@ -474,13 +483,13 @@ footer strong{color:#fff;font-size:16px}
       </div>
       <div class="price-flash">
         <span class="old">$70/mo.</span>
-        <span class="new">$30<small>/mo.</small></span>
+        <span class="new"><small>from</small> $30<small>/mo.</small></span>
         <span class="tag">1 Gig fiber for year one, vs the typical $70 gig bill here. Then just $50/mo.</span>
       </div>
     </div>
 
     <div class="availability" id="checker">
-      <div class="fid-mini">fidium<i>.</i> <span>Authorized Dealer</span></div>
+      <span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
       <h2><span class="zap"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span> Check availability</h2>
       <p class="muted">Enter your Sacramento-area address to see if we can get you fiber.</p>
       <div id="availForm">
@@ -520,9 +529,9 @@ footer strong{color:#fff;font-size:16px}
     <div class="cmp-cards rv">
       <div class="bill fid">
         <div class="ribbon">THE SWITCH</div>
-        <div class="who"><b>fidium<i>.</i></b> Fiber</div>
+        <div class="who"><span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span></div>
         <div class="speed">1 Gig</div>
-        <div class="amt">$30</div>
+        <div class="amt"><small>from</small> $30</div>
         <div class="per">/mo. first year • then $50/mo.</div>
         <ul>
           <li>First month free</li>
@@ -549,20 +558,20 @@ footer strong{color:#fff;font-size:16px}
     <div class="cmp-wrap rv">
       <table class="cmp">
         <tr><th></th><th class="col-fid">Fidium Fiber</th><th>Other Fiber Carriers</th></tr>
-        <tr><td>1 Gig, year one</td><td class="col-fid">$30/mo.</td><td>$70/mo.</td></tr>
+        <tr><td>1 Gig, year one</td><td class="col-fid">from $30/mo.</td><td>$70/mo.</td></tr>
         <tr><td>1 Gig, after year one</td><td class="col-fid">$50/mo.</td><td>$70/mo. or more</td></tr>
-        <tr><td>2 Gig, year one</td><td class="col-fid">$40/mo.</td><td>Often not offered</td></tr>
-        <tr><td>300 Mbps, year one</td><td class="col-fid">$30/mo.</td><td>$50/mo.</td></tr>
+        <tr><td>2 Gig, year one</td><td class="col-fid">from $40/mo.</td><td>Often not offered</td></tr>
+        <tr><td>300 Mbps, year one</td><td class="col-fid">from $30/mo.</td><td>$50/mo.</td></tr>
         <tr><td>Free month offer</td><td class="col-fid"><span class="win">✓ 1 month free</span> (1 Gig &amp; 2 Gig)</td><td>✗</td></tr>
         <tr><td>First-year price lock</td><td class="col-fid"><span class="win">✓</span></td><td>✗</td></tr>
         <tr><td>Data caps</td><td class="col-fid">None</td><td>Varies</td></tr>
         <tr><td>Annual contract</td><td class="col-fid">None</td><td>Varies</td></tr>
       </table>
     </div>
-    <p class="cmp-note">"Other fiber carriers" figures are based on competing fiber providers' advertised new-customer online offers for comparable speeds, checked at Sacramento, CA addresses in October 2026, with autopay/paperless discounts applied where offered; excludes taxes and fees. Prices and promotions vary by provider and address and change over time; your exact Fidium offer is confirmed when we check your address. Fidium prices include a $10/mo. discount with AutoPay (bank account) and paperless billing, and are locked for year one: 1 Gig $30/mo. first year, then $50/mo.; 2 Gig $40/mo. first year, then $60/mo.</p>
+    <p class="cmp-note">"Other fiber carriers" figures are based on competing fiber providers' advertised new-customer online offers for comparable speeds, checked at Sacramento, CA addresses in October 2026, with autopay/paperless discounts applied where offered; excludes taxes and fees. Prices and promotions vary by provider and address and change over time; your exact Fidium offer is confirmed when we check your address. Fidium prices include a $10/mo. discount with AutoPay (bank account) and paperless billing, and are locked for year one: 1 Gig from $30/mo. first year, then $50/mo.; 2 Gig from $40/mo. first year, then $60/mo.</p>
 
     <div class="savings-banner rv" id="savingsBanner">
-      Gig for $30 instead of <b>$<span id="calcBill">70</span></b> =
+      Gig from $30 instead of <b>$<span id="calcBill">70</span></b> =
       <span class="big-save">$<span id="saveCount">480</span> saved in year one</span>
       <span id="afterLine">and it's still $20/mo. less after that.</span>
       <div class="sb-slider">
@@ -571,14 +580,14 @@ footer strong{color:#fff;font-size:16px}
         <span>$160</span>
       </div>
       <div class="sb-hint">Drag the slider to what you pay now and watch the math.</div>
-      <small>Savings vs Fidium 1 Gig at $30/mo. for year one, based on the advertised Sacramento offers above. Your exact savings depend on your current plan and address.</small>
+      <small>Savings vs Fidium 1 Gig at its $30/mo. first-year starting price, based on the advertised Sacramento offers above. Your exact savings depend on your current plan and address.</small>
     </div>
 
     <div class="speeds rv" id="speedBars">
       <h3>How much speed is that, really?</h3>
-      <div class="sbar gray"><div class="lab"><span>300 Mbps: browsing, streaming, smart home</span><span>$30/mo.</span></div><div class="track"><div class="fill f300"></div></div></div>
-      <div class="sbar"><div class="lab"><span>1 Gig: the whole family, all at once</span><span>$30/mo. first year</span></div><div class="track"><div class="fill f1000"></div></div></div>
-      <div class="sbar lime"><div class="lab"><span>2 Gig: creators, gamers, heavy households</span><span>$40/mo. first year</span></div><div class="track"><div class="fill f2000"></div></div></div>
+      <div class="sbar gray"><div class="lab"><span>300 Mbps: browsing, streaming, smart home</span><span>from $30/mo.</span></div><div class="track"><div class="fill f300"></div></div></div>
+      <div class="sbar"><div class="lab"><span>1 Gig: the whole family, all at once</span><span>from $30/mo. first year</span></div><div class="track"><div class="fill f1000"></div></div></div>
+      <div class="sbar lime"><div class="lab"><span>2 Gig: creators, gamers, heavy households</span><span>from $40/mo. first year</span></div><div class="track"><div class="fill f2000"></div></div></div>
     </div>
   </div>
 </section>
@@ -694,7 +703,7 @@ footer strong{color:#fff;font-size:16px}
       </div>
     </div>
     <div class="lead-card">
-      <div class="fid-mini">fidium<i>.</i> <span>Authorized Dealer</span></div>
+      <span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
       <form id="leadForm" onsubmit="submitLead(event)">
         <div class="row">
           <div><label>First Name</label><input id="ld_first" required></div>
@@ -738,7 +747,7 @@ footer strong{color:#fff;font-size:16px}
     <details><summary>Are you Fidium?</summary><p>We are an independent, authorized Fidium dealer. We help Sacramento-area residents check availability and get signed up for Fidium Fiber service.</p></details>
     <details><summary>Is Fidium Fiber available throughout Sacramento?</summary><p>Fidium Fiber serves many neighborhoods in Sacramento, Elk Grove, Roseville and nearby communities, but availability varies by individual address. Check yours above for a real answer.</p></details>
     <details><summary>I already have internet. How does switching work?</summary><p>Easy: we confirm fiber at your address, place your Fidium order, and you keep your current service until Fidium is installed and running. Then you cancel the old service. With no annual contract on Fidium, you're never locked in.</p></details>
-    <details><summary>Is the $30 price real?</summary><p>Yes: $30/mo. is the advertised first-year promotional rate for 1 Gig with AutoPay (bank account) and paperless billing, with the first month free and the price locked for year one. After year one it's $50/mo., which is still well below the typical gig bill here. We'll always show you the exact offer for your address before you order.</p></details>
+    <details><summary>Is the $30 price real?</summary><p>Yes: $30/mo. is the advertised first-year starting rate for 1 Gig with AutoPay (bank account) and paperless billing, with the first month free and the price locked for year one. After year one it's $50/mo., which is still well below the typical gig bill here. Your exact offer can vary by address. We'll always show you the exact offer for your address before you order.</p></details>
     <details><summary>Does Fidium Fiber have data caps or contracts?</summary><p>Fidium advertises unlimited data and no annual contract on its fiber plans.</p></details>
     <details><summary>Why order through you instead of Fidium directly?</summary><p>The price is identical either way: Fidium sets it and we never add a fee. What you get here is service: someone answers in minutes during business hours, places the order for you, and books your install around your schedule instead of leaving you in a checkout flow and a call queue.</p></details>
     <details><summary>How do I get signed up?</summary><p>Check your exact address above or send us your details and our team confirms what's available, locks in your offer, and places the order with you.</p></details>
@@ -748,10 +757,7 @@ footer strong{color:#fff;font-size:16px}
 
 <footer>
   <div class="container">
-    <strong>fidium</strong><br><br>
-    <div style="display:inline-block;background:linear-gradient(100deg,#1363e0,#1d6ff2);color:#fff;padding:11px 16px;border-radius:8px;font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:18px;">
-      INDEPENDENT AUTHORIZED FIDIUM DEALER
-    </div><br>
+    <span class="fidlock fid-lg"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span><br><br>
     This page is operated by an independent authorized Fidium dealer and is not Fidium or Consolidated Communications itself. Fidium service availability, pricing, promotions, speeds, equipment, taxes, fees and terms are subject to applicable Fidium terms and may change. Fidium name, trademarks and promotional materials are the property of their respective owners and are used in accordance with applicable dealer authorization and brand guidelines. Competitor comparisons are based on other providers' publicly advertised offers for comparable speeds at Sacramento-area addresses; all third-party names and marks are the property of their respective owners, and this site is not affiliated with, sponsored or endorsed by any other provider.
   </div>
 </footer>
