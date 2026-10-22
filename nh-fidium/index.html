@@ -171,6 +171,13 @@ input:focus,select:focus{outline:0;border-color:var(--purple);box-shadow:0 0 0 4
 .disclaimer{font-size:10px;color:#75808a;text-align:center;margin:11px 0 0}
 .consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12px;color:#5f6b76}
 .consent input{width:17px;height:17px;margin-top:2px;flex:0 0 auto}
+.consent b{display:block;color:var(--ink);font-size:13px;margin-bottom:3px}
+.consent .fine{display:block;font-size:10.5px;line-height:1.5;color:#8a95a0}
+.ld-err{display:none;margin-top:10px;font-size:12.5px;font-weight:700;color:#dc2626}
+.ld-err.show{display:block}
+.callrow{margin-top:12px;text-align:center;font-size:13px;color:#5f6b76}
+.callrow a{color:#6d28d9;font-weight:800;text-decoration:none}
+.whyus{background:#f6f1fc}
 
 /* address autocomplete */
 .ac-wrap{position:relative}
@@ -592,6 +599,22 @@ footer strong{color:#fff;font-size:16px}
   </div>
 </section>
 
+<section class="whyus" id="whyus">
+  <div class="container">
+    <div class="section-head rv">
+      <div class="k2">Why order here</div>
+      <h2>SAME PRICE AS ORDERING DIRECT.<br>WAY LESS HASSLE.</h2>
+      <p>Fidium sets the price, so you pay the same no matter where you order. The difference is what you don't have to deal with.</p>
+    </div>
+    <div class="benefit-grid">
+      <div class="benefit rv"><div class="benefit-icon">👤</div><h3>A Human Places Your Order</h3><p>Your rep sets up the right plan and promo for your exact address. No checkout maze, no phone tree.</p></div>
+      <div class="benefit rv d1"><div class="benefit-icon">📅</div><h3>Install Booked Around You</h3><p>We schedule your installation for a time that actually works for your week.</p></div>
+      <div class="benefit rv d2"><div class="benefit-icon">💬</div><h3>Answers In Minutes</h3><p>Text or call during business hours and a real person gets right back to you.</p></div>
+      <div class="benefit rv d3"><div class="benefit-icon">🏷️</div><h3>$0 Extra, Ever</h3><p>Our service costs you nothing. You pay Fidium's price, not a penny more.</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="benefits" id="fiber">
   <div class="container">
     <div class="section-head rv">
@@ -642,7 +665,7 @@ footer strong{color:#fff;font-size:16px}
     <div>
       <div class="kicker"><span class="dot"></span> Get signed up</div>
       <h2>Ready to retire <span class="hl">your cable bill?</span></h2>
-      <p>Drop your details and the plan you want. Our team confirms availability, locks in your offer, and walks you through the switch. No hold music, no runaround.</p>
+      <p>Drop your details and the plan you want. A real person texts or calls you back within minutes during business hours, places your Fidium order with you, and books your install around your schedule.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
         <a href="tel:+10000000000" id="ctaCall">📞 Call us</a>
@@ -669,16 +692,19 @@ footer strong{color:#fff;font-size:16px}
           <option>1 Gig Fiber, from $30/mo. first year + 1 month free</option>
           <option>2 Gig Fiber, from $40/mo. first year + 1 month free</option>
         </select>
-        <label class="consent"><input type="checkbox" id="ld_consent" required>
-          <span>By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Terms of Service</a>.</span>
+        <label class="consent"><input type="checkbox" id="ld_consent" required onchange="var e=document.getElementById('ld_err');if(e&&this.checked)e.classList.remove('show')">
+          <span><b>Okay to text or call me about Fidium at my address.</b>
+          <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#6d28d9;font-weight:800">Terms of Service</a>.</span></span>
         </label>
         <button class="btn btn-purple" type="submit" id="ld_btn">GET MY FIDIUM OPTIONS →</button>
+        <p class="ld-err" id="ld_err">Please check the consent box above so we're allowed to contact you, or just call us instead.</p>
+        <p class="callrow">A real person replies in minutes during business hours. Rather talk now? <a href="tel:+17854625861">Call (785) 462-5861</a></p>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
       </form>
       <div class="success" id="leadSuccess">
         <div class="big">🎉</div>
         <h3>You're in!</h3>
-        <p id="leadSuccessMsg">Thanks! We've got your info. We'll confirm your Fidium options and reach out shortly.</p>
+        <p id="leadSuccessMsg">Thanks! A real person will text or call you within minutes during business hours to confirm your options and book your install.</p>
       </div>
     </div>
   </div>
@@ -693,6 +719,7 @@ footer strong{color:#fff;font-size:16px}
     <details><summary>What's actually different about fiber?</summary><p>Cable "gig" plans are gig-speed downloads only: uploads are usually around 100 Mbps or less on a shared coax line. Fidium is 100% fiber to your home with symmetrical speeds, so a 1 Gig plan uploads at 1 Gig too. That's what video calls, cloud backups, gaming and smart homes actually feel.</p></details>
     <details><summary>Are these prices real?</summary><p>Yes: we verified them in Fidium's own order flow at a Manchester address in October 2026. They're limited-time first-year rates with the AutoPay (bank account) and paperless billing discount: 300 Mbps at $30/mo., 1 Gig at $30/mo. with the first month free (then $50/mo.), and 2 Gig at $40/mo. with the first month free (then $60/mo.), all with a 1-year price lock. We'll always show you the exact offer for your address before you order.</p></details>
     <details><summary>Does Fidium Fiber have data caps or contracts?</summary><p>Fidium advertises unlimited data and no annual contract on its fiber plans.</p></details>
+    <details><summary>Why order through you instead of Fidium directly?</summary><p>The price is identical either way: Fidium sets it and we never add a fee. The difference is service. A real person answers in minutes during business hours, places the order for you, and books your install around your schedule instead of leaving you in a checkout flow and a call queue.</p></details>
     <details><summary>How do I get signed up?</summary><p>Check your exact address above or send us your details and our team confirms what's available, locks in your offer, and places the order with you.</p></details>
   </div>
 </section>
@@ -800,7 +827,7 @@ function renderResult(data, addrLabel){
     el.className = 'result yes show';
     el.innerHTML = '<h3>✅ Great news! We can get you fiber here!</h3>'
       + '<p>Fidium Fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
-      + 'Lock in your offer and our team takes it from there.</p>'
+      + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
       + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
       + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
@@ -841,7 +868,7 @@ function pickPlan(name){
 /* ---- lead submit (calls backend; demo fallback) ---- */
 async function submitLead(e){
   e.preventDefault();
-  if(!document.getElementById('ld_consent').checked){ alert('Please agree to be contacted so we can help you.'); return; }
+  if(!document.getElementById('ld_consent').checked){ var er=document.getElementById('ld_err'); er.classList.add('show'); er.scrollIntoView({block:'nearest'}); return; }
   const payload = {
     first:val('ld_first'), last:val('ld_last'), address:val('ld_addr'),
     city:val('ld_city'), zip:val('ld_zip'), phone:val('ld_phone'),
