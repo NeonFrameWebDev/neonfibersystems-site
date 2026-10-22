@@ -126,9 +126,10 @@ header{height:74px;background:rgba(24,10,44,.78);backdrop-filter:blur(16px) satu
 .hero:before{width:620px;height:620px;left:-180px;top:-240px;background:radial-gradient(circle,rgba(124,58,237,.55),transparent 65%);animation:drift 14s ease-in-out infinite alternate}
 .hero:after{width:560px;height:560px;right:-160px;bottom:-260px;background:radial-gradient(circle,rgba(184,230,46,.18),transparent 65%);animation:drift 18s ease-in-out infinite alternate-reverse}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.12)}}
-.hero .beams{position:absolute;left:0;right:0;bottom:-2px;width:100%;height:44%;z-index:-1;opacity:.85;pointer-events:none}
-.hero .beams{animation:beamglow 7s ease-in-out infinite alternate;will-change:opacity}
-@keyframes beamglow{from{opacity:.55}to{opacity:.95}}
+.hero .horizon{position:absolute;left:50%;bottom:-260px;transform:translateX(-50%);width:170%;max-width:2300px;height:460px;z-index:-1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(184,230,46,.20),rgba(168,85,247,.15) 45%,transparent 72%);
+  filter:blur(34px);animation:beamglow 8s ease-in-out infinite alternate;will-change:opacity}
+@keyframes beamglow{from{opacity:.55}to{opacity:1}}
 .fid-mini{display:flex;align-items:baseline;gap:8px;font-weight:900;font-size:21px;letter-spacing:-.8px;color:var(--purple-dark);margin:0 0 12px}
 .fid-mini i{font-style:normal;color:#8fc415}
 .fid-mini span{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#9aa3ad}
@@ -233,7 +234,7 @@ section{padding:84px 0}
   .hero:before,.hero:after,.kicker .dot,.mq-track,.availability:before{animation:none}
   .btn:after{display:none}
   .callbtn,.callbtn .ico{animation:none}
-  .hero .beams{animation:none}
+  .hero .horizon{animation:none}
 }
 
 /* ===== comparison ===== */
@@ -456,16 +457,7 @@ footer strong{color:#fff;font-size:16px}
 <section class="hero" id="availability">
   <div class="grid-lines"></div>
   <div class="noise"></div>
-  <svg class="beams" viewBox="0 0 1440 340" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="beamg" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#a855f7" stop-opacity="0"/>
-      <stop offset=".45" stop-color="#c084fc" stop-opacity=".9"/>
-      <stop offset="1" stop-color="#b8e62e" stop-opacity=".9"/>
-    </linearGradient></defs>
-    <path d="M-40 260 C 360 130, 760 310, 1480 170" fill="none" stroke="url(#beamg)" stroke-width="2.2"/>
-    <path d="M-40 300 C 420 190, 900 350, 1480 220" fill="none" stroke="url(#beamg)" stroke-width="1.6" opacity=".55"/>
-    <path d="M-40 215 C 300 90, 860 270, 1480 120" fill="none" stroke="url(#beamg)" stroke-width="1.1" opacity=".35"/>
-  </svg>
+  <div class="horizon" aria-hidden="true"></div>
   <div class="container hero-grid">
     <div>
       <div class="kicker"><span class="dot"></span> New Hampshire • Authorized Fidium Dealer</div>
