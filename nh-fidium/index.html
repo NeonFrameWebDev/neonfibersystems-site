@@ -94,7 +94,8 @@ header{height:74px;background:rgba(24,10,44,.78);backdrop-filter:blur(16px) satu
 .navlinks a:hover:after{right:0}
 .nav-right{display:flex;align-items:center;gap:14px}
 .callbtn{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:15px;color:#fff}
-.callbtn .ico{font-size:17px}
+.callbtn .ico{display:flex}
+.callbtn .ico svg.ic{width:17px;height:17px}
 @keyframes callPulse{0%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,.55)}70%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 12px rgba(184,230,46,0)}100%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,0)}}
 @keyframes callRing{0%,86%,100%{transform:rotate(0)}88%{transform:rotate(-16deg)}91%{transform:rotate(12deg)}94%{transform:rotate(-8deg)}97%{transform:rotate(4deg)}}
 .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:16px 26px;font-weight:800;font-size:16px;border:0;cursor:pointer;transition:transform .18s,box-shadow .18s;font-family:inherit;letter-spacing:.2px}
@@ -173,7 +174,9 @@ h1 .hl{background:linear-gradient(95deg,#c084fc 10%,#b8e62e 90%);-webkit-backgro
   animation:spinbr 7s linear infinite}
 @keyframes spinbr{to{--spin:360deg}}
 .availability h2{font-size:27px;margin:0 0 6px;font-weight:900;letter-spacing:-.8px}
-.availability h2 .zap{color:var(--purple)}
+.availability h2 .zap{color:var(--purple);display:inline-flex;vertical-align:-2px}
+.zap svg.ic{width:20px;height:20px}
+svg.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:0 0 auto}
 .muted{color:var(--gray);font-size:15px;margin:0 0 16px}
 label{display:block;font-size:13px;font-weight:800;margin:13px 0 6px;letter-spacing:.3px}
 input,select{width:100%;padding:15px 14px;border:1.5px solid #d9cfe8;border-radius:10px;font-size:16px;background:#fff;font-family:inherit;transition:border-color .15s,box-shadow .15s}
@@ -326,7 +329,8 @@ table.cmp{width:100%;min-width:430px;border-collapse:collapse;font-size:16px}
 .benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .benefit{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .2s,box-shadow .2s}
 .benefit:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(60,20,110,.12)}
-.benefit-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#f0e5fd,#e3d1fa);color:var(--purple);font-size:25px;margin-bottom:16px}
+.benefit-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#f0e5fd,#e3d1fa);color:var(--purple);margin-bottom:16px}
+.benefit-icon svg.ic{width:24px;height:24px}
 .benefit h3{margin:0 0 7px;font-size:18px;font-weight:800}
 .benefit p{margin:0;color:var(--gray);font-size:14.5px}
 
@@ -346,7 +350,7 @@ table.cmp{width:100%;min-width:430px;border-collapse:collapse;font-size:16px}
 .sac-art .stat span{font-size:12px;color:#d9cdf0;font-weight:700}
 .market-list{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
 .market{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);border-radius:20px;padding:8px 13px;font-size:12.5px;font-weight:700}
-.market:before{content:"📍 "}
+.market:before{content:""}
 .checklist{display:grid;gap:18px;margin-top:28px}
 .check{display:flex;gap:16px;background:var(--light);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .check b{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900}
@@ -368,7 +372,8 @@ table.cmp{width:100%;min-width:430px;border-collapse:collapse;font-size:16px}
 .lead-card .btn{width:100%;margin-top:16px}
 .success{display:none;text-align:center;padding:24px 10px}
 .success.show{display:block}
-.success .big{font-size:52px}
+.success .big{display:flex;justify-content:center;margin-bottom:8px}
+.success .big svg.ic{width:54px;height:54px;color:#65a30d}
 .success h3{color:var(--ok);font-size:26px;margin:8px 0}
 .success p{color:#2b3642;font-size:16px;line-height:1.55;max-width:460px;margin:0 auto}
 
@@ -424,8 +429,9 @@ footer strong{color:#fff;font-size:16px}
  .cmp th{font-size:10.5px;letter-spacing:.2px}
  .cmp td:first-child,.cmp th:first-child{width:32%}
  .callbtn span:last-child{display:none}
- .callbtn{width:42px;height:42px;justify-content:center;gap:0;border-radius:50%;background:linear-gradient(135deg,#b8e62e,#93c71c);box-shadow:0 4px 14px rgba(184,230,46,.4);animation:callPulse 2.4s ease-out infinite}
- .callbtn .ico{font-size:20px;display:inline-block;animation:callRing 3s ease-in-out infinite}
+ .callbtn{width:42px;height:42px;justify-content:center;gap:0;border-radius:50%;background:linear-gradient(135deg,#b8e62e,#93c71c);box-shadow:0 4px 14px rgba(184,230,46,.4);animation:callPulse 2.4s ease-out infinite;color:#1c2d00}
+ .callbtn .ico{display:inline-block;animation:callRing 3s ease-in-out infinite}
+ .callbtn .ico svg.ic{width:20px;height:20px}
  .mq-track{padding:14px 0 50px}
  .sac-art:after{font-size:34px;letter-spacing:-2px}
 }
@@ -443,7 +449,7 @@ footer strong{color:#fff;font-size:16px}
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-right">
-      <a class="callbtn" id="headerCall" href="tel:+10000000000"><span class="ico">📞</span><span id="headerPhone">Call us</span></a>
+      <a class="callbtn" id="headerCall" href="tel:+10000000000"><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></span><span id="headerPhone">Call us</span></a>
       <a class="btn btn-lime hdr-cta" href="#checker">CHECK ADDRESS</a>
     </div>
   </div>
@@ -451,7 +457,7 @@ footer strong{color:#fff;font-size:16px}
 
 <main>
 <div class="announce">
-  🍁 <b>NEW HAMPSHIRE:</b> 1 Gig Fidium Fiber: $30/mo. your first year, plus 1 month free. Limited time.
+  <b>NEW HAMPSHIRE:</b> 1 Gig Fidium Fiber: $30/mo. your first year, plus 1 month free. Limited time.
 </div>
 
 <section class="hero" id="availability">
@@ -478,7 +484,7 @@ footer strong{color:#fff;font-size:16px}
 
     <div class="availability" id="checker">
       <div class="fid-mini">fidium<i>.</i> <span>Authorized Dealer</span></div>
-      <h2><span class="zap">⚡</span> Check availability</h2>
+      <h2><span class="zap"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span> Check availability</h2>
       <p class="muted">Enter your New Hampshire address to see if we can get you fiber.</p>
       <div id="availForm">
         <label>Your address</label>
@@ -516,7 +522,7 @@ footer strong{color:#fff;font-size:16px}
 
     <div class="cmp-cards rv">
       <div class="bill fid">
-        <div class="ribbon">⭐ THE SWITCH</div>
+        <div class="ribbon">THE SWITCH</div>
         <div class="who"><b>fidium<i>.</i></b> Fiber</div>
         <div class="speed">1 Gig</div>
         <div class="amt">$30</div>
@@ -567,7 +573,7 @@ footer strong{color:#fff;font-size:16px}
         <input type="range" id="billSlider" min="50" max="160" step="5" value="70" aria-label="Your current monthly internet bill">
         <span>$160</span>
       </div>
-      <div class="sb-hint">👆 Drag to what you pay now and watch the math.</div>
+      <div class="sb-hint">Drag the slider to what you pay now and watch the math.</div>
       <small>Savings vs Fidium 1 Gig at $30/mo. for year one, based on the verified New Hampshire offers above. Your exact savings depend on your current plan and address.</small>
     </div>
 
@@ -626,10 +632,10 @@ footer strong{color:#fff;font-size:16px}
       <p>Fidium sets the price, so you pay the same no matter where you order. The difference is what you don't have to deal with.</p>
     </div>
     <div class="benefit-grid">
-      <div class="benefit rv"><div class="benefit-icon">👤</div><h3>A Human Places Your Order</h3><p>Your rep sets up the right plan and promo for your exact address. No checkout maze, no phone tree.</p></div>
-      <div class="benefit rv d1"><div class="benefit-icon">📅</div><h3>Install Booked Around You</h3><p>You tell us what day works and we set it up. No waiting home all afternoon wondering.</p></div>
-      <div class="benefit rv d2"><div class="benefit-icon">💬</div><h3>Answers In Minutes</h3><p>Text or call during business hours and you get a person right back, not a ticket number.</p></div>
-      <div class="benefit rv d3"><div class="benefit-icon">🏷️</div><h3>$0 Extra, Ever</h3><p>Our service costs you nothing. You pay Fidium's price, not a penny more.</p></div>
+      <div class="benefit rv"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><h3>A Human Places Your Order</h3><p>Your rep sets up the right plan and promo for your exact address. No checkout maze, no phone tree.</p></div>
+      <div class="benefit rv d1"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h3>Install Booked Around You</h3><p>You tell us what day works and we set it up. No waiting home all afternoon wondering.</p></div>
+      <div class="benefit rv d2"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Answers In Minutes</h3><p>Text or call during business hours and you get a person right back, not a ticket number.</p></div>
+      <div class="benefit rv d3"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div><h3>$0 Extra, Ever</h3><p>Our service costs you nothing. You pay Fidium's price, not a penny more.</p></div>
     </div>
   </div>
 </section>
@@ -642,10 +648,10 @@ footer strong{color:#fff;font-size:16px}
       <p>100% fiber to your home, built for streaming, gaming, video calls and everything else at once.</p>
     </div>
     <div class="benefit-grid">
-      <div class="benefit rv"><div class="benefit-icon">⚡</div><h3>Up to 2 Gig</h3><p>Fast enough for every device in the house, all at the same time.</p></div>
-      <div class="benefit rv d1"><div class="benefit-icon">↕️</div><h3>Symmetrical Speeds</h3><p>Uploads as fast as downloads. Cable can't do that, fiber does.</p></div>
-      <div class="benefit rv d2"><div class="benefit-icon">∞</div><h3>No Data Caps</h3><p>Unlimited data. Stream, download and game without overage fees.</p></div>
-      <div class="benefit rv d3"><div class="benefit-icon">🔓</div><h3>No Annual Contract</h3><p>No long-term commitment, with a first-year price lock on your rate.</p></div>
+      <div class="benefit rv"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Up to 2 Gig</h3><p>Fast enough for every device in the house, all at the same time.</p></div>
+      <div class="benefit rv d1"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l4-4 4 4M12 3v18M8 17l4 4 4-4"/></svg></div><h3>Symmetrical Speeds</h3><p>Uploads as fast as downloads. Cable can't do that, fiber does.</p></div>
+      <div class="benefit rv d2"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12c-1.9-2.6-3.3-4-5.4-4a4 4 0 0 0 0 8c2.1 0 3.5-1.4 5.4-4zm0 0c1.9-2.6 3.3-4 5.4-4a4 4 0 0 1 0 8c-2.1 0-3.5-1.4-5.4-4z"/></svg></div><h3>No Data Caps</h3><p>Unlimited data. Stream, download and game without overage fees.</p></div>
+      <div class="benefit rv d3"><div class="benefit-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div><h3>No Annual Contract</h3><p>No long-term commitment, with a first-year price lock on your rate.</p></div>
     </div>
   </div>
 </section>
@@ -687,8 +693,8 @@ footer strong{color:#fff;font-size:16px}
       <p>Drop your details and the plan you want. A real person texts or calls you back within minutes during business hours, places your Fidium order with you, and books your install around your schedule.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
-        <a href="tel:+10000000000" id="ctaCall">📞 Call us</a>
-        <button style="border:0;background:#fff;color:var(--purple-dark);border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;font-size:16px;font-family:inherit" onclick="openChat()">💬 Chat now</button>
+        <a href="tel:+10000000000" id="ctaCall"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg> Call us</a>
+        <button style="border:0;background:#fff;color:var(--purple-dark);border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;font-size:16px;font-family:inherit" onclick="openChat()"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Chat now</button>
       </div>
     </div>
     <div class="lead-card">
@@ -722,7 +728,7 @@ footer strong{color:#fff;font-size:16px}
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
       </form>
       <div class="success" id="leadSuccess">
-        <div class="big">🎉</div>
+        <div class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14l-3-3"/></svg></div>
         <h3>You're in!</h3>
         <p id="leadSuccessMsg">Thanks! Expect a text or call within minutes during business hours. We'll confirm your options and get your install on the calendar.</p>
       </div>
@@ -845,7 +851,7 @@ function renderResult(data, addrLabel){
   if(data && data.signable){
     const plans = (data.plans||[]).map(p=>'<span class="plan">'+esc(p)+'</span>').join('');
     el.className = 'result yes show';
-    el.innerHTML = '<h3>✅ Great news! We can get you fiber here!</h3>'
+    el.innerHTML = '<h3>Great news! We can get you fiber here!</h3>'
       + '<p>Fidium Fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
       + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
@@ -855,16 +861,16 @@ function renderResult(data, addrLabel){
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#6d28d9;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span> 🔎</h3>'
+    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
       + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
       + 'wired roads, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
       + 'it live and lock in your best pricing.</p>'
       + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
       +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
       +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="openChat()">💬 CHAT NOW &amp; GET A LIVE ANSWER</button>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="openChat()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
-      +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">📞 '+CONFIG.PHONE_DISPLAY+'</a>'
+      +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
       +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
       + '</div>'
       + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
