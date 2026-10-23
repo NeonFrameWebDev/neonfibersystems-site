@@ -168,7 +168,8 @@ option{color:#0a1026;background:#fff}
 .offer.hot{border:2px solid transparent;
   background:linear-gradient(var(--card),var(--card)) padding-box,conic-gradient(from var(--spin),#2f7bff,#8b5cf6,#ff3d9a,#22d3ee,#b8e62e,#2f7bff) border-box;
   animation:spinb 6s linear infinite;box-shadow:0 26px 64px rgba(139,92,246,.3)}
-.offer .badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(100deg,#c7f141,var(--lime));color:var(--lime-dark);font-size:10.5px;font-weight:800;letter-spacing:1.2px;padding:7px 15px;border-radius:999px;white-space:nowrap;animation:floaty 4s ease-in-out infinite alternate}
+.offer .badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(100deg,#c7f141,var(--lime));color:var(--lime-dark);font-size:10.5px;font-weight:800;letter-spacing:1.2px;padding:7px 15px;border-radius:999px;white-space:nowrap;animation:floatyb 4s ease-in-out infinite alternate}
+@keyframes floatyb{from{transform:translate(-50%,0)}to{transform:translate(-50%,-8px)}}
 .offer h3{font-size:19px;letter-spacing:-.4px;margin-bottom:10px;color:#fff}
 .offer .price{font-size:50px;font-weight:800;letter-spacing:-2.6px;line-height:1;color:#fff}
 .offer.hot .price{background:var(--rainbow);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hueflow 7s ease-in-out infinite alternate}
