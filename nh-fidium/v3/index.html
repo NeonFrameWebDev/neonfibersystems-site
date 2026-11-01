@@ -1025,7 +1025,29 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   var box=document.getElementById('nfChat'), log=document.getElementById('nfChatLog'),
       form=document.getElementById('nfChatForm'), inp=document.getElementById('nfChatIn'),
       btn=document.getElementById('nfChatBtn');
-  var started=false, handed=false, poller=null;
+  var started=false, handed=false, poller=null, lastEmail='', lastPhone='';
+
+  /* #chat-conv-fire 2026-11-01: tell Google about a chat lead. Without this the chat
+     produces a lead and a Discord card while the Chat lead conversion stays at zero,
+     which looks exactly like chat never converting. Fires once, user data first. */
+  function fireChatConv(){
+    if(window.__nfChatConvSent || typeof gtag !== 'function') return;
+    window.__nfChatConvSent = true;
+    window.__nfChatLeadSent = true;   /* so re-enabling Tawk could never double count */
+    try{
+      var ud={};
+      if(lastEmail) ud.email=lastEmail;
+      if(lastPhone) ud.phone_number=lastPhone;
+      if(ud.email || ud.phone_number) gtag('set','user_data', ud);
+      gtag('event','conversion', {'send_to': NF_CHAT_CONV});
+    }catch(e){}
+  }
+  function remember(text){
+    try{
+      var e=nfFindEmail(text); if(e) lastEmail=e;
+      var p=nfFindPhone(text); if(p) lastPhone=p;
+    }catch(err){}
+  }
 
   function sid(){
     try{
@@ -1084,10 +1106,15 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var t=(inp.value||'').trim(); if(!t) return;
-    inp.value=''; add(t, true);
+    inp.value=''; add(t, true); remember(t);
     send(t).then(function(d){
       if(d.reply) add(d.reply,false);
-      if(d.done && !handed){ handed=true; note('Connecting you to a specialist...'); startPolling(); }
+      if(d.done && !handed){
+        handed=true;
+        if(d.lead_id) fireChatConv();     /* a real lead was written, so it counts */
+        note('Connecting you to a specialist...');
+        startPolling();
+      }
     }).catch(fail);
   });
 })();
