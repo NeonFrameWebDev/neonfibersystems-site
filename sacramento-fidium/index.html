@@ -929,6 +929,26 @@ async function submitLead(e){
      fires on failed submits too and would inflate the count.
        __leadConvSent  - fire once per page even if this path is ever reached twice.
        typeof gtag     - the tag script is blocked by some ad blockers; never throw. */
+  /* #enh-conv 2026-11-01: enhanced conversions for leads. The account setting alone
+     does nothing; the page must hand gtag the visitor's own details at conversion
+     time or Google has nothing to match on. gtag hashes these in the browser, so raw
+     values never leave it. Only fields we actually have are sent, and a missing field
+     is simply omitted rather than sent empty. */
+  if (typeof gtag === 'function') {
+    var ud = {};
+    if (payload.email) { ud.email = payload.email; }
+    var _d = (payload.phone || '').replace(/\D/g, '');
+    if (_d.length === 10) { _d = '1' + _d; }
+    if (_d.length === 11) { ud.phone_number = '+' + _d; }   /* E.164, as Google requires */
+    if (payload.first || payload.address) {
+      ud.address = {
+        first_name: payload.first || '', last_name: payload.last || '',
+        street: payload.address || '', city: payload.city || '',
+        region: payload.state || '', postal_code: payload.zip || '', country: 'US'
+      };
+    }
+    if (ud.email || ud.phone_number) { gtag('set', 'user_data', ud); }
+  }
   if (!window.__leadConvSent && typeof gtag === 'function') {
     window.__leadConvSent = true;
     gtag('event', 'conversion', {'send_to': 'AW-18532023269/Nm3-CM-Xx6YdEOX34IRF'});
