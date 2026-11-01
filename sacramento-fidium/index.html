@@ -822,12 +822,159 @@ function loadTawk(){
 })();
 function openChat(){
   if(window.Tawk_API && typeof Tawk_API.maximize === 'function'){ Tawk_API.maximize(); return; }
-  Tawk_API.onLoad = function(){ Tawk_API.maximize(); };
+  Tawk_API.onLoad = function(){ nfTawkOnLoad(); Tawk_API.maximize(); };
   loadTawk();
   setTimeout(function(){
     if(!(window.Tawk_API && typeof Tawk_API.maximize === 'function')) window.location.href = 'tel:' + CONFIG.PHONE_TEL;
   }, 5000);
 }
+
+/* =========================================================================
+   #chat-conv 2026-11-01: make the Tawk.to live chat visible to Google Ads.
+
+   The hole this closes: leads arrive three ways (form, phone, chat) and chat
+   was the only one Google could not see. A visitor who gave us their number in
+   chat looked to Google like a click that went nowhere, so the campaigns would
+   learn to avoid exactly the people who chat. Worse, no lead row was ever
+   written for them, so when one of those customers was installed the uploader
+   had nothing to match and the $450 never got back to Google.
+
+   What counts as a chat lead: the visitor actually gave a phone number or an
+   email address. Opening the chat is NOT counted, on purpose - counting it
+   would teach Google to bid for curiosity instead of customers.
+
+   Contact details can show up in three places and all three are handled:
+     onPrechatSubmit      - the pre-chat form, when Tawk is set to ask
+     onOfflineSubmit      - the offline message form, outside staffed hours
+     onChatMessageVisitor - the visitor just typing their number into the chat,
+                            which is what most people actually do
+
+   Fires once per chat session. If a visitor gives an email first and a phone
+   later, the lead goes on the first of the two: a lead captured early and
+   slightly thin beats a complete one we never get because they closed the tab.
+   ========================================================================= */
+var NF_CHAT_CONV   = 'AW-18532023269/E0XuCI-Il7AdEOX34IRF';   /* "Chat lead", id 7885669391 */
+var NF_CHAT_SOURCE = 'sacramento-fidium-lp-chat';
+
+function nfChatAlreadySent(){
+  if (window.__nfChatLeadSent) { return true; }
+  try { return sessionStorage.getItem('nf_chat_lead_sent') === '1'; } catch(e){ return false; }
+}
+function nfChatMarkSent(){
+  window.__nfChatLeadSent = true;
+  try { sessionStorage.setItem('nf_chat_lead_sent', '1'); } catch(e){}
+}
+
+function nfFindEmail(s){
+  var m = (s || '').match(/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/);
+  return m ? m[0] : '';
+}
+/* Only a clean 10-digit US number counts. Our own published line is ignored:
+   visitors paste it back at us ("is this 916-619-0975?") and that is not a lead. */
+function nfFindPhone(s){
+  var t = (s || '').replace(/[^\d]/g, ' ');
+  var m = t.match(/\d[\d\s]{8,}\d/);
+  if (!m) { return ''; }
+  var dg = m[0].replace(/\D/g, '');
+  if (dg.length === 11 && dg.charAt(0) === '1') { dg = dg.slice(1); }
+  if (dg.length !== 10) { return ''; }
+  var e164 = '+1' + dg;
+  if (e164 === CONFIG.PHONE_TEL) { return ''; }
+  return e164;
+}
+/* Tawk hands these callbacks different shapes depending on which form fired,
+   so flatten whatever arrives into text and scan it rather than trusting a key. */
+function nfFlatten(d){
+  try{
+    if (!d) { return ''; }
+    if (typeof d === 'string') { return d; }
+    if (Object.prototype.toString.call(d) === '[object Array]') {
+      return d.map(function(x){
+        if (!x) { return ''; }
+        if (typeof x === 'string') { return x; }
+        return [x.label, x.name, x.answer, x.value, x.message].filter(Boolean).join(' ');
+      }).join(' \n ');
+    }
+    return [d.name, d.email, d.phone, d.message, d.question].filter(Boolean).join(' \n ');
+  }catch(e){ return ''; }
+}
+function nfPickName(d){
+  try{
+    if (Object.prototype.toString.call(d) === '[object Array]') {
+      for (var i = 0; i < d.length; i++){
+        var f = d[i] || {}, lab = ((f.label || f.name || '') + '').toLowerCase();
+        if (lab.indexOf('name') > -1) { return (f.answer || f.value || '') + ''; }
+      }
+    } else if (d && d.name) { return d.name + ''; }
+  }catch(e){}
+  return '';
+}
+
+function nfChatLead(email, phone, name, why){
+  if (nfChatAlreadySent()) { return; }
+  if (!email && !phone) { return; }
+  nfChatMarkSent();
+  var parts = (name || '').trim().split(/\s+/);
+  var payload = {
+    first: parts[0] || '', last: parts.slice(1).join(' ') || '',
+    address: '', city: '', zip: '',
+    phone: phone || '', email: email || '',
+    plan: '', carrier: CONFIG.CARRIER, state: CONFIG.STATE,
+    source: NF_CHAT_SOURCE, ts: new Date().toISOString(),
+    chat_trigger: why || ''
+  };
+  /* same click ids the form sends, so an install can be traced back to the ad */
+  Object.assign(payload, clickIds());
+  try{
+    if (CONFIG.API_BASE){
+      /* keepalive: the visitor often keeps chatting or closes the tab straight
+         after, and the request must survive that. */
+      fetch(CONFIG.API_BASE + '/api/lead', {method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload), keepalive: true}).catch(function(){});
+    }
+  }catch(e){}
+  /* enhanced conversions, same order as the form: user data BEFORE the event,
+     or Google has nothing to match a click-id-less conversion against. */
+  if (typeof gtag === 'function'){
+    var ud = {};
+    if (payload.email) { ud.email = payload.email; }
+    if (payload.phone) { ud.phone_number = payload.phone; }   /* already E.164 */
+    if (ud.email || ud.phone_number) { gtag('set', 'user_data', ud); }
+    gtag('event', 'conversion', {'send_to': NF_CHAT_CONV});
+  }
+}
+
+Tawk_API.onPrechatSubmit = function(data){
+  var t = nfFlatten(data);
+  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'prechat');
+};
+Tawk_API.onOfflineSubmit = function(data){
+  var t = nfFlatten(data);
+  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'offline');
+};
+Tawk_API.onChatMessageVisitor = function(msg){
+  var t = (msg && (msg.message || msg.text)) ? (msg.message || msg.text)
+        : (typeof msg === 'string' ? msg : nfFlatten(msg));
+  nfChatLead(nfFindEmail(t), nfFindPhone(t), '', 'message');
+};
+
+/* Put the click ids on the Tawk conversation itself, so whoever answers the
+   chat can see which ad the person came from, and so the conversation can be
+   reconciled by hand if the lead POST above ever fails. */
+function nfTawkOnLoad(){
+  try{
+    var ids = clickIds();
+    if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function'){
+      var a = {'nf-landing': ids.landing || location.pathname};
+      if (ids.gclid)  { a['nf-gclid']  = ids.gclid; }
+      if (ids.gbraid) { a['nf-gbraid'] = ids.gbraid; }
+      if (ids.wbraid) { a['nf-wbraid'] = ids.wbraid; }
+      Tawk_API.setAttributes(a, function(){});
+    }
+  }catch(e){}
+}
+Tawk_API.onLoad = nfTawkOnLoad;
 
 /* ---- availability check (calls backend; demo fallback) ---- */
 async function checkAvailability(){
