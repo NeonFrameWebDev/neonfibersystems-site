@@ -537,6 +537,15 @@ async function submitLead(e){
   }catch(e){ /* still show success; lead is better captured client-side than lost */ }
   document.getElementById('leadForm').style.display='none';
   document.getElementById('leadSuccess').classList.add('show');
+  /* #gtag-lead 2026-11-01: the Google Ads lead conversion, fired HERE because this is
+     where the success state actually appears. Deliberately not a click handler: a click
+     fires on failed submits too and would inflate the count.
+       __leadConvSent  - fire once per page even if this path is ever reached twice.
+       typeof gtag     - the tag script is blocked by some ad blockers; never throw. */
+  if (!window.__leadConvSent && typeof gtag === 'function') {
+    window.__leadConvSent = true;
+    gtag('event', 'conversion', {'send_to': 'AW-18532023269/Nm3-CM-Xx6YdEOX34IRF'});
+  }
 }
 
 /* helpers */
