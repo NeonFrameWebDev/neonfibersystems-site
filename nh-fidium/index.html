@@ -9,6 +9,32 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'AW-18532023269');
+  /* #call-conv 2026-11-01: count people who CALL the number on this page.
+     Deliberately not "calls from ads": that counts taps on a call asset attached to the
+     ad itself, which serves on Search and essentially not on Display, and all three of
+     our campaigns are Display. It would have sat at zero forever.
+
+     How this works: for a visitor who arrived from an ad, Google swaps the number shown
+     on the page for a forwarding number. The call still rings our real line. Google
+     counts it once the call passes 60 seconds, so a wrong number or a hang-up is not a
+     lead. The number must be present as plain text on the page, which it is.
+
+     The callback matters as much as the swap. Google rewrites the number where it appears
+     as TEXT, but our call buttons are links whose text reads "Call now", so their tel:
+     targets would keep dialling the unswapped number and those calls would never be
+     attributed. The callback rewrites every tel: link to the forwarding number, so the
+     buttons and the visible number stay in step. */
+  gtag('config', 'AW-18532023269/kr_LCP3YorAdEOX34IRF', {
+    'phone_conversion_number': '(785) 462-5861',
+    'phone_conversion_callback': function (formatted_number, mobile_number) {
+      try {
+        if (!mobile_number) { return; }
+        window.__nfSwappedTel = mobile_number;
+        var links = document.querySelectorAll('a[href^="tel:"]');
+        for (var i = 0; i < links.length; i++) { links[i].href = 'tel:' + mobile_number; }
+      } catch (e) {}
+    }
+  });
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fidium Fiber New Hampshire</title>
