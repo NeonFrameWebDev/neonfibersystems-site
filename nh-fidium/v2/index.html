@@ -527,6 +527,9 @@ async function submitLead(e){
     email:val('ld_email'), plan:val('ld_plan'), carrier:CONFIG.CARRIER,
     state:CONFIG.STATE, source:'nh-fidium-lp-v2', ts:new Date().toISOString()
   };
+  /* #gclid-capture: attach the ad click id so this lead can be matched back to
+     the campaign later. Backend keeps it automatically (leads.raw). */
+  Object.assign(payload, clickIds());
   const btn = document.getElementById('ld_btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Sending…';
   try{
@@ -546,6 +549,37 @@ async function submitLead(e){
     window.__leadConvSent = true;
     gtag('event', 'conversion', {'send_to': 'AW-18532023269/Nm3-CM-Xx6YdEOX34IRF'});
   }
+}
+
+/* #gclid-capture 2026-11-01: Google only puts the click id on the URL at the moment of
+   the ad click. Grab it on load and keep it, or the lead can never be traced back to the
+   ad that produced it. gbraid/wbraid are the iOS/app forms that DISPLAY campaigns use.
+   Everything is wrapped in try/catch: storage is unavailable in private mode and in some
+   embedded browsers, and analytics must never break the form. */
+(function(){
+  try{
+    var q = new URLSearchParams(location.search);
+    ['gclid','gbraid','wbraid'].forEach(function(k){
+      var v = q.get(k);
+      if(v){
+        localStorage.setItem('nf_'+k, v);
+        localStorage.setItem('nf_click_ts', new Date().toISOString());
+      }
+    });
+  }catch(e){}
+})();
+function clickIds(){
+  var o = {};
+  try{
+    ['gclid','gbraid','wbraid'].forEach(function(k){
+      var v = localStorage.getItem('nf_'+k);
+      if(v){ o[k] = v; }
+    });
+    var t = localStorage.getItem('nf_click_ts');
+    if(t){ o.click_ts = t; }
+    o.landing = location.pathname;
+  }catch(e){}
+  return o;
 }
 
 /* helpers */
