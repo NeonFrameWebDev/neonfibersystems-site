@@ -1380,7 +1380,8 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   <div id="nfChatHead"><span>Chat with us</span>
     <button id="nfChatClose" type="button" aria-label="Close chat">&times;</button></div>
   <div id="nfChatLog"></div>
-  <form id="nfChatForm" autocomplete="off">
+  <button id="nfChatStart" type="button" style="margin:10px 12px 12px;padding:13px;border:0;border-radius:10px;background:#1363e0;color:#fff;font-weight:800;font-size:15px;cursor:pointer">Start Chat</button>
+  <form id="nfChatForm" autocomplete="off" style="display:none">
     <input id="nfChatIn" type="text" placeholder="Type here..." maxlength="400" aria-label="Message">
     <button id="nfChatSend" type="submit">Send</button>
   </form>
@@ -1390,7 +1391,8 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   var API = CONFIG.API_BASE, SRC = 'sacramento-fidium-lp';
   var box=document.getElementById('nfChat'), log=document.getElementById('nfChatLog'),
       form=document.getElementById('nfChatForm'), inp=document.getElementById('nfChatIn'),
-      btn=document.getElementById('nfChatBtn');
+        btn=document.getElementById('nfChatBtn');
+    var startBtn=document.getElementById('nfChatStart');
   var started=false, handed=false, poller=null, lastEmail='', lastPhone='';
 
   /* #chat-conv-fire 2026-11-01: tell Google about a chat lead. Without this the chat
@@ -1457,16 +1459,25 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   function fail(){
     note('We can\'t reach our system right now. Please call '+CONFIG.PHONE_DISPLAY+'.');
   }
+  function startChat(){
+    if(startBtn) startBtn.style.display='none';
+    form.style.display=''; inp.focus();
+    send('__START_CHAT__').then(function(d){
+      if(d.reply) add(d.reply,false);
+      if(d.done && !handed){ handed=true; if(d.lead_id) fireChatConv(); startPolling(); }
+    }).catch(fail);
+  }
   function open(){
-    box.classList.add('on'); inp.focus();
+    box.classList.add('on');
     if(started) return;
     started=true;
     send('').then(function(d){
       add(d.reply||'Hi! How can we help?', false);
-      if(d.done){ handed=true; startPolling(); }
+      if(startBtn){ startBtn.style.display=''; } else { form.style.display=''; inp.focus(); }
     }).catch(fail);
   }
   window.nfChatOpen=open;
+  if(startBtn) startBtn.addEventListener('click', startChat);
   btn.addEventListener('click', function(){ box.classList.contains('on')?box.classList.remove('on'):open(); });
   document.getElementById('nfChatClose').addEventListener('click', function(){ box.classList.remove('on'); });
   form.addEventListener('submit', function(e){
