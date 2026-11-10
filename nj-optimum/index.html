@@ -588,7 +588,10 @@ async function submitLead(e){
     first:val('ld_first'), last:val('ld_last'), address:val('ld_addr'),
     city:val('ld_city'), zip:val('ld_zip'), phone:val('ld_phone'),
     email:val('ld_email'), plan:val('ld_plan'), carrier:CONFIG.CARRIER,
-    state:CONFIG.STATE, source:'nj-optimum-lp', ts:new Date().toISOString()
+    state:CONFIG.STATE, source:'nj-optimum-lp', ts:new Date().toISOString(),
+    consent:!!(document.getElementById('ld_consent')||{}).checked,
+    consent_ts:new Date().toISOString(),
+    consent_text:nfConsentText()
   };
   const btn = document.getElementById('ld_btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Sending…';
@@ -609,6 +612,17 @@ function openChat(){
 }
 
 /* helpers */
+/* #consent-capture 2026-11-10: the consent box is required and JS-gated, but its value
+   never left the browser, so no lead had stored proof of consent. Record the tick, the
+   moment, and the exact wording shown. */
+function nfConsentText(){
+  try{
+    var el = document.getElementById('ld_consent');
+    var lab = el && (el.closest ? el.closest('label') : null);
+    if (!lab) { return ''; }
+    return (lab.innerText || lab.textContent || '').replace(/\s+/g,' ').trim().slice(0,700);
+  }catch(e){ return ''; }
+}
 function val(id){ return (document.getElementById(id).value||'').trim(); }
 function copy(a,b){ const x=document.getElementById(a), y=document.getElementById(b); if(x&&y&&x.value) y.value=x.value; }
 function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }

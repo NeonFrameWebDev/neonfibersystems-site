@@ -547,7 +547,27 @@ function nfPickName(d){
   return '';
 }
 
-function nfChatLead(email, phone, name, why){
+/* Scans whatever the Tawk form handed over for a consent answer. Tawk field labels and
+   shapes vary, so match on the label and accept the usual affirmative answers. Returns null
+   when the form carried no consent field at all, which is NOT the same as a refusal. */
+function nfPickConsent(d){
+  try{
+    var arr = (Object.prototype.toString.call(d) === '[object Array]') ? d : [];
+    for (var i = 0; i < arr.length; i++){
+      var f = arr[i] || {};
+      var lab = ((f.label || f.name || '') + '').toLowerCase();
+      if (lab.indexOf('consent') > -1 || lab.indexOf('agree') > -1 ||
+          lab.indexOf('okay to text') > -1 || lab.indexOf('ok to text') > -1){
+        var ans = ((f.answer != null ? f.answer : f.value) + '').toLowerCase().trim();
+        var yes = (ans === 'true' || ans === 'yes' || ans === 'on' || ans === '1' ||
+                   ans === 'checked' || ans.indexOf('agree') > -1);
+        return { ok: yes, text: ((f.label || f.name || '') + '').slice(0,700) };
+      }
+    }
+  }catch(e){}
+  return null;
+}
+function nfChatLead(email, phone, name, why, consent){
   if (nfChatAlreadySent()) { return; }
   if (!email && !phone) { return; }
   nfChatMarkSent();
@@ -558,7 +578,13 @@ function nfChatLead(email, phone, name, why){
     phone: phone || '', email: email || '',
     plan: '', carrier: CONFIG.CARRIER, state: CONFIG.STATE,
     source: NF_CHAT_SOURCE, ts: new Date().toISOString(),
-    chat_trigger: why || ''
+    chat_trigger: why || '',
+    /* consent is null when the Tawk form carried no consent field. The backend
+       treats a chat lead without consent as not textable. */
+    consent: !!(consent && consent.ok),
+    consent_ts: (consent && consent.ok) ? new Date().toISOString() : '',
+    consent_text: (consent && consent.text) ? consent.text : '',
+    consent_source: consent ? 'tawk-form' : 'none'
   };
   /* same click ids the form sends, so an install can be traced back to the ad */
   Object.assign(payload, clickIds());
@@ -584,11 +610,11 @@ function nfChatLead(email, phone, name, why){
 
 Tawk_API.onPrechatSubmit = function(data){
   var t = nfFlatten(data);
-  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'prechat');
+  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'prechat', nfPickConsent(data));
 };
 Tawk_API.onOfflineSubmit = function(data){
   var t = nfFlatten(data);
-  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'offline');
+  nfChatLead(nfFindEmail(t), nfFindPhone(t), nfPickName(data), 'offline', nfPickConsent(data));
 };
 Tawk_API.onChatMessageVisitor = function(msg){
   var t = (msg && (msg.message || msg.text)) ? (msg.message || msg.text)
@@ -693,7 +719,10 @@ async function submitLead(e){
     first:val('ld_first'), last:val('ld_last'), address:val('ld_addr'),
     city:val('ld_city'), zip:val('ld_zip'), phone:val('ld_phone'),
     email:val('ld_email'), plan:val('ld_plan'), carrier:CONFIG.CARRIER,
-    state:CONFIG.STATE, source:'nh-fidium-lp-v2', ts:new Date().toISOString()
+    state:CONFIG.STATE, source:'nh-fidium-lp-v2', ts:new Date().toISOString(),
+    consent:!!(document.getElementById('ld_consent')||{}).checked,
+    consent_ts:new Date().toISOString(),
+    consent_text:nfConsentText()
   };
   /* #gclid-capture: attach the ad click id so this lead can be matched back to
      the campaign later. Backend keeps it automatically (leads.raw). */
@@ -756,6 +785,17 @@ async function submitLead(e){
     });
   }catch(e){}
 })();
+/* #consent-capture 2026-11-10: the consent box is required and JS-gated, but its value
+   never left the browser, so no lead had stored proof of consent. These helpers record the
+   tick, the moment, and the exact wording shown, and let the chat path say when it has none. */
+function nfConsentText(){
+  try{
+    var el = document.getElementById('ld_consent');
+    var lab = el && (el.closest ? el.closest('label') : null);
+    if (!lab) { return ''; }
+    return (lab.innerText || lab.textContent || '').replace(/\s+/g,' ').trim().slice(0,700);
+  }catch(e){ return ''; }
+}
 function clickIds(){
   var o = {};
   try{
