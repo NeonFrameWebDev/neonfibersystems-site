@@ -852,7 +852,9 @@ async function submitLead(e){
 (function(){
   function nfSendView(){
     try{
-      if (!window.CONFIG || !CONFIG.API_BASE) { return; }
+      /* CONFIG is declared with const, so it is a bare binding and never on window.
+         Checking window.CONFIG silently disabled this on every page. */
+      if (typeof CONFIG === 'undefined' || !CONFIG.API_BASE) { return; }
       var q = new URLSearchParams(location.search);
       var p = {
         page: location.pathname,
