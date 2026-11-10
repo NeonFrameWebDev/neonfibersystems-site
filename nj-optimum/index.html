@@ -615,6 +615,33 @@ function openChat(){
 /* #consent-capture 2026-11-10: the consent box is required and JS-gated, but its value
    never left the browser, so no lead had stored proof of consent. Record the tick, the
    moment, and the exact wording shown. */
+/* #pageview-stats 2026-11-10: first-party view counter. No cookie, no third party,
+   nothing identifying sent. Fires on load so it never competes with first paint, and
+   it is wrapped so a tracking failure can never break the page. */
+(function(){
+  function nfSendView(){
+    try{
+      if (!window.CONFIG || !CONFIG.API_BASE) { return; }
+      var q = new URLSearchParams(location.search);
+      var p = {
+        page: location.pathname,
+        source: 'nj-optimum-lp',
+        referrer: document.referrer || '',
+        device: (window.matchMedia && window.matchMedia('(max-width:900px)').matches)
+                ? 'mobile' : 'desktop'
+      };
+      ['gclid','utm_source','utm_medium','utm_campaign'].forEach(function(k){
+        var v = q.get(k); if (v) { p[k] = v; }
+      });
+      fetch(CONFIG.API_BASE + '/api/pageview', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(p), keepalive: true
+      }).catch(function(){});
+    }catch(e){}
+  }
+  if (document.readyState === 'complete') { nfSendView(); }
+  else { window.addEventListener('load', nfSendView); }
+})();
 function nfConsentText(){
   try{
     var el = document.getElementById('ld_consent');
