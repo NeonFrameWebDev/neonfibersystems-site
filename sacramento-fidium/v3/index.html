@@ -786,13 +786,23 @@ async function submitLead(e){
      the campaign later. Backend keeps it automatically (leads.raw). */
   Object.assign(payload, clickIds());
   const btn = document.getElementById('ld_btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Sending…';
+  btn.dataset.orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Sending…';
   try{
+    var _leadOk = true;   /* #lead-reject 2026-11-10 (archer,TC): default true so a NETWORK drop still shows success (deliberate) */
     if(CONFIG.API_BASE){
-      await fetch(CONFIG.API_BASE + '/api/lead', {method:'POST',
+      var _leadResp = await fetch(CONFIG.API_BASE + '/api/lead', {method:'POST',
         headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      if(_leadResp && !_leadResp.ok){ _leadOk = false; }   /* backend REJECTED (e.g. 400): not a real lead */
     } else { await sleep(700); }
-  }catch(e){ /* still show success; lead is better captured client-side than lost */ }
+  }catch(e){ /* network failure only (fetch throws): still show success, lead better captured client-side than lost */ }
+  if(!_leadOk){
+    /* the backend rejected this lead: do NOT show success and do NOT fire the ad conversion,
+       let them correct it. Only reached for a real 4xx (no usable contact, rate limit, etc). */
+    btn.disabled = false; btn.innerHTML = btn.dataset.orig || 'Try again';
+    var _ldErr = document.getElementById('ld_err');
+    if(_ldErr){ _ldErr.textContent = 'We could not read that. Please check your phone number or email and try again.'; _ldErr.classList.add('show'); _ldErr.scrollIntoView({block:'nearest'}); }
+    return;
+  }
   document.getElementById('leadForm').style.display='none';
   document.getElementById('leadSuccess').classList.add('show');
   /* #gtag-lead 2026-11-01: the Google Ads lead conversion, fired HERE because this is
