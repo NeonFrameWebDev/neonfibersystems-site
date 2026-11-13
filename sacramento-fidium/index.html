@@ -131,13 +131,13 @@ header{height:74px;background:rgba(5,15,33,.78);backdrop-filter:blur(16px) satur
 .callbtn .ico{display:flex}
 .callbtn .ico svg.ic{width:17px;height:17px}
 .fidlock{display:inline-flex;align-items:center;background:#fff;border-radius:12px;padding:5px;gap:9px;box-shadow:0 3px 12px rgba(10,26,48,.18)}
-.fidlock .fl-img{height:30px;width:auto;display:block;margin-left:7px}
+.fidlock .fl-img{display:block;margin-left:9px;font-family:inherit;font-weight:900;font-size:24px;line-height:1;letter-spacing:-.4px;color:#14254a}
 .fidlock .fl-ad{background:#1b3f94;color:#fff;font-size:10.5px;font-weight:700;line-height:1.2;padding:7px 10px;border-radius:8px;text-align:left;letter-spacing:.2px}
 .fidlock.fid-sm{padding:4px;border-radius:9px;gap:7px}
-.fidlock.fid-sm .fl-img{height:21px;margin-left:5px}
+.fidlock.fid-sm .fl-img{font-size:17px;margin-left:7px}
 .fidlock.fid-sm .fl-ad{font-size:8.5px;padding:5px 7px;border-radius:6px}
-.fidlock.fid-lg .fl-img{height:40px}
-@media(max-width:600px){.fidlock .fl-img{height:23px}.fidlock .fl-ad{font-size:9px;padding:6px 8px}}
+.fidlock.fid-lg .fl-img{font-size:32px}
+@media(max-width:600px){.fidlock .fl-img{font-size:19px}.fidlock .fl-ad{font-size:9px;padding:6px 8px}}
 @keyframes callPulse{0%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,.55)}70%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 12px rgba(184,230,46,0)}100%{box-shadow:0 4px 14px rgba(184,230,46,.4),0 0 0 0 rgba(184,230,46,0)}}
 @keyframes callRing{0%,86%,100%{transform:rotate(0)}88%{transform:rotate(-16deg)}91%{transform:rotate(12deg)}94%{transform:rotate(-8deg)}97%{transform:rotate(4deg)}}
 .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:16px 26px;font-weight:800;font-size:16px;border:0;cursor:pointer;transition:transform .18s,box-shadow .18s;font-family:inherit;letter-spacing:.2px}
@@ -482,7 +482,7 @@ footer strong{color:#fff;font-size:16px}
 
 <header>
   <div class="container nav">
-    <span class="fidlock"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
+    <span class="fidlock"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span>
     <nav class="navlinks">
       <a href="#compare">Compare</a>
       <a href="#offers">Plans</a>
@@ -523,7 +523,7 @@ footer strong{color:#fff;font-size:16px}
     </div>
 
     <div class="availability" id="checker">
-      <span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
+      <span class="fidlock fid-sm"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span>
       <h2><span class="zap"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span> Check availability</h2>
       <p class="muted">Enter your Sacramento-area address to see if we can get you fiber.</p>
       <div id="availForm">
@@ -563,7 +563,7 @@ footer strong{color:#fff;font-size:16px}
     <div class="cmp-cards rv">
       <div class="bill fid">
         <div class="ribbon">THE SWITCH</div>
-        <div class="who"><span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span></div>
+        <div class="who"><span class="fidlock fid-sm"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span></div>
         <div class="speed">1 Gig</div>
         <div class="amt"><small>from</small> $30</div>
         <div class="per">/mo. first year • then $50/mo.</div>
@@ -737,7 +737,7 @@ footer strong{color:#fff;font-size:16px}
       </div>
     </div>
     <div class="lead-card">
-      <span class="fidlock fid-sm"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span>
+      <span class="fidlock fid-sm"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span>
       <form id="leadForm" onsubmit="submitLead(event)">
         <div class="row">
           <div><label>First Name</label><input id="ld_first" required></div>
@@ -791,7 +791,7 @@ footer strong{color:#fff;font-size:16px}
 
 <footer>
   <div class="container">
-    <span class="fidlock fid-lg"><img src="https://neonfibersystems.com/assets/brand/fidium-logo.png" alt="Fidium" class="fl-img"><span class="fl-ad">Authorized<br>Dealer</span></span><br><br>
+    <span class="fidlock fid-lg"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span><br><br>
     This page is operated by an independent authorized Fidium dealer and is not Fidium or Consolidated Communications itself. Fidium service availability, pricing, promotions, speeds, equipment, taxes, fees and terms are subject to applicable Fidium terms and may change. Fidium name, trademarks and promotional materials are the property of their respective owners and are used in accordance with applicable dealer authorization and brand guidelines. Competitor comparisons are based on other providers' publicly advertised offers for comparable speeds at Sacramento-area addresses; all third-party names and marks are the property of their respective owners, and this site is not affiliated with, sponsored or endorsed by any other provider.
   </div>
 </footer>
