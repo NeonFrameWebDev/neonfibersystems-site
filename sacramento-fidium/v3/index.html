@@ -860,7 +860,24 @@ async function checkAvailability(){
      nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
   if(nfLiveWatch(data, typed, state, btnBack)) return;
   btnBack();
+  if(!(data && data.signable) && !/^\s*\d/.test(typed)){ nfNeedNumber(); return; }   /* #need-number */
   renderResult(data, typed);
+}
+
+/* #need-number 2026-11-19: the live check needs a house number at the start. When it is missing, say so
+   instead of the "we're on it" card. The check was still sent (and logged); the same buttons stay. */
+function nfNeedNumber(){
+  const el = document.getElementById('av_result');
+  el.className = 'result maybe show';
+  el.innerHTML = '<h3>Start with your house number</h3>'
+    + '<p>We check every address live, so we need the full street address, like <strong>1234 Main St</strong>. '
+    + 'Add the number at the start and check again.</p>'
+    + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="if(window.nfChatGo){nfChatGo()}else{openChat()}">CHAT NOW &amp; GET A LIVE ANSWER</button>'
+    + '<div style="display:flex;gap:10px;margin-top:10px">'
+    +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
+    +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
+    + '</div>';
+  el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function renderResult(data, addrLabel){
