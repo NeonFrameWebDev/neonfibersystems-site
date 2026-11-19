@@ -890,9 +890,9 @@ function renderResult(data, addrLabel){
       + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
       + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
-      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
-      + '<a href="#" onclick="openChat();return false" style="color:#1363e0;font-weight:800">Chat with us</a> or '
-      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
+      + '<button class="btn btn-purple" style="width:100%;margin-top:10px" onclick="nfChatGo()">CHAT WITH US NOW</button>'      /* #chat-cta */
+      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to call? '
+      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">Call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
     el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
@@ -902,7 +902,7 @@ function renderResult(data, addrLabel){
       + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
       +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
       +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="openChat()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="nfChatGo()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
       +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
       +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
@@ -912,6 +912,8 @@ function renderResult(data, addrLabel){
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
+/* #chat-cta 2026-11-19: open the chat and start it in one tap (falls back to just opening it) */
+function nfChatGo(){ try{ if(window.nfChatStartNow){ window.nfChatStartNow(); return; } }catch(e){} openChat(); }
 function toLead(){
   // carry the address into the signup form (street-only if a suggestion was picked, else the raw text)
   const street = val('av_street') || val('av_addr');
@@ -1262,6 +1264,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
         btn=document.getElementById('nfChatBtn');
     var startBtn=document.getElementById('nfChatStart');
   var started=false, handed=false, poller=null, lastEmail='', lastPhone='';
+  var chatGo=false;      /* #chat-cta: Start Chat already sent */
 
   /* #chat-conv-fire 2026-11-01: tell Google about a chat lead. Without this the chat
      produces a lead and a Discord card while the Chat lead conversion stays at zero,
@@ -1305,6 +1308,8 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   }
   function meta(){
     var o={carrier:CONFIG.CARRIER, state:CONFIG.STATE, source:SRC};
+    try{ var _bx=document.getElementById('av_addr'), _bv=(_bx && _bx.value) ? String(_bx.value).trim() : '';
+         if(_bv.length >= 6) o.box_addr=_bv.slice(0,120); }catch(e){}      /* #chat-box-addr */
     try{ Object.assign(o, clickIds()); }catch(e){}
     return o;
   }
@@ -1328,6 +1333,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     note('We can\'t reach our system right now. Please call '+CONFIG.PHONE_DISPLAY+'.');
   }
   function startChat(){
+    chatGo=true;
     if(startBtn) startBtn.style.display='none';
     form.style.display=''; inp.focus();
     send('__START_CHAT__').then(function(d){
@@ -1345,6 +1351,17 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     }).catch(fail);
   }
   window.nfChatOpen=open;
+  /* #chat-cta: open AND start in one tap. Greeting first (the backend needs it), then Start Chat. */
+  window.nfChatStartNow=function(){
+    box.classList.add('on');
+    if(chatGo) return;
+    if(!started){
+      started=true; chatGo=true;
+      send('').then(function(d){ add(d.reply||'Hi! How can we help?', false); startChat(); }).catch(fail);
+    } else if(startBtn && startBtn.style.display!=='none'){
+      startChat();
+    }
+  };
   if(startBtn) startBtn.addEventListener('click', startChat);
   btn.addEventListener('click', function(){ box.classList.contains('on')?box.classList.remove('on'):open(); });
   document.getElementById('nfChatClose').addEventListener('click', function(){ box.classList.remove('on'); });
