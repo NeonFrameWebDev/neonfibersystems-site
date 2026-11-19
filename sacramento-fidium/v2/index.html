@@ -51,6 +51,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"></noscript>
+<!-- #no-font-jump gate start (Archer 2026-11-19): the top of the page is shown once, in its final font, so it never moves -->
+<script>
+(function(){
+  var d=document.documentElement, done=false, F="Space Grotesk", W=[400,500,700];
+  function link(){ return document.querySelector('link[href*="fonts.googleapis.com/css2"]'); }
+  function show(ok){
+    if(done) return; done=true;
+    if(!ok){ try{ var l=link(); if(l){ l.onload=null; l.media='print'; } }catch(e){} }
+    d.classList.remove('nf-wf-wait');
+  }
+  try{
+    var l=link();
+    if(!l || !document.fonts || !document.fonts.load || !window.Promise) return;
+    d.classList.add('nf-wf-wait');
+    setTimeout(function(){ show(false); }, 1000);
+    var go=function(){ Promise.all(W.map(function(w){ return document.fonts.load(w+' 16px "'+F+'"'); }))
+      .then(function(r){ show(r.every(function(x){ return x && x.length; })); }, function(){ show(false); }); };
+    if(l.media==='all'){ go(); }
+    else { l.addEventListener('load', function(){ setTimeout(go, 0); }); l.addEventListener('error', function(){ show(false); }); }
+  }catch(e){ show(false); }
+})();
+</script>
+<!-- #no-font-jump gate end -->
 <style>
 :root{
   --ink:#0a1a30;--bg:#fbfcfe;--blue:#1363e0;--blue-deep:#0b3b8c;--navy:#0a1a30;
@@ -291,6 +314,19 @@ footer .tagd{display:inline-block;background:var(--navy);color:#fff;padding:9px 
  .mcta:not(.show)~#nfChat{bottom:58px}
 }
 /* #mobile-first-check end */
+/* #no-font-jump start: backup fonts sized like the real ones, so the page does not move when the font loads (Archer 2026-11-19) */
+@font-face{font-family:"Space Grotesk fb";src:local("Arial"),local("ArialMT");font-weight:400;size-adjust:109.23%;ascent-override:89.72%;descent-override:26.55%;line-gap-override:0%}
+@font-face{font-family:"Space Grotesk fb";src:local("Arial"),local("ArialMT");font-weight:500;size-adjust:104.99%;ascent-override:93.34%;descent-override:27.62%;line-gap-override:0%}
+@font-face{font-family:"Space Grotesk fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:700;size-adjust:101.52%;ascent-override:96.53%;descent-override:28.57%;line-gap-override:0%}
+@font-face{font-family:"Space Grotesk fbr";src:local("Roboto"),local("Roboto-Regular"),local("Roboto Regular");font-weight:400;size-adjust:109.33%;ascent-override:89.64%;descent-override:26.53%;line-gap-override:0%}
+@font-face{font-family:"Space Grotesk fbr";src:local("Roboto"),local("Roboto-Regular"),local("Roboto Regular");font-weight:500;size-adjust:105.33%;ascent-override:93.04%;descent-override:27.53%;line-gap-override:0%}
+@font-face{font-family:"Space Grotesk fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:700;size-adjust:107.93%;ascent-override:90.80%;descent-override:26.87%;line-gap-override:0%}
+body{font-family:'Space Grotesk','Space Grotesk fb','Space Grotesk fbr',system-ui,-apple-system,sans-serif}
+@media(max-width:600px){.hero>.container>.eyebrow{white-space:nowrap;max-width:100%;overflow:hidden}}
+@media(max-width:345px){.hero>.container>.eyebrow{font-size:11px;letter-spacing:1.6px}}
+html.nf-wf-wait .strip,html.nf-wf-wait .hero{visibility:hidden;animation:nfWfShow 0s 1.6s forwards}
+@keyframes nfWfShow{to{visibility:visible}}
+/* #no-font-jump end */
 </style>
 </head>
 <body>

@@ -51,6 +51,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap"></noscript>
+<!-- #no-font-jump gate start (Archer 2026-11-19): the top of the page is shown once, in its final font, so it never moves -->
+<script>
+(function(){
+  var d=document.documentElement, done=false, F="Sora", W=[400,600,800];
+  function link(){ return document.querySelector('link[href*="fonts.googleapis.com/css2"]'); }
+  function show(ok){
+    if(done) return; done=true;
+    if(!ok){ try{ var l=link(); if(l){ l.onload=null; l.media='print'; } }catch(e){} }
+    d.classList.remove('nf-wf-wait');
+  }
+  try{
+    var l=link();
+    if(!l || !document.fonts || !document.fonts.load || !window.Promise) return;
+    d.classList.add('nf-wf-wait');
+    setTimeout(function(){ show(false); }, 1000);
+    var go=function(){ Promise.all(W.map(function(w){ return document.fonts.load(w+' 16px "'+F+'"'); }))
+      .then(function(r){ show(r.every(function(x){ return x && x.length; })); }, function(){ show(false); }); };
+    if(l.media==='all'){ go(); }
+    else { l.addEventListener('load', function(){ setTimeout(go, 0); }); l.addEventListener('error', function(){ show(false); }); }
+  }catch(e){ show(false); }
+})();
+</script>
+<!-- #no-font-jump gate end -->
 <style>
 :root{
   --bg:#070b1e;--ink:#eef2ff;--mut:#9aa8d0;--line:rgba(154,168,208,.22);
@@ -339,6 +362,21 @@ footer .tagd{display:inline-block;background:linear-gradient(120deg,var(--blue),
  .mcta:not(.show)~#nfChat{bottom:58px}
 }
 /* #mobile-first-check end */
+/* #no-font-jump start: backup fonts sized like the real ones, so the page does not move when the font loads (Archer 2026-11-19) */
+@font-face{font-family:"Sora fb";src:local("Arial"),local("ArialMT");font-weight:400;size-adjust:112.40%;ascent-override:86.30%;descent-override:25.80%;line-gap-override:0%}
+@font-face{font-family:"Sora fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:600;size-adjust:107.06%;ascent-override:90.60%;descent-override:27.09%;line-gap-override:0%}
+@font-face{font-family:"Sora fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:800;size-adjust:98.12%;ascent-override:98.86%;descent-override:29.56%;line-gap-override:0%}
+@font-face{font-family:"Sora fbr";src:local("Roboto"),local("Roboto-Regular"),local("Roboto Regular");font-weight:400;size-adjust:112.60%;ascent-override:86.15%;descent-override:25.75%;line-gap-override:0%}
+@font-face{font-family:"Sora fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:600;size-adjust:112.43%;ascent-override:86.28%;descent-override:25.79%;line-gap-override:0%}
+@font-face{font-family:"Sora fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:800;size-adjust:107.41%;ascent-override:90.31%;descent-override:27.00%;line-gap-override:0%}
+body{font-family:'Sora','Sora fb','Sora fbr',system-ui,-apple-system,sans-serif}
+@media(max-width:600px){.hero>.container>.eyebrow{white-space:nowrap;max-width:100%;overflow:hidden}}
+@media(max-width:380px){.hero>.container>.eyebrow{font-size:11px;letter-spacing:1.6px}}
+@media(max-width:340px){.hero>.container>.eyebrow{font-size:10.5px;letter-spacing:1.2px}}
+@media(max-width:345px){.checker .btn{font-size:14px;letter-spacing:0;padding-left:12px;padding-right:12px;white-space:nowrap}}
+html.nf-wf-wait .strip,html.nf-wf-wait .hero{visibility:hidden;animation:nfWfShow 0s 1.6s forwards}
+@keyframes nfWfShow{to{visibility:visible}}
+/* #no-font-jump end */
 </style>
 </head>
 <body>

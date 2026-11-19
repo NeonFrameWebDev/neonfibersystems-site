@@ -52,6 +52,29 @@
 <!-- non-blocking font load: page renders immediately on the system font, swaps in Outfit when ready -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet"></noscript>
+<!-- #no-font-jump gate start (Archer 2026-11-19): the top of the page is shown once, in its final font, so it never moves -->
+<script>
+(function(){
+  var d=document.documentElement, done=false, F="Outfit", W=[400,700,800,900];
+  function link(){ return document.querySelector('link[href*="fonts.googleapis.com/css2"]'); }
+  function show(ok){
+    if(done) return; done=true;
+    if(!ok){ try{ var l=link(); if(l){ l.onload=null; l.media='print'; } }catch(e){} }
+    d.classList.remove('nf-wf-wait');
+  }
+  try{
+    var l=link();
+    if(!l || !document.fonts || !document.fonts.load || !window.Promise) return;
+    d.classList.add('nf-wf-wait');
+    setTimeout(function(){ show(false); }, 1000);
+    var go=function(){ Promise.all(W.map(function(w){ return document.fonts.load(w+' 16px "'+F+'"'); }))
+      .then(function(r){ show(r.every(function(x){ return x && x.length; })); }, function(){ show(false); }); };
+    if(l.media==='all'){ go(); }
+    else { l.addEventListener('load', function(){ setTimeout(go, 0); }); l.addEventListener('error', function(){ show(false); }); }
+  }catch(e){ show(false); }
+})();
+</script>
+<!-- #no-font-jump gate end -->
 <!-- Open Graph (Facebook/LinkedIn share previews) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Neon Fiber, Authorized Fidium Dealer">
@@ -521,6 +544,22 @@ footer strong{color:#fff;font-size:16px}
  .mcta:not(.show)~#nfChat{bottom:58px}
 }
 /* #mobile-first-check end */
+/* #no-font-jump start: backup fonts sized like the real ones, so the page does not move when the font loads (Archer 2026-11-19) */
+@font-face{font-family:"Outfit fb";src:local("Arial"),local("ArialMT");font-weight:400;size-adjust:98.86%;ascent-override:101.15%;descent-override:26.30%;line-gap-override:0%}
+@font-face{font-family:"Outfit fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:700;size-adjust:95.12%;ascent-override:105.13%;descent-override:27.33%;line-gap-override:0%}
+@font-face{font-family:"Outfit fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:800;size-adjust:96.95%;ascent-override:103.15%;descent-override:26.82%;line-gap-override:0%}
+@font-face{font-family:"Outfit fb";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:900;size-adjust:99.19%;ascent-override:100.82%;descent-override:26.21%;line-gap-override:0%}
+@font-face{font-family:"Outfit fbr";src:local("Roboto"),local("Roboto-Regular"),local("Roboto Regular");font-weight:400;size-adjust:99.92%;ascent-override:100.08%;descent-override:26.02%;line-gap-override:0%}
+@font-face{font-family:"Outfit fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:700;size-adjust:100.46%;ascent-override:99.54%;descent-override:25.88%;line-gap-override:0%}
+@font-face{font-family:"Outfit fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:800;size-adjust:103.60%;ascent-override:96.53%;descent-override:25.10%;line-gap-override:0%}
+@font-face{font-family:"Outfit fbr";src:local("Roboto Bold"),local("Roboto-Bold");font-weight:900;size-adjust:106.20%;ascent-override:94.16%;descent-override:24.48%;line-gap-override:0%}
+body{font-family:'Outfit','Outfit fb','Outfit fbr',Arial,Helvetica,sans-serif}
+@media(max-width:600px){.hero-grid .kicker{white-space:nowrap;max-width:100%;overflow:hidden}}
+@media(max-width:360px){.hero-grid .kicker{font-size:10.5px;letter-spacing:1px}}
+@media(max-width:340px){.hero-grid .kicker{font-size:10px;letter-spacing:.8px}}
+html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWfShow 0s 1.6s forwards}
+@keyframes nfWfShow{to{visibility:visible}}
+/* #no-font-jump end */
 </style>
 </head>
 <body>
