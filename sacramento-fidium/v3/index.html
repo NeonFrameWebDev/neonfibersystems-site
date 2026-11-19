@@ -294,6 +294,51 @@ footer .tagd{display:inline-block;background:linear-gradient(120deg,var(--blue),
   .nebula,.checker,.offer.hot,.logo i,h1,.stat b,.offer.hot .price,.pricefloat,.offer .badge,.mq-track,.btn:after,.eyebrow .dot,.callbtn,.callbtn .ico{animation:none}
   html{scroll-behavior:auto}
 }
+/* #mobile-first-check start: on phones the address box sits right under the headline (Archer 2026-11-19) */
+@media(max-width:600px){
+ .strip{padding:8px 14px;font-size:12.5px;line-height:1.35}
+ .hdr-cta{white-space:nowrap}
+ .hero{padding:22px 0 48px}
+ .hero>.container{display:flex;flex-direction:column}
+ .hero>.container>*{order:9}
+ .hero>.container>.eyebrow{order:1;align-self:center}
+ .hero>.container>h1{order:2;font-size:44px;letter-spacing:-2px;margin:12px auto 16px}
+ .hero>.container>.checker{order:3;width:100%}
+ .hero>.container>.sub{order:4;margin:22px auto 20px}
+ .hero>.container>.pricefloat{order:5;align-self:center}
+ .checker-in{padding:16px 16px 14px}
+ .checker .muted{display:none}
+ .checker h2{margin-bottom:8px}
+}
+@media(max-width:400px){
+ .bar{padding-left:14px;padding-right:14px}
+ header .fidlock .fl-img{font-size:17px}
+ header .fidlock .fl-ad{font-size:8.5px;padding:5px 7px}
+ .hdr-cta{padding:9px 8px;font-size:11px;letter-spacing:0}
+ .bar-right{gap:10px}
+}
+@media(max-width:345px){
+ .bar{padding-left:10px;padding-right:10px}
+ .hdr-cta{padding:8px 6px;font-size:10.5px}
+ .bar-right{gap:6px}
+ .callbtn{width:36px;height:36px}
+ header .fidlock .fl-img{font-size:16px}
+ header .fidlock .fl-ad{font-size:8px;padding:4px 6px}
+}
+@media(max-width:600px){
+ #nfChatBtn{transition:bottom .25s,right .25s,width .25s,height .25s}
+ .mcta:not(.show)~#nfChatBtn{right:10px;bottom:10px;width:52px;height:52px}
+ .mcta:not(.show)~#nfChat{bottom:72px}
+}
+@media(max-width:600px) and (max-height:660px){
+ .checker .disclaimer{text-align:left;padding-right:60px}
+}
+@media(max-width:600px) and (max-height:600px){
+ .strip{display:none}
+ .mcta:not(.show)~#nfChatBtn{width:44px;height:44px;right:8px;bottom:6px}
+ .mcta:not(.show)~#nfChat{bottom:58px}
+}
+/* #mobile-first-check end */
 </style>
 </head>
 <body>

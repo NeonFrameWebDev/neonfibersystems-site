@@ -479,6 +479,48 @@ footer strong{color:#fff;font-size:16px}
  .callbtn .ico svg.ic{width:20px;height:20px}
  .mq-track{padding:14px 0 50px}
 }
+/* #mobile-first-check start: on phones the address box sits right under the headline (Archer 2026-11-19) */
+@media(max-width:600px){
+ .announce{padding:8px 14px;font-size:12.5px;line-height:1.35}
+ .hdr-cta{white-space:nowrap}
+ .hero{padding:22px 0 0}
+ .hero-grid{gap:0;align-items:start}
+ .hero-grid>div:first-child{display:contents}
+ .hero-grid .kicker{order:1;justify-self:start;font-size:11.5px;letter-spacing:1.4px}
+ .hero-grid h1{order:2;font-size:33px;letter-spacing:-1.1px;margin:10px 0 14px}
+ .hero-grid .availability{order:3;padding:16px 16px 14px;margin:0 0 26px}
+ .hero-grid p.sub{order:4;font-size:18px;margin:0 0 20px}
+ .hero-grid .hero-points{order:5}
+ .hero-grid .price-flash{order:6;justify-self:start;margin-top:24px}
+ .availability .fid-sm,.availability .muted{display:none}
+ .availability h2{font-size:20px;margin:0 0 8px}
+ .availability .btn{margin-top:10px;padding:15px}
+}
+@media(max-width:380px){
+ .hdr-cta{padding:9px 9px;font-size:11.5px}
+ .nav-right{gap:8px}
+}
+@media(max-width:345px){
+ .hdr-cta{padding:8px 7px;font-size:10.5px}
+ .nav-right{gap:6px}
+ .callbtn{width:36px;height:36px}
+ header .fidlock .fl-img{font-size:16px}
+ header .fidlock .fl-ad{font-size:8px;padding:4px 6px}
+}
+@media(max-width:600px){
+ #nfChatBtn{transition:bottom .25s,right .25s,width .25s,height .25s}
+ .mcta:not(.show)~#nfChatBtn{right:10px;bottom:10px;width:52px;height:52px}
+ .mcta:not(.show)~#nfChat{bottom:72px}
+}
+@media(max-width:600px) and (max-height:660px){
+ .availability .disclaimer{text-align:left;padding-right:60px}
+}
+@media(max-width:600px) and (max-height:600px){
+ .announce{display:none}
+ .mcta:not(.show)~#nfChatBtn{width:44px;height:44px;right:8px;bottom:6px}
+ .mcta:not(.show)~#nfChat{bottom:58px}
+}
+/* #mobile-first-check end */
 </style>
 </head>
 <body>
