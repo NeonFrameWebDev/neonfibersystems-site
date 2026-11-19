@@ -138,6 +138,9 @@ input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(19,9
 .result.show{display:block}
 .result.yes{background:#f3fbe9;border:1px solid #cde8a4}
 .result.maybe{background:#fff8ec;border:1px solid #f3dcae}
+.result.checking{background:#f3f6fb;border:1px solid #d6deea}
+.nf-wait-spin{width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;margin-right:10px;animation:nfspin .7s linear infinite;vertical-align:-3px;opacity:.7}
+@keyframes nfspin{to{transform:rotate(360deg)}}
 .result h3{font-size:19px;letter-spacing:-.3px;margin-bottom:8px}
 .result p{font-size:14.5px;color:#43525f}
 .result .addr{font-weight:700;color:var(--ink)}
@@ -643,41 +646,50 @@ Tawk_API.onLoad = nfTawkOnLoad;
 /* #live-check 2026-11-18: an address we have not confirmed yet is being checked live in the background.
    Ask the backend a few times whether that changed, and switch to the "great news" card ONLY when it
    says available. Anything else leaves the card exactly as it was. */
-function nfLiveWatch(data, addrLabel, state){
+function nfLiveWatch(data, addrLabel, state, done){
+  /* #live-wait 2026-11-19: while the real check runs the visitor sees a plain "checking" card, never an answer.
+     The answer card is drawn once, when the live check has answered: "great news" ONLY when it says available,
+     otherwise the normal "we're on it" card. done() puts the button back. Returns true when it took over. */
+  function finish(){ try{ if(done) done(); }catch(e){} }
   try{
-    if(!data || data.signable || !data.live || !data.live.id || !CONFIG.API_BASE) return;
-    var h = data.live, tries = 0, mine = (window.__nfLiveSeq = (window.__nfLiveSeq || 0) + 1);
-    function dropNote(){ var n = document.getElementById('av_live_note'); if(n) n.remove(); }
+    if(!data || data.signable || !data.live || !data.live.id || !CONFIG.API_BASE){ return false; }
+    var h = data.live, tries = 0, over = false, mine = (window.__nfLiveSeq = (window.__nfLiveSeq || 0) + 1);
     var el = document.getElementById('av_result');
     if(el){
-      dropNote();
-      var note = document.createElement('p');
-      note.id = 'av_live_note';
-      note.style.cssText = 'font-size:13px;color:#5f6b76;margin:12px 0 0;text-align:center';
-      note.textContent = 'Checking this address live right now. This takes a few seconds.';
-      el.appendChild(note);
+      el.className = 'result checking show';
+      el.innerHTML = '<h3><span class="nf-wait-spin"></span>Checking your address now</h3>'
+        + '<p>We are checking <span class="addr">' + esc(addrLabel) + '</span> with ' + esc(CONFIG.CARRIER)
+        + ' right now. This takes a few seconds.</p>';
+      el.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+    function end(d){
+      if(over) return;
+      over = true; clearInterval(t);
+      if(mine !== window.__nfLiveSeq) return;            /* they checked another address: that check owns the card */
+      if(d && d.status === 'available'){
+        var label = addrLabel, city = String(d.city || '').toLowerCase().replace(/\b[a-z]/g, function(c){ return c.toUpperCase(); });
+        if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
+        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || [])}, label);
+      } else {
+        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[]}, addrLabel);
+      }
+      finish();
     }
     var t = setInterval(function(){
-      if(mine !== window.__nfLiveSeq){ clearInterval(t); return; }   /* they checked another address */
+      if(mine !== window.__nfLiveSeq){ over = true; clearInterval(t); return; }
       tries++;
       fetch(CONFIG.API_BASE + '/api/availability-live?id=' + encodeURIComponent(h.id)
             + '&sig=' + encodeURIComponent(h.sig) + '&carrier=' + encodeURIComponent(CONFIG.CARRIER)
             + '&state=' + encodeURIComponent(state || ''))
         .then(function(r){ return r.json(); })
         .then(function(d){
-          if(mine !== window.__nfLiveSeq) return;
-          if(d && d.status === 'available'){
-            clearInterval(t);
-            var label = addrLabel, city = String(d.city || '').toLowerCase().replace(/[a-z]/g, function(c){ return c.toUpperCase(); });
-            if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
-            renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || [])}, label);
-          } else if((d && d.status === 'no') || tries >= 8){
-            clearInterval(t); dropNote();
-          }
+          if(d && (d.status === 'available' || d.status === 'no')){ end(d); }
+          else if(tries >= 12){ end(null); }
         })
-        .catch(function(){ if(tries >= 8){ clearInterval(t); dropNote(); } });
-    }, 3000);
-  }catch(e){}
+        .catch(function(){ if(tries >= 12){ end(null); } });
+    }, 2000);
+    return true;
+  }catch(e){ return false; }
 }
 
 async function checkAvailability(){
@@ -702,9 +714,12 @@ async function checkAvailability(){
                plans:['300 Mbps from $30/mo first year','1 Gig from $30/mo first year + 1 month free','2 Gig from $40/mo + 1 month free'] };
     }
   }catch(e){ data = { signable:true, carrier:'Fidium', plans:[] }; }
-  btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →';
+  function btnBack(){ btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →'; }
+  /* #live-wait: when the real check is running, the button stays on "Checking" and a loading card shows.
+     nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
+  if(nfLiveWatch(data, typed, state, btnBack)) return;
+  btnBack();
   renderResult(data, typed);
-  nfLiveWatch(data, typed, state);
 }
 
 function renderResult(data, addrLabel){
