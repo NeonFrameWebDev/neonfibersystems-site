@@ -282,6 +282,14 @@ input:focus,select:focus{outline:0;border-color:var(--purple);box-shadow:0 0 0 4
 .result .addr{font-weight:800}
 .result .plans{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
 .result .plan{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:13px;font-weight:700}
+/* #self-service 2026-11-23: pricing tier cards for the signup flow */
+.tier-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0 6px}
+.tier-card{background:#fff;border:2px solid var(--line);border-radius:14px;padding:16px 14px;text-align:center;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.tier-card:hover,.tier-card.selected{border-color:var(--purple);box-shadow:0 2px 12px rgba(108,78,220,.15)}
+.tier-card .tc-speed{font-size:20px;font-weight:900;color:var(--purple-dark);margin:0 0 4px}
+.tier-card .tc-price{font-size:15px;font-weight:700;color:var(--ok);margin:0 0 2px}
+.tier-card .tc-note{font-size:11px;color:#6b7686;margin:0}
+.tier-card .tc-tag{display:inline-block;background:var(--purple);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border-radius:999px;padding:3px 10px;margin-bottom:8px}
 .result .maybe-steps{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 2px}
 .result .maybe-steps span{background:#fff;border:1px solid #ffd9a3;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:#8a5a12}
 .spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:8px}
@@ -811,9 +819,9 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
   <div class="noise"></div>
   <div class="container cta-grid">
     <div>
-      <div class="kicker"><span class="dot"></span> Get signed up</div>
-      <h2>Ready to stop <span class="hl">overpaying?</span></h2>
-      <p>Drop your details and the plan you want. A real person texts or calls you back within minutes during business hours, places your Fidium order with you, and books your install around your schedule.</p>
+      <div class="kicker"><span class="dot"></span> Sign up in seconds</div>
+      <h2>Start your <span class="hl">Fidium order</span></h2>
+      <p>Fill in your details below to get started. You'll get a confirmation number right away, and a Fidium specialist will contact you to finalize your install date.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
         <a href="tel:+19166190975" id="ctaCall"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg> Call us</a>
@@ -845,15 +853,17 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
           <span><b>Okay to text or call me about Fidium at my address.</b>
           <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Terms of Service</a>.</span></span>
         </label>
-        <button class="btn btn-purple" type="submit" id="ld_btn">GET MY FIDIUM OPTIONS →</button>
+        <button class="btn btn-purple" type="submit" id="ld_btn">COMPLETE SIGN UP →</button>
         <p class="ld-err" id="ld_err">Please check the consent box above so we're allowed to contact you, or just call us instead.</p>
         <p class="callrow">A real person replies in minutes during business hours. Rather talk now? <a href="tel:+19166190975">Call (916) 619-0975</a></p>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
       </form>
       <div class="success" id="leadSuccess">
         <div class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14l-3-3"/></svg></div>
-        <h3>You're in!</h3>
-        <p id="leadSuccessMsg">Thanks! Expect a text or call within minutes during business hours. We'll confirm your options and get your install on the calendar.</p>
+        <h3>You're all set!</h3>
+        <p id="leadConfNum" style="font-size:18px;font-weight:900;color:var(--purple);margin:8px 0 4px"></p>
+        <p id="leadSuccessMsg">A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your installation. Keep your confirmation number handy!</p>
+        <p style="font-size:13px;color:#6b7686;margin-top:12px">Questions in the meantime? Call <a href="tel:+19166190975" style="color:#1363e0;font-weight:800">(916) 619-0975</a>.</p>
       </div>
     </div>
   </div>
@@ -1206,16 +1216,29 @@ function nfNeedNumber(){
 function renderResult(data, addrLabel){
   const el = document.getElementById('av_result');
   if(data && data.signable){
-    const plans = (data.plans||[]).map(p=>'<span class="plan">'+esc(p)+'</span>').join('');
+    /* #self-service 2026-11-23: show pricing tiers as attractive cards */
+    const TIERS = [
+      {speed:'300 Mbps', price:'$30/mo', note:'First year rate', tag:''},
+      {speed:'1 Gig', price:'$30/mo', note:'First year + 1 month free', tag:'Most Popular'},
+      {speed:'2 Gig', price:'$40/mo', note:'First year + 1 month free', tag:'Best Value'}
+    ];
+    var cards = TIERS.map(function(t,i){
+      return '<div class="tier-card" onclick="selectTier(this,'+i+')">'
+        + (t.tag ? '<div class="tc-tag">'+t.tag+'</div>' : '')
+        + '<p class="tc-speed">'+t.speed+'</p>'
+        + '<p class="tc-price">'+t.price+'</p>'
+        + '<p class="tc-note">'+t.note+'</p></div>';
+    }).join('');
     el.className = 'result yes show';
-    el.innerHTML = '<h3>Great news! We can get you fiber here!</h3>'
-      + '<p>Fidium Fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
-      + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
-      + (plans? '<div class="plans">'+plans+'</div>' : '')
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
-      + '<button class="btn btn-purple" style="width:100%;margin-top:10px" onclick="nfChatGo()">CHAT WITH US NOW</button>'      /* #chat-cta */
-      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to call? '
-      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">Call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
+    el.innerHTML = '<h3>Fiber is available at your address!</h3>'
+      + '<p><span class="addr">'+esc(addrLabel)+'</span> is eligible for Fidium Fiber. '
+      + 'Pick your speed and sign up in under a minute:</p>'
+      + '<div class="tier-cards">'+cards+'</div>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px" onclick="toLead()">SIGN UP NOW &#x2192;</button>'
+      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Same pricing as ordering direct. No fees, no obligation.</p>'
+      + '<p style="text-align:center;font-size:13px;margin:4px 0 0;color:#5f6b76">Questions? '
+      + '<button style="background:none;border:none;color:#1363e0;font-weight:800;cursor:pointer;font-size:13px;padding:0;font-family:inherit" onclick="nfChatGo()">Chat with us</button> or '
+      + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
     el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
@@ -1243,6 +1266,18 @@ function toLead(){
   const la = document.getElementById('ld_addr'); if(la && street) la.value = street;
   copy('av_city','ld_city'); copy('av_zip','ld_zip');
   document.getElementById('signup').scrollIntoView({behavior:'smooth'});
+}
+/* #self-service 2026-11-23: tier card selection */
+function selectTier(card, idx){
+  document.querySelectorAll('.tier-card').forEach(function(c){ c.classList.remove('selected'); });
+  card.classList.add('selected');
+  var PLAN_MAP = [
+    '300 Mbps Fiber, from $30/mo.',
+    '1 Gig Fiber, from $30/mo. first year',
+    '2 Gig Fiber, from $40/mo. first year'
+  ];
+  var sel = document.getElementById('ld_plan');
+  for(var o of sel.options){ if(o.text === PLAN_MAP[idx]){ sel.value = o.value || o.text; break; } }
 }
 function pickPlan(name){
   const sel = document.getElementById('ld_plan');
@@ -1274,6 +1309,8 @@ async function submitLead(e){
       var _leadResp = await fetch(CONFIG.API_BASE + '/api/lead', {method:'POST',
         headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
       if(_leadResp && !_leadResp.ok){ _leadOk = false; }   /* backend REJECTED (e.g. 400): not a real lead */
+      /* #self-service 2026-11-23: capture confirmation number before body is consumed */
+      if(_leadResp && _leadResp.ok){ try{ var _rj = await _leadResp.json(); window.__nfConfNum = _rj.confirmation_number; }catch(e){} }
     } else { await sleep(700); }
   }catch(e){ /* network failure only (fetch throws): still show success, lead better captured client-side than lost */ }
   if(!_leadOk){
@@ -1286,6 +1323,10 @@ async function submitLead(e){
   }
   document.getElementById('leadForm').style.display='none';
   document.getElementById('leadSuccess').classList.add('show');
+  /* #self-service 2026-11-23: show confirmation number from API response */
+  if(window.__nfConfNum){
+    document.getElementById('leadConfNum').textContent = 'Confirmation: ' + window.__nfConfNum;
+  }
   /* #gtag-lead 2026-11-01: the Google Ads lead conversion, fired HERE because this is
      where the success state actually appears. Deliberately not a click handler: a click
      fires on failed submits too and would inflate the count.
