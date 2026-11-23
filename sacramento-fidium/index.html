@@ -1143,7 +1143,7 @@ function nfLiveWatch(data, addrLabel, state, done){
       if(d && d.status === 'available'){
         var label = addrLabel, city = String(d.city || '').toLowerCase().replace(/\b[a-z]/g, function(c){ return c.toUpperCase(); });
         if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
-        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || [])}, label);
+        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || []), pricing:(d.pricing || window.__nfPricing || null)}, label);
       } else {
         renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[]}, addrLabel);
       }
@@ -1191,6 +1191,8 @@ async function checkAvailability(){
   function btnBack(){ btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →'; }
   /* #live-wait: when the real check is running, the button stays on "Checking" and a loading card shows.
      nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
+  /* Store pricing from initial response for the live-check callback */
+  if(data && data.pricing) window.__nfPricing = data.pricing;
   if(nfLiveWatch(data, typed, state, btnBack)) return;
   btnBack();
   if(!(data && data.signable) && !/^\s*\d/.test(typed)){ nfNeedNumber(); return; }   /* #need-number */
@@ -1216,12 +1218,24 @@ function nfNeedNumber(){
 function renderResult(data, addrLabel){
   const el = document.getElementById('av_result');
   if(data && data.signable){
-    /* #self-service 2026-11-23: show pricing tiers as attractive cards */
-    const TIERS = [
-      {speed:'300 Mbps', price:'$30/mo', note:'First year rate', tag:''},
-      {speed:'1 Gig', price:'$30/mo', note:'First year + 1 month free', tag:'Most Popular'},
-      {speed:'2 Gig', price:'$40/mo', note:'First year + 1 month free', tag:'Best Value'}
-    ];
+    /* #self-service 2026-11-23: live pricing from Fidium API (checkout prices with autopay) */
+    var TIERS;
+    if(data.pricing && data.pricing.length){
+      /* Map API pricing to tier cards; only show tiers up to 2 Gig for Sacramento */
+      var SAC_SPEEDS = {'300 Mbps':1, '1 Gig':1, '2 Gig':1};
+      TIERS = data.pricing.filter(function(p){ return SAC_SPEEDS[p.speed]; }).map(function(p){
+        var tag = '';
+        if(p.speed === '1 Gig') tag = 'Most Popular';
+        else if(p.speed === '2 Gig') tag = 'Best Value';
+        return {speed: p.speed, price: '$'+p.price+'/mo', note: p.note || '1st year with AutoPay', tag: tag};
+      });
+    } else {
+      TIERS = [
+        {speed:'300 Mbps', price:'$30/mo', note:'1st year with AutoPay', tag:''},
+        {speed:'1 Gig', price:'$30/mo', note:'1st year with AutoPay', tag:'Most Popular'},
+        {speed:'2 Gig', price:'$40/mo', note:'1st year with AutoPay', tag:'Best Value'}
+      ];
+    }
     var cards = TIERS.map(function(t,i){
       return '<div class="tier-card" onclick="selectTier(this,'+i+')">'
         + (t.tag ? '<div class="tc-tag">'+t.tag+'</div>' : '')
