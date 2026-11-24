@@ -732,7 +732,7 @@ footer strong{color:#fff;font-size:16px}
   <div class="noise"></div>
   <div class="container cta-grid">
     <div>
-      <div class="kicker"><span class="dot"></span> Get signed up</div>
+      <div class="kicker"><span class="dot"></span> Get your order started</div>
       <h2>Ready to retire <span class="hl">your cable bill?</span></h2>
       <p>Drop your details and the plan you want. A real person texts or calls you back within minutes during business hours, places your Fidium order with you, and books your install around your schedule.</p>
       <div class="orstrip">
@@ -766,7 +766,7 @@ footer strong{color:#fff;font-size:16px}
           <span><b>Okay to text or call me about Fidium at my address.</b>
           <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Terms of Service</a>.</span></span>
         </label>
-        <button class="btn btn-purple" type="submit" id="ld_btn">GET MY FIDIUM OPTIONS →</button>
+        <button class="btn btn-purple" type="submit" id="ld_btn">COMPLETE YOUR ORDER →</button>
         <p class="ld-err" id="ld_err">Please check the consent box above so we're allowed to contact you, or just call us instead.</p>
         <p class="callrow">A real person replies in minutes during business hours. Rather talk now? <a href="tel:+17854625861">Call (785) 462-5861</a></p>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
@@ -1055,9 +1055,9 @@ function nfLiveWatch(data, addrLabel, state, done){
       if(d && d.status === 'available'){
         var label = addrLabel, city = String(d.city || '').toLowerCase().replace(/\b[a-z]/g, function(c){ return c.toUpperCase(); });
         if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
-        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || [])}, label);
+        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || []), pricing:(d.pricing || window.__nfPricing || null)}, label);
       } else {
-        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[]}, addrLabel);
+        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[], pricing:(window.__nfPricing || null)}, addrLabel);
       }
       finish();
     }
@@ -1103,6 +1103,7 @@ async function checkAvailability(){
   function btnBack(){ btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →'; }
   /* #live-wait: when the real check is running, the button stays on "Checking" and a loading card shows.
      nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
+  if(data && data.pricing) window.__nfPricing = data.pricing;
   if(nfLiveWatch(data, typed, state, btnBack)) return;
   btnBack();
   renderResult(data, typed);
@@ -1115,27 +1116,23 @@ function renderResult(data, addrLabel){
     el.className = 'result yes show';
     el.innerHTML = '<h3>Great news! We can get you fiber here!</h3>'
       + '<p>Fidium Fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
-      + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
+      + 'Order right here and a real person will book your install around your schedule.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">ORDER NOW →</button>'
       + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
       + '<a href="#" onclick="openChat();return false" style="color:#1363e0;font-weight:800">Chat with us</a> or '
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
-      + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
-      + 'wired roads, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
-      + 'it live and lock in your best pricing.</p>'
-      + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
-      +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
-      +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="openChat()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
+    el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
+      + '<p>Fidium is expanding fast in New Hampshire. We just need to verify your exact address &mdash; '
+      + 'it only takes a moment. Leave your info and a specialist will confirm your availability and get you ordered.</p>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
       +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
-      +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
+      +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">CHAT NOW →</button>'
       + '</div>'
-      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation. Same pricing as ordering direct.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }

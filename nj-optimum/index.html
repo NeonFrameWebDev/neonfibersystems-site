@@ -398,7 +398,7 @@ footer strong{color:#fff;font-size:15px}
 <section class="cta" id="signup">
   <div class="container cta-grid">
     <div>
-      <div class="kicker" style="color:#89d2ff">Get signed up</div>
+      <div class="kicker" style="color:#89d2ff">Get your order started</div>
       <h2>Ready to get connected?</h2>
       <p>Drop your details and the package you want. Our team confirms availability, locks in your offer, and walks you through the order. No hold music, no runaround.</p>
       <div class="orstrip">
@@ -434,7 +434,7 @@ footer strong{color:#fff;font-size:15px}
         <label class="consent"><input type="checkbox" id="ld_consent" required>
           <span>By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Optimum dealer) by phone, text, and email about Optimum internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#0084D6;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#0084D6;font-weight:800">Terms of Service</a>.</span>
         </label>
-        <button class="btn btn-blue" type="submit" id="ld_btn">GET MY OPTIMUM OPTIONS →</button>
+        <button class="btn btn-blue" type="submit" id="ld_btn">COMPLETE YOUR ORDER →</button>
         <p class="disclaimer">We are an independent authorized Optimum dealer. Availability and offers vary by address.</p>
       </form>
       <div class="success" id="leadSuccess">
@@ -542,27 +542,23 @@ function renderResult(data, addrLabel){
     el.className = 'result yes show';
     el.innerHTML = '<h3>✅ Great news! We can get you fiber here!</h3>'
       + '<p>Optimum fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
-      + 'Lock in your offer and our team takes it from there.</p>'
+      + 'Order right here and our team takes it from there &mdash; takes under a minute.</p>'
       + (plans? '<div class="plans">'+plans+'</div>' : '')
-      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
+      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="toLead()">ORDER NOW →</button>'
       + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to talk? '
       + '<a href="#" onclick="openChat();return false" style="color:#0084D6;font-weight:800">Chat with us</a> or '
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#0084D6;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span> 🔎</h3>'
-      + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
-      + 'wired streets, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
-      + 'it live and lock in your best pricing.</p>'
-      + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
-      +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
-      +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-orange" style="width:100%;margin-top:14px" onclick="openChat()">💬 CHAT NOW &amp; GET A LIVE ANSWER</button>'
+    el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
+      + '<p>Optimum is expanding fast in New Jersey. We just need to verify your exact address &mdash; '
+      + 'it only takes a moment. Leave your info and a specialist will confirm your availability and get you ordered.</p>'
+      + '<button class="btn btn-orange" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
       +   '<a class="btn btn-blue" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">📞 '+CONFIG.PHONE_DISPLAY+'</a>'
-      +   '<button class="btn btn-blue" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
+      +   '<button class="btn btn-blue" style="flex:1" onclick="toLead()">CHAT NOW →</button>'
       + '</div>'
-      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation. Same pricing as ordering direct.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
