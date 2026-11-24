@@ -6,7 +6,9 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18532023269"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  /* #nftest 2026-11-24 (Archer, TC): ?nftest=1 turns Google off for this visit so an order can be tested end to end */
+  window.__nfTest = /[?&]nftest=1(&|$)/.test(location.search);
+  function gtag(){ if(window.__nfTest) return; dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', 'AW-18532023269');
   /* #call-conv 2026-11-01: count people who CALL the number on this page.
@@ -920,7 +922,7 @@ body.nf-ordering #nfChatBtn,body.nf-ordering #nfChat{display:none!important}
   <div class="container cta-grid">
     <div>
       <div class="kicker"><span class="dot"></span> Order in seconds</div>
-      <h2>Start your <span class="hl">Fidium order</span></h2>
+      <h2>Lock in <span class="hl">your offer.</span></h2>
       <p>Fill in your details below to get started. You'll get a confirmation number right away, and a Fidium specialist will contact you to finalize your install date.</p>
       <div class="orstrip">
         <span>Prefer to talk?</span>
@@ -953,7 +955,7 @@ body.nf-ordering #nfChatBtn,body.nf-ordering #nfChat{display:none!important}
           <span><b>Okay to text or call me about Fidium at my address.</b>
           <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Terms of Service</a>.</span></span>
         </label>
-        <button class="btn btn-purple" type="submit" id="ld_btn">COMPLETE YOUR ORDER →</button>
+        <button class="btn btn-purple" type="submit" id="ld_btn">GET MY FIDIUM OPTIONS →</button>
         <p class="ld-err" id="ld_err">Please check the consent box above so we're allowed to contact you, or just call us instead.</p>
         <p class="callrow">A real person replies in minutes during business hours. Rather talk now? <a href="tel:+19166190975">Call (916) 619-0975</a></p>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
@@ -1410,6 +1412,7 @@ async function submitLead(e){
   /* #gclid-capture: attach the ad click id so this lead can be matched back to
      the campaign later. Backend keeps it automatically (leads.raw). */
   Object.assign(payload, clickIds());
+  if(window.__nfTest){ payload.test = true; payload.last = (payload.last || '') + ' (TEST)'; payload.plan = 'TEST, ignore. ' + (payload.plan || ''); }
   const btn = document.getElementById('ld_btn');
   btn.dataset.orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Sending…';
   try{
@@ -1619,6 +1622,7 @@ async function submitCheckout(e){
   Object.assign(payload, clickIds());
   payload.address_confirmed = !!window.__nfOrderConfirmed;
   if(!payload.address_confirmed) payload.plan = 'REQUEST, address NOT confirmed. Interested in: ' + (speed || 'not sure');
+  if(window.__nfTest){ payload.test = true; payload.last = (payload.last || '') + ' (TEST)'; payload.plan = 'TEST, ignore. ' + (payload.plan || ''); }
 
   var btn = document.getElementById('co_btn');
   btn.disabled = true;
@@ -1705,6 +1709,7 @@ async function submitCheckout(e){
    it is wrapped so a tracking failure can never break the page. */
 (function(){
   function nfSendView(){
+    if(window.__nfTest) return;
     try{
       /* CONFIG is declared with const, so it is a bare binding and never on window.
          Checking window.CONFIG silently disabled this on every page. */
@@ -1739,6 +1744,7 @@ function nfConsentText(){
 }
 function clickIds(){
   var o = {};
+  if(window.__nfTest) return o;
   try{
     ['gclid','gbraid','wbraid'].forEach(function(k){
       var v = localStorage.getItem('nf_'+k);
@@ -2130,5 +2136,6 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     <p style="margin-top:20px;font-size:14px;color:#8896a6">Questions? Call <a href="tel:+19166190975" style="color:var(--purple);font-weight:800">(916) 619-0975</a></p>
   </div>
 </div>
+<script>if(window.__nfTest){(function(){var b=document.createElement('div');b.id='nfTestBar';b.textContent='TEST MODE: Google is off. Orders are marked TEST.';b.style.cssText='position:fixed;left:8px;bottom:8px;z-index:2147483001;background:#b00020;color:#fff;font:700 12px/1.3 system-ui,Arial,sans-serif;padding:7px 10px;border-radius:8px;pointer-events:none;max-width:60vw';document.body.appendChild(b);})();}</script>
 </body>
 </html>
