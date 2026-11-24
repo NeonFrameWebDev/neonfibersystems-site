@@ -377,6 +377,107 @@ body{font-family:'Sora','Sora fb','Sora fbr',system-ui,-apple-system,sans-serif}
 html.nf-wf-wait .strip,html.nf-wf-wait .hero{visibility:hidden;animation:nfWfShow 0s 1.6s forwards}
 @keyframes nfWfShow{to{visibility:visible}}
 /* #no-font-jump end */
+/* ===== checkout overlay ===== */
+.checkout-overlay{position:fixed;inset:0;z-index:200;background:#f5f7fa;overflow-y:auto;
+  transform:translateY(100%);opacity:0;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .3s;
+  pointer-events:none}
+.checkout-overlay.open{transform:none;opacity:1;pointer-events:auto}
+.checkout-overlay *{box-sizing:border-box}
+.co-header{background:var(--purple-ink);color:#fff;padding:0}
+.co-header-inner{max-width:680px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+.co-header .co-brand{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:900;letter-spacing:-.5px}
+.co-header .co-brand img{height:28px}
+.co-close{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:8px 16px;
+  font-size:14px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.co-close:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.co-steps{background:var(--purple-deep);padding:16px 24px}
+.co-steps-inner{max-width:680px;margin:0 auto;display:flex;gap:0;align-items:center}
+.co-step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:rgba(255,255,255,.45)}
+.co-step.active{color:#fff}
+.co-step .co-num{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}
+.co-step.active .co-num{background:var(--lime);border-color:var(--lime);color:var(--lime-dark)}
+.co-step.done .co-num{background:var(--lime);border-color:var(--lime);color:var(--lime-dark)}
+.co-step.done{color:rgba(255,255,255,.7)}
+.co-step-line{flex:1;height:2px;background:rgba(255,255,255,.15);margin:0 12px;min-width:20px}
+.co-body{max-width:680px;margin:0 auto;padding:32px 24px 100px}
+.co-summary{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:24px}
+.co-summary h3{font-size:14px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:1.5px;margin:0 0 16px}
+.co-addr-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #eef1f6}
+.co-addr-row svg{flex:0 0 auto;width:20px;height:20px;color:var(--purple)}
+.co-addr-row span{font-size:16px;font-weight:700;color:#1a2332}
+.co-plan-cards{display:flex;gap:10px;flex-wrap:wrap}
+.co-plan{flex:1;min-width:140px;border:2px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:.15s;position:relative}
+@media(hover:hover){.co-plan:hover{border-color:var(--purple);background:#f8faff}}
+.co-plan.selected{border-color:var(--purple);background:#eef4ff;box-shadow:0 0 0 3px rgba(19,99,224,.12)}
+.co-plan .co-plan-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.co-plan .co-plan-speed{font-size:16px;font-weight:900;color:#1a2332;margin:4px 0 2px}
+.co-plan .co-plan-price{font-size:22px;font-weight:900;color:var(--purple);letter-spacing:-1px}
+.co-plan .co-plan-note{font-size:11px;color:#6b7686;margin-top:2px}
+.co-plan .co-plan-check{display:none;position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-size:12px}
+.co-plan.selected .co-plan-check{display:flex}
+.co-form-card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.co-form-card h3{font-size:14px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:1.5px;margin:0 0 20px}
+.co-form-card label{display:block;font-size:13px;font-weight:700;color:#4a5568;margin:0 0 6px}
+.co-form-card input,.co-form-card select{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px;font-family:inherit;color:#1a2332;background:#fff;transition:.15s;-webkit-appearance:none}
+.co-form-card input:focus,.co-form-card select:focus{border-color:var(--purple);outline:0;box-shadow:0 0 0 4px rgba(19,99,224,.1)}
+.co-form-card input::placeholder{color:#a0aec0}
+.co-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.co-field{margin-bottom:16px}
+.co-consent{display:flex;align-items:flex-start;gap:12px;margin:20px 0;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e2e8f0}
+.co-consent input[type=checkbox]{flex:0 0 auto;width:20px;height:20px;margin-top:2px;accent-color:var(--purple);cursor:pointer}
+.co-consent span{font-size:13px;color:#4a5568;line-height:1.5}
+.co-consent b{color:#1a2332}
+.co-consent .fine{font-size:11px;color:#8896a6;display:block;margin-top:6px}
+.co-submit{width:100%;padding:18px;border:0;border-radius:12px;font-size:18px;font-weight:900;font-family:inherit;cursor:pointer;transition:.2s;
+  background:linear-gradient(100deg,#b8e62e,#d4f163);color:var(--lime-dark);
+  box-shadow:0 4px 16px rgba(140,185,10,.3),0 10px 28px rgba(184,230,46,.25)}
+.co-submit:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(140,185,10,.4),0 14px 36px rgba(184,230,46,.35)}
+.co-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.co-err{color:#e53e3e;font-size:13px;font-weight:700;margin-top:8px;display:none}
+.co-err.show{display:block}
+.co-secure{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;font-size:12px;color:#8896a6;font-weight:600}
+.co-secure svg{width:14px;height:14px}
+
+.co-consent input[type=checkbox]{-webkit-appearance:auto;appearance:auto;padding:0;border:0}
+.co-close{white-space:nowrap}
+body.nf-ordering #nfChatBtn,body.nf-ordering #nfChat{display:none!important}
+
+/* checkout success */
+.co-success{display:none;text-align:center;padding:48px 24px}
+.co-success.show{display:block}
+.co-success .co-check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#b8e62e,#65a30d);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.co-success .co-check-circle svg{width:36px;height:36px;color:#fff}
+.co-success h2{font-size:28px;font-weight:900;color:#1a2332;margin:0 0 8px;letter-spacing:-.5px}
+.co-success .co-conf{font-size:20px;font-weight:900;color:var(--purple);margin:12px 0}
+.co-success p{font-size:16px;color:#4a5568;line-height:1.6;max-width:480px;margin:0 auto}
+.co-success .co-next-steps{background:#f0f9ff;border-radius:12px;padding:20px 24px;margin:24px auto 0;max-width:400px;text-align:left}
+.co-success .co-next-steps h4{font-size:14px;font-weight:800;color:var(--purple);margin:0 0 12px;text-transform:uppercase;letter-spacing:1px}
+.co-success .co-next-steps li{font-size:14px;color:#2d3748;margin:8px 0;padding-left:24px;position:relative;list-style:none}
+.co-success .co-next-steps li:before{content:"\2713";position:absolute;left:0;color:#65a30d;font-weight:900}
+
+@media(max-width:600px){
+  .co-row{grid-template-columns:1fr}
+  .co-brand>span:last-child{display:none}
+  .co-plan-cards{flex-direction:column}
+  .co-body{padding:20px 16px 80px}
+  .co-summary{padding:18px 20px}
+  .co-form-card{padding:20px}
+  .co-header-inner{padding:16px}
+  .co-steps-inner{gap:0}
+  .co-step span{display:none}
+  .co-step .co-num{width:30px;height:30px;font-size:14px}
+  .co-step-line{min-width:16px}
+}
+
+.checkout-overlay{--purple:#1363e0;--purple-deep:#0b3b8c;--purple-dark:#0a2a5e;--purple-ink:#06142a;--lime:#b8e62e;--lime-dark:#213300;color:#1a2332}
+.result .tier-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0 6px}
+.result .tier-card{background:#fff;border:2px solid #dbe4f0;border-radius:14px;padding:14px 12px;text-align:center}
+.result .tier-card[onclick]{cursor:pointer}
+.result .tier-card.selected{border-color:#1363e0;box-shadow:0 2px 12px rgba(19,99,224,.25)}
+.result .tier-card .tc-speed{font-size:19px;font-weight:800;color:#0a2a5e;margin:0 0 4px}
+.result .tier-card .tc-price{font-size:15px;font-weight:700;color:#0f7a3d;margin:0 0 2px}
+.result .tier-card .tc-note{font-size:11px;color:#5f6b76;margin:0}
+.result .tier-card .tc-tag{display:inline-block;background:#1363e0;color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border-radius:999px;padding:3px 10px;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -810,9 +911,9 @@ function nfLiveWatch(data, addrLabel, state, done){
       if(d && d.status === 'available'){
         var label = addrLabel, city = String(d.city || '').toLowerCase().replace(/\b[a-z]/g, function(c){ return c.toUpperCase(); });
         if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
-        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || [])}, label);
+        renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || []), pricing:(d.pricing || window.__nfPricing || null)}, label);
       } else {
-        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[]}, addrLabel);
+        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[], pricing:(window.__nfPricing || null)}, addrLabel);
       }
       finish();
     }
@@ -858,6 +959,7 @@ async function checkAvailability(){
   function btnBack(){ btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →'; }
   /* #live-wait: when the real check is running, the button stays on "Checking" and a loading card shows.
      nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
+  if(data && data.pricing) window.__nfPricing = data.pricing;
   if(nfLiveWatch(data, typed, state, btnBack)) return;
   btnBack();
   if(!(data && data.signable) && !/^\s*\d/.test(typed)){ nfNeedNumber(); return; }   /* #need-number */
@@ -880,46 +982,59 @@ function nfNeedNumber(){
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
+function nfTierList(pricing){
+  var SAC = {'300 Mbps':'', '1 Gig':'Most Popular', '2 Gig':'Best Value'};
+  return (pricing || []).filter(function(p){ return p.speed in SAC; }).map(function(p){
+    return {speed:p.speed, price:'$'+p.price+'/mo', note:p.note || '1st year with AutoPay', tag:SAC[p.speed]};
+  });
+}
+function selectTier(card, speed){
+  document.querySelectorAll('#av_result .tier-card').forEach(function(c){ c.classList.remove('selected'); });
+  card.classList.add('selected');
+  window.__nfSelectedSpeed = speed;
+}
 function renderResult(data, addrLabel){
   const el = document.getElementById('av_result');
+  const tiers = nfTierList(data && data.pricing);
+  window.__nfSelectedSpeed = null;
+  function cards(pick){
+    return tiers.map(function(t){
+      return '<div class="tier-card"' + (pick ? ' onclick="selectTier(this,\'' + esc(t.speed) + '\')"' : '') + '>'
+        + (t.tag ? '<div class="tc-tag">' + esc(t.tag) + '</div>' : '')
+        + '<p class="tc-speed">' + esc(t.speed) + '</p><p class="tc-price">' + esc(t.price) + '</p><p class="tc-note">' + esc(t.note) + '</p></div>';
+    }).join('');
+  }
   if(data && data.signable){
     const plans = (data.plans||[]).map(p=>'<span class="plan">'+esc(p)+'</span>').join('');
     el.className = 'result yes show';
     el.innerHTML = '<h3>Great news! We can get you fiber here!</h3>'
       + '<p>Fidium Fiber looks available at <span class="addr">'+esc(addrLabel)+'</span>. '
-      + 'Same price as ordering direct: a real person places your order and books your install around you.</p>'
-      + (plans? '<div class="plans">'+plans+'</div>' : '')
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="toLead()">LOCK IN MY INSTALL →</button>'
+      + 'Same price as ordering direct. Pick your speed and order right here:</p>'
+      + (tiers.length ? '<div class="tier-cards">'+cards(true)+'</div>' : (plans ? '<div class="plans">'+plans+'</div>' : ''))
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px" onclick="toLead(window.__nfSelectedSpeed)">ORDER NOW &#x2192;</button>'
       + '<button class="btn btn-purple" style="width:100%;margin-top:10px" onclick="nfChatGo()">CHAT WITH US NOW</button>'      /* #chat-cta */
       + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Prefer to call? '
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">Call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
-      + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
-      + 'wired streets, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
-      + 'it live and lock in your best pricing.</p>'
-      + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
-      +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
-      +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="nfChatGo()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
+    el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
+      + '<p>We just need to verify your exact address &mdash; it only takes a moment. '
+      + 'Leave your info and a specialist will confirm your availability and get you ordered.</p>'
+      + (tiers.length ? '<div class="tier-cards" style="opacity:.85">'+cards(false)+'</div>' : '')
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
+      +   '<button class="btn btn-purple" style="flex:1" onclick="nfChatGo()">CHAT NOW</button>'
       +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
-      +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
       + '</div>'
-      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation. Same pricing as ordering direct.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 /* #chat-cta 2026-11-19: open the chat and start it in one tap (falls back to just opening it) */
 function nfChatGo(){ try{ if(window.nfChatStartNow){ window.nfChatStartNow(); return; } }catch(e){} openChat(); }
-function toLead(){
-  // carry the address into the signup form (street-only if a suggestion was picked, else the raw text)
-  const street = val('av_street') || val('av_addr');
-  const la = document.getElementById('ld_addr'); if(la && street) la.value = street;
-  copy('av_city','ld_city'); copy('av_zip','ld_zip');
-  document.getElementById('signup').scrollIntoView({behavior:'smooth'});
+function toLead(planName){
+  openCheckout(planName || null);
 }
 function pickPlan(name){
   const sel = document.getElementById('ld_plan');
@@ -993,6 +1108,203 @@ async function submitLead(e){
     gtag('event', 'conversion', {'send_to': 'AW-18532023269/Nm3-CM-Xx6YdEOX34IRF'});
   }
 }
+
+/* ===== checkout overlay ===== */
+function openCheckout(planName){
+  var ov = document.getElementById('checkoutOverlay');
+
+  /* populate address */
+  var typed = val('av_addr'), addr = val('av_street'), city = val('av_city'), zip = val('av_zip');
+  if(!typed){
+    document.getElementById('checker').scrollIntoView({behavior:'smooth', block:'start'});
+    document.getElementById('av_addr').focus({preventScroll:true});
+    return;
+  }
+  if(!addr){
+    var parts = typed.split(',').map(function(x){ return x.trim(); }).filter(Boolean);
+    addr = parts[0] || '';
+    var z = parts.slice(1).join(' ').match(/\b\d{5}\b/);
+    if(!zip && z) zip = z[0];
+    if(!city) city = (parts[1] || '').replace(/\b\d{5}(-\d{4})?\b/, '').replace(new RegExp('\b' + CONFIG.STATE + '\b', 'i'), '').trim();
+  }
+  var full = addr + (city ? ', ' + city : '') + (CONFIG.STATE ? ', ' + CONFIG.STATE : '') + (zip ? ' ' + zip : '');
+  document.getElementById('coAddr').textContent = full;
+
+  /* pre-fill address fields */
+  document.getElementById('co_addr').value = addr || '';
+  document.getElementById('co_city').value = city || '';
+  document.getElementById('co_zip').value = zip || '';
+
+  /* build plan cards from pricing data */
+  var pc = document.getElementById('coPlanCards');
+  var pricing = window.__nfPricing;
+  var SAC = {'300 Mbps':1, '1 Gig':1, '2 Gig':1};
+  var tags = {'1 Gig':'Most Popular', '2 Gig':'Best Value'};
+  if(pricing && pricing.length){
+    var plans = pricing.filter(function(p){ return SAC[p.speed]; });
+    pc.innerHTML = plans.map(function(p, i){
+      var sel = (planName && p.speed === planName) ? ' selected' : ((!planName && i === 1) ? ' selected' : '');
+      var tag = tags[p.speed] ? '<div class="co-plan-tag">' + tags[p.speed] + '</div>' : '';
+      var note = p.note || '1st year with AutoPay';
+      return '<div class="co-plan' + sel + '" onclick="selectCheckoutPlan(this,\''+p.speed+'\')">'
+        + '<div class="co-plan-check">&#10003;</div>'
+        + tag
+        + '<div class="co-plan-speed">' + p.speed + '</div>'
+        + '<div class="co-plan-price">$' + p.price + '/mo</div>'
+        + '<div class="co-plan-note">' + note + '</div></div>';
+    }).join('');
+  } else {
+    pc.innerHTML = [
+      {speed:'300 Mbps', note:'We will confirm your price'},
+      {speed:'1 Gig', note:'We will confirm your price', tag:'Most Popular'},
+      {speed:'2 Gig', note:'We will confirm your price', tag:'Best Value'}
+    ].map(function(p, i){
+      var sel = (planName && p.speed === planName) ? ' selected' : ((!planName && i === 1) ? ' selected' : '');
+      var tagH = p.tag ? '<div class="co-plan-tag">' + p.tag + '</div>' : '';
+      return '<div class="co-plan' + sel + '" onclick="selectCheckoutPlan(this,\''+p.speed+'\')">'
+        + '<div class="co-plan-check">&#10003;</div>'
+        + tagH
+        + '<div class="co-plan-speed">' + p.speed + '</div>'
+        + '<div class="co-plan-note">' + p.note + '</div></div>';
+    }).join('');
+  }
+
+  /* set hidden plan field */
+  var selCard = pc.querySelector('.co-plan.selected');
+  if(selCard) document.getElementById('co_plan').value = selCard.querySelector('.co-plan-speed').textContent;
+
+  /* reset form state */
+  document.getElementById('coFormBody').style.display = '';
+  document.getElementById('coSuccess').classList.remove('show');
+  document.getElementById('co_err').classList.remove('show');
+  document.getElementById('co_btn').disabled = false;
+  document.getElementById('co_btn').innerHTML = 'PLACE YOUR ORDER &rarr;';
+  document.getElementById('coStep2').className = 'co-step active';
+  document.getElementById('coStep3').className = 'co-step';
+
+  /* open overlay */
+  ov.classList.add('open');
+  document.body.classList.add('nf-ordering');
+  document.body.style.overflow = 'hidden';
+  ov.scrollTop = 0;
+
+  /* focus first empty field */
+  setTimeout(function(){
+    var first = document.getElementById('co_first');
+    if(first && !first.value && window.innerWidth > 900) first.focus({preventScroll:true});
+  }, 400);
+}
+
+function closeCheckout(){
+  document.getElementById('checkoutOverlay').classList.remove('open');
+  document.body.classList.remove('nf-ordering');
+  document.body.style.overflow = '';
+}
+
+function selectCheckoutPlan(el, speed){
+  document.querySelectorAll('#coPlanCards .co-plan').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('co_plan').value = speed;
+}
+
+async function submitCheckout(e){
+  e.preventDefault();
+  if(!document.getElementById('co_consent').checked){
+    document.getElementById('co_err').classList.add('show');
+    return;
+  }
+  document.getElementById('co_err').classList.remove('show');
+
+  /* map the plan speed to the select option text format */
+  var speed = document.getElementById('co_plan').value || '';
+  var planText = speed;
+  var planMap = {
+    '300 Mbps': '300 Mbps Fiber, from $30/mo.',
+    '1 Gig': '1 Gig Fiber, from $30/mo. first year',
+    '2 Gig': '2 Gig Fiber, from $40/mo. first year'
+  };
+  if(planMap[speed]) planText = planMap[speed];
+
+  var payload = {
+    first: document.getElementById('co_first').value.trim(),
+    last: document.getElementById('co_last').value.trim(),
+    address: document.getElementById('co_addr').value.trim(),
+    city: document.getElementById('co_city').value.trim(),
+    zip: document.getElementById('co_zip').value.trim(),
+    phone: document.getElementById('co_phone').value.trim(),
+    email: document.getElementById('co_email').value.trim(),
+    plan: planText,
+    carrier: CONFIG.CARRIER,
+    state: CONFIG.STATE,
+    source: 'sacramento-fidium-lp-v3',
+    ts: new Date().toISOString(),
+    consent: true,
+    consent_ts: new Date().toISOString(),
+    consent_text: (function(){
+      try { var el = document.getElementById('co_consent'); if(el && el.parentElement) return el.parentElement.textContent.trim(); } catch(e){} return '';
+    })()
+  };
+  Object.assign(payload, clickIds());
+
+  var btn = document.getElementById('co_btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing your order...';
+
+  try{
+    var _ok = true;
+    if(CONFIG.API_BASE){
+      var resp = await fetch(CONFIG.API_BASE + '/api/lead', {method:'POST',
+        headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      if(resp && !resp.ok){ _ok = false; }
+      if(resp && resp.ok){ try{ var rj = await resp.json(); window.__nfConfNum = rj.confirmation_number; }catch(e){} }
+    } else { await sleep(700); }
+  }catch(e){ var _net = true; _ok = false; }
+
+  if(!_ok){
+    btn.disabled = false;
+    btn.innerHTML = 'PLACE YOUR ORDER &rarr;';
+    document.getElementById('co_err').textContent = _net ? 'We could not reach our server, so your order was not sent. Please try again, or call (916) 619-0975.' : 'Something didn\u2019t look right. Please check your phone number and email and try again.';
+    document.getElementById('co_err').classList.add('show');
+    document.getElementById('co_err').scrollIntoView({block:'center'});
+    return;
+  }
+
+  /* show success */
+  document.getElementById('coFormBody').style.display = 'none';
+  document.getElementById('coSuccess').classList.add('show');
+  document.getElementById('coStep2').className = 'co-step done';
+  document.getElementById('coStep2').querySelector('.co-num').innerHTML = '&#10003;';
+  document.getElementById('coStep3').className = 'co-step active';
+  document.getElementById('coStep3').querySelector('.co-num').innerHTML = '&#10003;';
+
+  if(window.__nfConfNum){
+    document.getElementById('coConfNum').textContent = 'Confirmation #' + window.__nfConfNum;
+  }
+
+  document.getElementById('checkoutOverlay').scrollTop = 0;
+
+  /* fire Google Ads conversion */
+  if (typeof gtag === 'function') {
+    var ud = {};
+    if (payload.email) { ud.email = payload.email; }
+    var _d = (payload.phone || '').replace(/\D/g, '');
+    if (_d.length === 10) { _d = '1' + _d; }
+    if (_d.length === 11) { ud.phone_number = '+' + _d; }
+    if (payload.first || payload.address) {
+      ud.address = {
+        first_name: payload.first || '', last_name: payload.last || '',
+        street: payload.address || '', city: payload.city || '',
+        region: payload.state || '', postal_code: payload.zip || '', country: 'US'
+      };
+    }
+    if (ud.email || ud.phone_number) { gtag('set', 'user_data', ud); }
+  }
+  if (!window.__leadConvSent && typeof gtag === 'function') {
+    window.__leadConvSent = true;
+    gtag('event', 'conversion', {'send_to': 'AW-18532023269/Nm3-CM-Xx6YdEOX34IRF'});
+  }
+}
+
 
 /* #gclid-capture 2026-11-01: Google only puts the click id on the URL at the moment of
    the ad click. Grab it on load and keep it, or the lead can never be traced back to the
@@ -1381,5 +1693,103 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   });
 })();
 </script>
+<!-- checkout overlay -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="co-header">
+    <div class="co-header-inner">
+      <div class="co-brand">
+        <span class="fidlock fid-sm" style="margin:0"><span class="fl-img">Fidium</span><span class="fl-ad">Authorized<br>Dealer</span></span>
+        <span style="color:#b9cdee;font-weight:400;font-size:14px">Secure Order</span>
+      </div>
+      <button class="co-close" onclick="closeCheckout()">&larr; Back to plans</button>
+    </div>
+  </div>
+  <div class="co-steps">
+    <div class="co-steps-inner">
+      <div class="co-step done" id="coStep1"><span class="co-num">&#10003;</span><span>Check Address</span></div>
+      <div class="co-step-line"></div>
+      <div class="co-step active" id="coStep2"><span class="co-num">2</span><span>Your Information</span></div>
+      <div class="co-step-line"></div>
+      <div class="co-step" id="coStep3"><span class="co-num">3</span><span>Confirmation</span></div>
+    </div>
+  </div>
+
+  <div class="co-body" id="coFormBody">
+    <div class="co-summary">
+      <h3>Your Order</h3>
+      <div class="co-addr-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="coAddr">123 Main St, Sacramento, CA</span>
+      </div>
+      <div class="co-plan-cards" id="coPlanCards">
+      </div>
+    </div>
+
+    <div class="co-form-card">
+      <h3>Your Information</h3>
+      <form id="coForm" onsubmit="submitCheckout(event)">
+        <div class="co-row">
+          <div class="co-field">
+            <label for="co_first">First Name</label>
+            <input id="co_first" placeholder="John" required autocomplete="given-name">
+          </div>
+          <div class="co-field">
+            <label for="co_last">Last Name</label>
+            <input id="co_last" placeholder="Smith" required autocomplete="family-name">
+          </div>
+        </div>
+        <div class="co-field">
+          <label for="co_addr">Street Address</label>
+          <input id="co_addr" required autocomplete="street-address">
+        </div>
+        <div class="co-row">
+          <div class="co-field">
+            <label for="co_city">City</label>
+            <input id="co_city" required autocomplete="address-level2">
+          </div>
+          <div class="co-field">
+            <label for="co_zip">ZIP Code</label>
+            <input id="co_zip" inputmode="numeric" required autocomplete="postal-code">
+          </div>
+        </div>
+        <div class="co-field">
+          <label for="co_phone">Phone Number</label>
+          <input id="co_phone" type="tel" placeholder="(555) 555-5555" required autocomplete="tel">
+        </div>
+        <div class="co-field">
+          <label for="co_email">Email Address</label>
+          <input id="co_email" type="email" placeholder="john@example.com" required autocomplete="email">
+        </div>
+        <input type="hidden" id="co_plan" value="">
+
+        <div class="co-consent">
+          <input type="checkbox" id="co_consent" required>
+          <span><b>I agree to be contacted about Fidium service at my address.</b>
+          <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:var(--purple);font-weight:700">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:var(--purple);font-weight:700">Terms of Service</a>.</span></span>
+        </div>
+
+        <button class="co-submit" type="submit" id="co_btn">PLACE YOUR ORDER &rarr;</button>
+        <p class="co-err" id="co_err">Please check the consent box to continue.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="co-body co-success" id="coSuccess">
+    <div class="co-check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+    <h2>Order Received!</h2>
+    <p id="coConfNum" style="font-size:20px;font-weight:900;color:var(--purple);margin:12px 0"></p>
+    <p>A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.</p>
+    <div class="co-next-steps">
+      <h4>What happens next</h4>
+      <ul style="margin:0;padding:0">
+        <li>A specialist calls to confirm your order</li>
+        <li>We schedule your installation at a time that works for you</li>
+        <li>Professional installation</li>
+        <li>You're online with Fidium Fiber!</li>
+      </ul>
+    </div>
+    <p style="margin-top:20px;font-size:14px;color:#8896a6">Questions? Call <a href="tel:+19166190975" style="color:var(--purple);font-weight:800">(916) 619-0975</a></p>
+  </div>
+</div>
 </body>
 </html>
