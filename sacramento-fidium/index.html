@@ -1287,7 +1287,7 @@ async function checkAvailability(){
       data = { signable:true, carrier:'Fidium',
                plans:['300 Mbps from $30/mo','1 Gig from $30/mo first year','2 Gig from $40/mo first year'] };
     }
-  }catch(e){ data = { signable:true, carrier:'Fidium', plans:[] }; }
+  }catch(e){ data = { signable:false, carrier:'Fidium', plans:[] }; }
   function btnBack(){ btn.disabled = false; btn.textContent = 'CHECK AVAILABILITY →'; }
   /* #live-wait: when the real check is running, the button stays on "Checking" and a loading card shows.
      nfLiveWatch draws the answer card when the live check has answered, then puts the button back. */
@@ -1316,6 +1316,7 @@ function nfNeedNumber(){
 }
 
 function renderResult(data, addrLabel){
+  window.__nfConfirmed = !!(data && data.signable); window.__nfConfirmedFor = val('av_addr');
   const el = document.getElementById('av_result');
   if(data && data.signable){
     /* #self-service 2026-11-23: live pricing from Fidium API (checkout prices with autopay) */
@@ -1355,34 +1356,15 @@ function renderResult(data, addrLabel){
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    /* Build tier cards for the maybe path too */
-    var maybeTiers;
-    if(data.pricing && data.pricing.length){
-      var SAC2 = {'300 Mbps':1, '1 Gig':1, '2 Gig':1};
-      maybeTiers = data.pricing.filter(function(p){ return SAC2[p.speed]; }).map(function(p){
-        var t2 = '';
-        if(p.speed === '1 Gig') t2 = 'Most Popular';
-        else if(p.speed === '2 Gig') t2 = 'Best Value';
-        return {speed: p.speed, price: '$'+p.price+'/mo', note: p.note || '1st year with AutoPay', tag: t2};
-      });
-    }
-    var mc = (maybeTiers || []).map(function(t){
-      return '<div class="tier-card">'
-        + (t.tag ? '<div class="tc-tag">'+t.tag+'</div>' : '')
-        + '<p class="tc-speed">'+t.speed+'</p>'
-        + '<p class="tc-price">'+t.price+'</p>'
-        + '<p class="tc-note">'+t.note+'</p></div>';
-    }).join('');
-    el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
-      + '<p>We just need to verify your exact address &mdash; '
-      + 'it only takes a moment. Leave your info and a specialist will confirm your availability and get you ordered.</p>'
-      + (mc ? '<div class="tier-cards" style="opacity:.85">'+mc+'</div>' : '')
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
-      + '<div style="display:flex;gap:10px;margin-top:10px">'
-      +   '<button class="btn btn-purple" style="flex:1" onclick="nfChatGo()">CHAT NOW</button>'
-      +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
+    el.innerHTML = '<h3>We could not confirm <span class="addr">'+esc(addrLabel)+'</span> yet</h3>'
+      + '<p>We were not able to confirm Fidium service at this address. Leave your info and we will check it by hand '
+      + 'and tell you either way, or talk to us now.</p>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">HAVE US CHECK IT &#x2192;</button>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px">'
+      +   '<button class="btn btn-purple" style="flex:1 1 170px;white-space:nowrap" onclick="nfChatGo()">CHAT NOW</button>'
+      +   '<a class="btn btn-purple" style="flex:1 1 170px;white-space:nowrap;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
       + '</div>'
-      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation. Same pricing as ordering direct.</p>';
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
@@ -1510,6 +1492,14 @@ function openCheckout(planName){
     if(!city) city = (parts[1] || '').replace(/\b\d{5}(-\d{4})?\b/, '').replace(new RegExp('\b' + CONFIG.STATE + '\b', 'i'), '').trim();
   }
   var full = addr + (city ? ', ' + city : '') + (CONFIG.STATE ? ', ' + CONFIG.STATE : '') + (zip ? ' ' + zip : '');
+  var ok = window.__nfOrderConfirmed = !!(window.__nfConfirmed && window.__nfConfirmedFor === typed);
+  var s1 = document.getElementById('coStep1');
+  s1.className = ok ? 'co-step done' : 'co-step';
+  s1.querySelector('.co-num').innerHTML = ok ? '&#10003;' : '1';
+  document.querySelector('#coStep2 .co-num').textContent = '2';
+  document.querySelector('#coStep3 .co-num').textContent = '3';
+  document.getElementById('coSumTitle').textContent = ok ? 'Your Order' : 'Your Request';
+  document.getElementById('coNote').style.display = ok ? 'none' : 'block';
   document.getElementById('coAddr').textContent = full;
 
   /* pre-fill address fields */
@@ -1522,7 +1512,7 @@ function openCheckout(planName){
   var pricing = window.__nfPricing;
   var SAC = {'300 Mbps':1, '1 Gig':1, '2 Gig':1};
   var tags = {'1 Gig':'Most Popular', '2 Gig':'Best Value'};
-  if(pricing && pricing.length){
+  if(ok && pricing && pricing.length){
     var plans = pricing.filter(function(p){ return SAC[p.speed]; });
     pc.innerHTML = plans.map(function(p, i){
       var sel = (planName && p.speed === planName) ? ' selected' : ((!planName && i === 1) ? ' selected' : '');
@@ -1560,7 +1550,7 @@ function openCheckout(planName){
   document.getElementById('coSuccess').classList.remove('show');
   document.getElementById('co_err').classList.remove('show');
   document.getElementById('co_btn').disabled = false;
-  document.getElementById('co_btn').innerHTML = 'PLACE YOUR ORDER &rarr;';
+  document.getElementById('co_btn').innerHTML = ok ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
   document.getElementById('coStep2').className = 'co-step active';
   document.getElementById('coStep3').className = 'co-step';
 
@@ -1627,10 +1617,12 @@ async function submitCheckout(e){
     })()
   };
   Object.assign(payload, clickIds());
+  payload.address_confirmed = !!window.__nfOrderConfirmed;
+  if(!payload.address_confirmed) payload.plan = 'REQUEST, address NOT confirmed. Interested in: ' + (speed || 'not sure');
 
   var btn = document.getElementById('co_btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Processing your order...';
+  btn.innerHTML = '<span class="spinner"></span> ' + (window.__nfOrderConfirmed ? 'Processing your order...' : 'Sending your request...');
 
   try{
     var _ok = true;
@@ -1644,13 +1636,18 @@ async function submitCheckout(e){
 
   if(!_ok){
     btn.disabled = false;
-    btn.innerHTML = 'PLACE YOUR ORDER &rarr;';
-    document.getElementById('co_err').textContent = _net ? 'We could not reach our server, so your order was not sent. Please try again, or call (916) 619-0975.' : 'Something didn\u2019t look right. Please check your phone number and email and try again.';
+    btn.innerHTML = window.__nfOrderConfirmed ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
+    document.getElementById('co_err').textContent = _net ? 'We could not reach our server, so this was not sent. Please try again, or call (916) 619-0975.' : 'Something didn\u2019t look right. Please check your phone number and email and try again.';
     document.getElementById('co_err').classList.add('show');
     document.getElementById('co_err').scrollIntoView({block:'center'});
     return;
   }
 
+  var okd = !!window.__nfOrderConfirmed;
+  document.getElementById('coDoneTitle').textContent = okd ? 'Order Received!' : 'Request received!';
+  document.getElementById('coDoneText').textContent = okd ? 'A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.' : 'We will check this address by hand and contact you either way. Nothing has been ordered yet.';
+  document.getElementById('coDoneList').innerHTML = (okd ? ['A specialist calls to confirm your order', 'We schedule your installation at a time that works for you', 'Professional installation', 'You&rsquo;re online with Fidium Fiber!']
+    : ['We check your address with Fidium', 'If service is available, we confirm your price and book the install', 'If it is not, we tell you']).map(function(x){ return '<li>' + x + '</li>'; }).join('');
   /* show success */
   document.getElementById('coFormBody').style.display = 'none';
   document.getElementById('coSuccess').classList.add('show');
@@ -1660,12 +1657,13 @@ async function submitCheckout(e){
   document.getElementById('coStep3').querySelector('.co-num').innerHTML = '&#10003;';
 
   if(window.__nfConfNum){
-    document.getElementById('coConfNum').textContent = 'Confirmation #' + window.__nfConfNum;
+    document.getElementById('coConfNum').textContent = (okd ? 'Confirmation #' : 'Reference #') + window.__nfConfNum;
   }
 
   document.getElementById('checkoutOverlay').scrollTop = 0;
 
-  /* fire Google Ads conversion */
+  /* fire Google Ads conversion: only for a confirmed address */
+  if(!okd) return;
   if (typeof gtag === 'function') {
     var ud = {};
     if (payload.email) { ud.email = payload.email; }
@@ -2056,11 +2054,12 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
 
   <div class="co-body" id="coFormBody">
     <div class="co-summary">
-      <h3>Your Order</h3>
+      <h3 id="coSumTitle">Your Order</h3>
       <div class="co-addr-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span id="coAddr">123 Main St, Sacramento, CA</span>
       </div>
+      <p id="coNote" style="display:none;margin:0 0 16px;font-size:14px;line-height:1.5;color:#7a4b00;background:#fff4e0;border-radius:10px;padding:12px 14px">We have not confirmed Fidium at this address yet. Send this in and we will check it by hand. Nothing is ordered until we confirm it with you.</p>
       <div class="co-plan-cards" id="coPlanCards">
       </div>
     </div>
@@ -2116,12 +2115,12 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
 
   <div class="co-body co-success" id="coSuccess">
     <div class="co-check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-    <h2>Order Received!</h2>
+    <h2 id="coDoneTitle">Order Received!</h2>
     <p id="coConfNum" style="font-size:20px;font-weight:900;color:var(--purple);margin:12px auto"></p>
-    <p>A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.</p>
+    <p id="coDoneText">A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.</p>
     <div class="co-next-steps">
       <h4>What happens next</h4>
-      <ul style="margin:0;padding:0">
+      <ul id="coDoneList" style="margin:0;padding:0">
         <li>A specialist calls to confirm your order</li>
         <li>We schedule your installation at a time that works for you</li>
         <li>Professional installation</li>
