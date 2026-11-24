@@ -599,7 +599,7 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
 .co-addr-row span{font-size:16px;font-weight:700;color:#1a2332}
 .co-plan-cards{display:flex;gap:10px;flex-wrap:wrap}
 .co-plan{flex:1;min-width:140px;border:2px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:.15s;position:relative}
-.co-plan:hover{border-color:var(--purple);background:#f8faff}
+@media(hover:hover){.co-plan:hover{border-color:var(--purple);background:#f8faff}}
 .co-plan.selected{border-color:var(--purple);background:#eef4ff;box-shadow:0 0 0 3px rgba(19,99,224,.12)}
 .co-plan .co-plan-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
 .co-plan .co-plan-speed{font-size:16px;font-weight:900;color:#1a2332;margin:4px 0 2px}
@@ -630,6 +630,10 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
 .co-secure{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;font-size:12px;color:#8896a6;font-weight:600}
 .co-secure svg{width:14px;height:14px}
 
+.co-consent input[type=checkbox]{-webkit-appearance:auto;appearance:auto;padding:0;border:0}
+.co-close{white-space:nowrap}
+body.nf-ordering #nfChatBtn,body.nf-ordering #nfChat{display:none!important}
+
 /* checkout success */
 .co-success{display:none;text-align:center;padding:48px 24px}
 .co-success.show{display:block}
@@ -645,6 +649,7 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
 
 @media(max-width:600px){
   .co-row{grid-template-columns:1fr}
+  .co-brand>span:last-child{display:none}
   .co-plan-cards{flex-direction:column}
   .co-body{padding:20px 16px 80px}
   .co-summary{padding:18px 20px}
@@ -1361,7 +1366,7 @@ function renderResult(data, addrLabel){
         + '<p class="tc-note">'+t.note+'</p></div>';
     }).join('');
     el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
-      + '<p>Fidium is expanding fast in Sacramento. We just need to verify your exact address &mdash; '
+      + '<p>We just need to verify your exact address &mdash; '
       + 'it only takes a moment. Leave your info and a specialist will confirm your availability and get you ordered.</p>'
       + (mc ? '<div class="tier-cards" style="opacity:.85">'+mc+'</div>' : '')
       + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
@@ -1483,13 +1488,20 @@ function openCheckout(planName){
   var ov = document.getElementById('checkoutOverlay');
 
   /* populate address */
-  var addr = val('av_street') || val('av_addr');
-  var city = val('av_city');
-  var zip = val('av_zip');
-  var full = addr;
-  if(city) full += ', ' + city;
-  if(CONFIG.STATE) full += ', ' + CONFIG.STATE;
-  if(zip) full += ' ' + zip;
+  var typed = val('av_addr'), addr = val('av_street'), city = val('av_city'), zip = val('av_zip');
+  if(!typed){
+    document.getElementById('checker').scrollIntoView({behavior:'smooth', block:'start'});
+    document.getElementById('av_addr').focus({preventScroll:true});
+    return;
+  }
+  if(!addr){
+    var parts = typed.split(',').map(function(x){ return x.trim(); }).filter(Boolean);
+    addr = parts[0] || '';
+    var z = parts.slice(1).join(' ').match(/\b\d{5}\b/);
+    if(!zip && z) zip = z[0];
+    if(!city) city = (parts[1] || '').replace(/\b\d{5}(-\d{4})?\b/, '').replace(new RegExp('\b' + CONFIG.STATE + '\b', 'i'), '').trim();
+  }
+  var full = addr + (city ? ', ' + city : '') + (CONFIG.STATE ? ', ' + CONFIG.STATE : '') + (zip ? ' ' + zip : '');
   document.getElementById('coAddr').textContent = full;
 
   /* pre-fill address fields */
@@ -1517,9 +1529,9 @@ function openCheckout(planName){
     }).join('');
   } else {
     pc.innerHTML = [
-      {speed:'300 Mbps', price:'30', note:'1st year with AutoPay'},
-      {speed:'1 Gig', price:'30', note:'1st year with AutoPay', tag:'Most Popular'},
-      {speed:'2 Gig', price:'40', note:'1st year with AutoPay + 1 month free', tag:'Best Value'}
+      {speed:'300 Mbps', note:'We will confirm your price'},
+      {speed:'1 Gig', note:'We will confirm your price', tag:'Most Popular'},
+      {speed:'2 Gig', note:'We will confirm your price', tag:'Best Value'}
     ].map(function(p, i){
       var sel = (planName && p.speed === planName) ? ' selected' : ((!planName && i === 1) ? ' selected' : '');
       var tagH = p.tag ? '<div class="co-plan-tag">' + p.tag + '</div>' : '';
@@ -1527,7 +1539,6 @@ function openCheckout(planName){
         + '<div class="co-plan-check">&#10003;</div>'
         + tagH
         + '<div class="co-plan-speed">' + p.speed + '</div>'
-        + '<div class="co-plan-price">$' + p.price + '/mo</div>'
         + '<div class="co-plan-note">' + p.note + '</div></div>';
     }).join('');
   }
@@ -1547,18 +1558,20 @@ function openCheckout(planName){
 
   /* open overlay */
   ov.classList.add('open');
+  document.body.classList.add('nf-ordering');
   document.body.style.overflow = 'hidden';
   ov.scrollTop = 0;
 
   /* focus first empty field */
   setTimeout(function(){
     var first = document.getElementById('co_first');
-    if(first && !first.value) first.focus();
+    if(first && !first.value && window.innerWidth > 900) first.focus({preventScroll:true});
   }, 400);
 }
 
 function closeCheckout(){
   document.getElementById('checkoutOverlay').classList.remove('open');
+  document.body.classList.remove('nf-ordering');
   document.body.style.overflow = '';
 }
 
@@ -1619,13 +1632,14 @@ async function submitCheckout(e){
       if(resp && !resp.ok){ _ok = false; }
       if(resp && resp.ok){ try{ var rj = await resp.json(); window.__nfConfNum = rj.confirmation_number; }catch(e){} }
     } else { await sleep(700); }
-  }catch(e){}
+  }catch(e){ var _net = true; _ok = false; }
 
   if(!_ok){
     btn.disabled = false;
     btn.innerHTML = 'PLACE YOUR ORDER &rarr;';
-    document.getElementById('co_err').textContent = 'Something didn\u2019t look right. Please check your phone number and email and try again.';
+    document.getElementById('co_err').textContent = _net ? 'We could not reach our server, so your order was not sent. Please try again, or call (916) 619-0975.' : 'Something didn\u2019t look right. Please check your phone number and email and try again.';
     document.getElementById('co_err').classList.add('show');
+    document.getElementById('co_err').scrollIntoView({block:'center'});
     return;
   }
 
@@ -2045,7 +2059,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
 
     <div class="co-form-card">
       <h3>Your Information</h3>
-      <form id="coForm" onsubmit="submitCheckout(event)" novalidate>
+      <form id="coForm" onsubmit="submitCheckout(event)">
         <div class="co-row">
           <div class="co-field">
             <label for="co_first">First Name</label>
@@ -2088,10 +2102,6 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
 
         <button class="co-submit" type="submit" id="co_btn">PLACE YOUR ORDER &rarr;</button>
         <p class="co-err" id="co_err">Please check the consent box to continue.</p>
-        <div class="co-secure">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Your information is secure and never shared without your permission.
-        </div>
       </form>
     </div>
   </div>
@@ -2106,7 +2116,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
       <ul style="margin:0;padding:0">
         <li>A specialist calls to confirm your order</li>
         <li>We schedule your installation at a time that works for you</li>
-        <li>Professional installation &mdash; typically under an hour</li>
+        <li>Professional installation</li>
         <li>You're online with Fidium Fiber!</li>
       </ul>
     </div>
