@@ -1003,6 +1003,8 @@ async function submitLead(e){
      time or Google has nothing to match on. gtag hashes these in the browser, so raw
      values never leave it. Only fields we actually have are sent, and a missing field
      is simply omitted rather than sent empty. */
+  /* #form-conv-zip 2026-11-24 (Archer, Chad option 1): every form is kept as a lead, only a Sacramento-area ZIP counts as a win */
+  if(!/(^|\D)95[678]\d\d(-?\d{4})?(\D|$)/.test(String(payload.zip || ''))) return;
   if (typeof gtag === 'function') {
     var ud = {};
     if (payload.email) { ud.email = payload.email; }
@@ -1472,14 +1474,18 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
       form=document.getElementById('nfChatForm'), inp=document.getElementById('nfChatIn'),
         btn=document.getElementById('nfChatBtn');
     var startBtn=document.getElementById('nfChatStart');
-  var started=false, handed=false, poller=null, lastEmail='', lastPhone='';
+  var started=false, handed=false, poller=null, lastEmail='', lastPhone='', chatLead=false, chatTyped=false;
+  try{ chatLead = sessionStorage.getItem('nf_chat_has_lead')==='1'; }catch(e){}
   var chatGo=false;      /* #chat-cta: Start Chat already sent */
 
   /* #chat-conv-fire 2026-11-01: tell Google about a chat lead. Without this the chat
      produces a lead and a Discord card while the Chat lead conversion stays at zero,
      which looks exactly like chat never converting. Fires once, user data first. */
   function fireChatConv(){
+    /* #chat-conv-typed 2026-11-24 (Archer, Chad option A): opening a chat is not a win, the visitor typing back is */
+    if(!chatLead || !chatTyped) return;
     if(window.__nfChatConvSent || typeof gtag !== 'function') return;
+    try{ if(sessionStorage.getItem('nf_chat_conv_sent')==='1') return; sessionStorage.setItem('nf_chat_conv_sent','1'); }catch(e){}
     window.__nfChatConvSent = true;
     window.__nfChatLeadSent = true;   /* so re-enabling Tawk could never double count */
     try{
@@ -1526,7 +1532,10 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     return fetch(API+'/api/chat', {method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({sid:sid(), text:text, meta:meta()})
-    }).then(function(r){ return r.json(); });
+    }).then(function(r){ return r.json(); }).then(function(d){
+      if(d && d.lead_id){ chatLead=true; try{ sessionStorage.setItem('nf_chat_has_lead','1'); }catch(e){} fireChatConv(); }
+      return d;
+    });
   }
   /* once a human has it, watch for what they type back */
   function startPolling(){
@@ -1547,7 +1556,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     form.style.display=''; inp.focus();
     send('__START_CHAT__').then(function(d){
       if(d.reply) add(d.reply,false);
-      if(d.done && !handed){ handed=true; if(d.lead_id) fireChatConv(); startPolling(); }
+      if(d.done && !handed){ handed=true; startPolling(); }
     }).catch(fail);
   }
   function open(){
@@ -1578,11 +1587,11 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
     e.preventDefault();
     var t=(inp.value||'').trim(); if(!t) return;
     inp.value=''; add(t, true); remember(t);
+    if(t.replace(/[\s!-\/:-@\[-`{-~]+/g, '')){ chatTyped=true; fireChatConv(); }
     send(t).then(function(d){
       if(d.reply) add(d.reply,false);
       if(d.done && !handed){
         handed=true;
-        if(d.lead_id) fireChatConv();     /* a real lead was written, so it counts */
         note('Connecting you to a specialist...');
         startPolling();
       }
