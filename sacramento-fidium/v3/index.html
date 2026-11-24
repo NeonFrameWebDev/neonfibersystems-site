@@ -442,6 +442,12 @@ html.nf-wf-wait .strip,html.nf-wf-wait .hero{visibility:hidden;animation:nfWfSho
 .co-close{white-space:nowrap}
 body.nf-ordering #nfChatBtn,body.nf-ordering #nfChat{display:none!important}
 
+.co-form-card label.co-consent{display:flex;margin:20px 0;font-weight:400;cursor:pointer}
+.co-consent input[type=checkbox]{width:24px;height:24px}
+.co-close{min-height:44px}
+#av_result a.btn{text-align:center}
+@media(max-width:600px){.co-row{gap:0}}
+
 /* checkout success */
 .co-success{display:none;text-align:center;padding:48px 24px}
 .co-success.show{display:block}
@@ -1762,11 +1768,11 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
         </div>
         <input type="hidden" id="co_plan" value="">
 
-        <div class="co-consent">
+        <label class="co-consent">
           <input type="checkbox" id="co_consent" required>
           <span><b>I agree to be contacted about Fidium service at my address.</b>
           <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:var(--purple);font-weight:700">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:var(--purple);font-weight:700">Terms of Service</a>.</span></span>
-        </div>
+        </label>
 
         <button class="co-submit" type="submit" id="co_btn">PLACE YOUR ORDER &rarr;</button>
         <p class="co-err" id="co_err">Please check the consent box to continue.</p>
@@ -1777,7 +1783,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
   <div class="co-body co-success" id="coSuccess">
     <div class="co-check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
     <h2>Order Received!</h2>
-    <p id="coConfNum" style="font-size:20px;font-weight:900;color:var(--purple);margin:12px 0"></p>
+    <p id="coConfNum" style="font-size:20px;font-weight:900;color:var(--purple);margin:12px auto"></p>
     <p>A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.</p>
     <div class="co-next-steps">
       <h4>What happens next</h4>
