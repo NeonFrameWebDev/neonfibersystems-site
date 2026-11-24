@@ -819,7 +819,7 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
   <div class="noise"></div>
   <div class="container cta-grid">
     <div>
-      <div class="kicker"><span class="dot"></span> Sign up in seconds</div>
+      <div class="kicker"><span class="dot"></span> Order in seconds</div>
       <h2>Start your <span class="hl">Fidium order</span></h2>
       <p>Fill in your details below to get started. You'll get a confirmation number right away, and a Fidium specialist will contact you to finalize your install date.</p>
       <div class="orstrip">
@@ -853,7 +853,7 @@ html.nf-wf-wait .announce,html.nf-wf-wait .hero{visibility:hidden;animation:nfWf
           <span><b>Okay to text or call me about Fidium at my address.</b>
           <span class="fine">By checking this box, I agree to be contacted by Neon Fiber (an independent authorized Fidium dealer) by phone, text, and email about Fidium internet service at my address, including by automated means. Consent is not a condition of purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="https://neonfibersystems.com/privacy/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Privacy Policy</a> and <a href="https://neonfibersystems.com/terms/" target="_blank" rel="noopener" style="color:#1363e0;font-weight:800">Terms of Service</a>.</span></span>
         </label>
-        <button class="btn btn-purple" type="submit" id="ld_btn">COMPLETE SIGN UP →</button>
+        <button class="btn btn-purple" type="submit" id="ld_btn">COMPLETE YOUR ORDER →</button>
         <p class="ld-err" id="ld_err">Please check the consent box above so we're allowed to contact you, or just call us instead.</p>
         <p class="callrow">A real person replies in minutes during business hours. Rather talk now? <a href="tel:+19166190975">Call (916) 619-0975</a></p>
         <p class="disclaimer">We are an independent authorized Fidium dealer. Availability and offers vary by address.</p>
@@ -1145,7 +1145,7 @@ function nfLiveWatch(data, addrLabel, state, done){
         if(city && label.toLowerCase().indexOf(city.toLowerCase()) < 0){ label = label + ', ' + city; }
         renderResult({signable:true, carrier:CONFIG.CARRIER, plans:(d.plans || []), pricing:(d.pricing || window.__nfPricing || null)}, label);
       } else {
-        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[]}, addrLabel);
+        renderResult({signable:false, carrier:CONFIG.CARRIER, plans:[], pricing:(window.__nfPricing || null)}, addrLabel);
       }
       finish();
     }
@@ -1246,28 +1246,43 @@ function renderResult(data, addrLabel){
     el.className = 'result yes show';
     el.innerHTML = '<h3>Fiber is available at your address!</h3>'
       + '<p><span class="addr">'+esc(addrLabel)+'</span> is eligible for Fidium Fiber. '
-      + 'Pick your speed and sign up in under a minute:</p>'
+      + 'Pick your speed and order right here \u2014 takes under a minute:</p>'
       + '<div class="tier-cards">'+cards+'</div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px" onclick="toLead()">SIGN UP NOW &#x2192;</button>'
-      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Same pricing as ordering direct. No fees, no obligation.</p>'
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px" onclick="toLead()">ORDER NOW &#x2192;</button>'
+      + '<p style="text-align:center;font-size:13px;margin:12px 0 0;color:#5f6b76">Same price as ordering direct from Fidium. No extra fees, no obligation.</p>'
       + '<p style="text-align:center;font-size:13px;margin:4px 0 0;color:#5f6b76">Questions? '
       + '<button style="background:none;border:none;color:#1363e0;font-weight:800;cursor:pointer;font-size:13px;padding:0;font-family:inherit" onclick="nfChatGo()">Chat with us</button> or '
       + '<a href="tel:'+CONFIG.PHONE_TEL+'" style="color:#1363e0;font-weight:800">call '+CONFIG.PHONE_DISPLAY+'</a>.</p>';
   } else {
     el.className = 'result maybe show';
-    el.innerHTML = '<h3>We\'re on it for <span class="addr">'+esc(addrLabel)+'</span></h3>'
-      + '<p>This address isn\'t in our instant-match list yet. That\'s common for newer builds and recently '
-      + 'wired streets, and it does <strong>not</strong> mean fiber is unavailable here. A specialist can confirm '
-      + 'it live and lock in your best pricing.</p>'
-      + '<div class="maybe-steps"><span>1&nbsp;&middot;&nbsp;Chat or call</span>'
-      +   '<span>2&nbsp;&middot;&nbsp;We confirm your exact address</span>'
-      +   '<span>3&nbsp;&middot;&nbsp;You get the best offer</span></div>'
-      + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="nfChatGo()">CHAT NOW &amp; GET A LIVE ANSWER</button>'
+    /* Build tier cards for the maybe path too */
+    var maybeTiers;
+    if(data.pricing && data.pricing.length){
+      var SAC2 = {'300 Mbps':1, '1 Gig':1, '2 Gig':1};
+      maybeTiers = data.pricing.filter(function(p){ return SAC2[p.speed]; }).map(function(p){
+        var t2 = '';
+        if(p.speed === '1 Gig') t2 = 'Most Popular';
+        else if(p.speed === '2 Gig') t2 = 'Best Value';
+        return {speed: p.speed, price: '$'+p.price+'/mo', note: p.note || '1st year with AutoPay', tag: t2};
+      });
+    }
+    var mc = (maybeTiers || []).map(function(t){
+      return '<div class="tier-card">'
+        + (t.tag ? '<div class="tc-tag">'+t.tag+'</div>' : '')
+        + '<p class="tc-speed">'+t.speed+'</p>'
+        + '<p class="tc-price">'+t.price+'</p>'
+        + '<p class="tc-note">'+t.note+'</p></div>';
+    }).join('');
+    el.innerHTML = '<h3>Almost there! Let us confirm <span class="addr">'+esc(addrLabel)+'</span></h3>'
+      + '<p>Fidium is expanding fast in Sacramento. We just need to verify your exact address &mdash; '
+      + 'it only takes a moment. Leave your info and a specialist will confirm your availability and get you ordered.</p>'
+      + (mc ? '<div class="tier-cards" style="opacity:.85">'+mc+'</div>' : '')
+      + '<button class="btn btn-lime" style="width:100%;margin-top:14px;font-size:17px;font-weight:900" onclick="toLead()">GET MY PRICE &#x2192;</button>'
       + '<div style="display:flex;gap:10px;margin-top:10px">'
+      +   '<button class="btn btn-purple" style="flex:1" onclick="nfChatGo()">CHAT NOW</button>'
       +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
-      +   '<button class="btn btn-purple" style="flex:1" onclick="toLead()">LEAVE MY INFO →</button>'
       + '</div>'
-      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">Takes under a minute. No obligation.</p>';
+      + '<p style="text-align:center;font-size:12px;margin:12px 0 0;color:#6b7686">No obligation. Same pricing as ordering direct.</p>';
   }
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
