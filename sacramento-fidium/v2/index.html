@@ -874,6 +874,11 @@ async function checkAvailability(){
   const typed = val('av_addr'), street = val('av_street') || typed,
         city = val('av_city'), state = val('av_state')||CONFIG.STATE;
   if(!typed){ alert('Please enter your address.'); return; }
+  if(!val('av_street') && !nfFullAddr(typed) && (/^\s*\d/.test(typed) || typed.trim().length < 5)){   /* #form-check */
+    window.__nfLiveSeq = (window.__nfLiveSeq || 0) + 1; window.__nfConfirmed = false;
+    nfNeedNumber('Please enter your full street address', 'We check every address live, so we need the whole thing, like <strong>123 Main St</strong>. Add the rest and check again.');
+    document.getElementById('av_addr').focus({preventScroll:true}); return;
+  }
   const btn = document.getElementById('av_btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Checking…';
   let data;
@@ -902,12 +907,11 @@ async function checkAvailability(){
 
 /* #need-number 2026-11-19: the live check needs a house number at the start. When it is missing, say so
    instead of the "we're on it" card. The check was still sent (and logged); the same buttons stay. */
-function nfNeedNumber(){
+function nfNeedNumber(h, p){
   const el = document.getElementById('av_result');
   el.className = 'result maybe show';
-  el.innerHTML = '<h3>Start with your house number</h3>'
-    + '<p>We check every address live, so we need the full street address, like <strong>1234 Main St</strong>. '
-    + 'Add the number at the start and check again.</p>'
+  el.innerHTML = '<h3>' + (h || 'Start with your house number') + '</h3>'
+    + '<p>' + (p || 'We check every address live, so we need the full street address, like <strong>1234 Main St</strong>. Add the number at the start and check again.') + '</p>'
     + '<button class="btn btn-lime" style="width:100%;margin-top:14px" onclick="if(window.nfChatGo){nfChatGo()}else{openChat()}">CHAT NOW &amp; GET A LIVE ANSWER</button>'
     + '<div style="display:flex;gap:10px;margin-top:10px">'
     +   '<a class="btn btn-purple" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center" href="tel:'+CONFIG.PHONE_TEL+'">CALL '+CONFIG.PHONE_DISPLAY+'</a>'
@@ -1076,40 +1080,50 @@ async function submitLead(e){
   if (document.readyState === 'complete') { nfSendView(); }
   else { window.addEventListener('load', nfSendView); }
 })();
-/* ===== checkout overlay ===== */
-function openCheckout(planName){
-  var ov = document.getElementById('checkoutOverlay');
-
-  /* populate address */
-  var typed = val('av_addr'), addr = val('av_street'), city = val('av_city'), zip = val('av_zip');
-  if(!typed){
-    document.getElementById('checker').scrollIntoView({behavior:'smooth', block:'start'});
-    document.getElementById('av_addr').focus({preventScroll:true});
-    return;
-  }
-  if(!addr){
-    var parts = typed.split(',').map(function(x){ return x.trim(); }).filter(Boolean);
-    addr = parts[0] || '';
-    var z = parts.slice(1).join(' ').match(/\b\d{5}\b/);
-    if(!zip && z) zip = z[0];
-    if(!city) city = (parts[1] || '').replace(/\b\d{5}(-\d{4})?\b/, '').replace(new RegExp('\b' + CONFIG.STATE + '\b', 'i'), '').trim();
-  }
-  var full = addr + (city ? ', ' + city : '') + (CONFIG.STATE ? ', ' + CONFIG.STATE : '') + (zip ? ' ' + zip : '');
-  var ok = window.__nfOrderConfirmed = !!(window.__nfConfirmed && window.__nfConfirmedFor === typed);
+/* #form-check 2026-11-25 (Archer, TC: "build both"; lead #143). (1) the address box wants a whole street address.
+   (2) the address typed in the order window is checked live too, so a good address sees prices and can order.
+   NF_FORM_CHECK_COUNTS: whether an order whose address was confirmed in the order window is sent to Google as a
+   conversion. Chad said NO (2026-11-24 7:03 PM Pacific, #ai-system-chat): keep it false. Nobody is ever blocked from sending. */
+var NF_FORM_CHECK_COUNTS = false;
+var NF_AREA = ['Sacramento','West Sacramento','Citrus Heights','Elk Grove','Roseville','Rocklin','Carmichael','Fair Oaks','Rancho Cordova','Orangevale','Folsom','Antelope','North Highlands','Granite Bay','Lincoln','Rio Linda','Elverta','Gold River','Mather','Loomis','Galt','Wilton','Florin'];
+window.__nfCo = {ok:false, by:'', street:'', city:'', zip:'', seq:0, tried:{}, good:{}, pending:null, sending:false};
+function nfClean(t){ return String(t || '').replace(/[^A-Za-z0-9#\/\- ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function nfLet(t){ return String(t || '').toLowerCase().replace(/[^a-z]/g, ''); }
+function nfFullAddr(t){ t = String(t || '').trim(); return t.length >= 5 && /^\d+[\s,.#\-]*\d*[A-Za-z]/.test(t) && (t.match(/[A-Za-z]/g) || []).length >= 2; }
+function nfDist(a, b){
+  var p = [], i, j; for(j = 0; j <= b.length; j++) p[j] = j;
+  for(i = 1; i <= a.length; i++){ var last = p[0]; p[0] = i; for(j = 1; j <= b.length; j++){ var t = p[j]; p[j] = Math.min(p[j] + 1, p[j-1] + 1, last + (a[i-1] === b[j-1] ? 0 : 1)); last = t; } }
+  return p[b.length];
+}
+function nfCity(c){
+  var k = nfLet(c), best = '', bd = 99; if(!k) return nfClean(c);
+  NF_AREA.forEach(function(n){ var d = nfDist(k, nfLet(n)); if(d < bd){ bd = d; best = n; } });
+  return (bd === 0 || (k.length >= 5 && bd <= (k.length >= 8 ? 2 : 1))) ? best : nfClean(c);
+}
+function nfKey(a, c, z){ return nfClean(a).toLowerCase() + '|' + nfLet(nfCity(c)) + '|' + String(z || '').replace(/\D/g, '').slice(0, 5); }
+function coStatus(kind, text){
+  var el = document.getElementById('coAddrStatus'); if(!el) return;
+  text = text || 'We check this address with ' + esc(CONFIG.CARRIER) + ' live.';   /* always takes its space: a line popping in would move the button from under a tap */
+  el.style.color = kind === 'yes' ? '#0f7a3d' : kind === 'no' ? '#7a4b00' : '#40506a';
+  el.style.background = kind === 'yes' ? '#e6f7ec' : kind === 'no' ? '#fff4e0' : '#eef2f9';
+  el.innerHTML = (kind === 'wait' ? '<span class="nf-wait-spin"></span> ' : '') + text;
+}
+/* keep the page still while something above the fields changes size. Call it before, call what it returns after */
+function nfStill(){
+  var ov = document.getElementById('checkoutOverlay'), ref = document.getElementById('co_addr'), y0 = ref.getBoundingClientRect().top, open = ov.classList.contains('open');
+  ov.style.overflowAnchor = 'none';
+  return function(){ if(open) ov.scrollTop += ref.getBoundingClientRect().top - y0; };
+}
+function coSetAddr(t){ var still = nfStill(); document.getElementById('coAddr').textContent = t; still(); }
+/* order or request: step 1, title, note, plan cards and button all follow from this one answer */
+function coMode(ok, planName){
+  var still = nfStill();
+  window.__nfOrderConfirmed = !!ok; window.__nfCo.ok = !!ok;
   var s1 = document.getElementById('coStep1');
   s1.className = ok ? 'co-step done' : 'co-step';
   s1.querySelector('.co-num').innerHTML = ok ? '&#10003;' : '1';
-  document.querySelector('#coStep2 .co-num').textContent = '2';
-  document.querySelector('#coStep3 .co-num').textContent = '3';
   document.getElementById('coSumTitle').textContent = ok ? 'Your Order' : 'Your Request';
   document.getElementById('coNote').style.display = ok ? 'none' : 'block';
-  document.getElementById('coAddr').textContent = full;
-
-  /* pre-fill address fields */
-  document.getElementById('co_addr').value = addr || '';
-  document.getElementById('co_city').value = city || '';
-  document.getElementById('co_zip').value = zip || '';
-
   /* build plan cards from pricing data */
   var pc = document.getElementById('coPlanCards');
   var pricing = window.__nfPricing;
@@ -1143,10 +1157,109 @@ function openCheckout(planName){
         + '<div class="co-plan-note">' + p.note + '</div></div>';
     }).join('');
   }
-
-  /* set hidden plan field */
   var selCard = pc.querySelector('.co-plan.selected');
   if(selCard) document.getElementById('co_plan').value = selCard.querySelector('.co-plan-speed').textContent;
+  still();
+  if(!window.__nfCo.sending) document.getElementById('co_btn').innerHTML = ok ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
+}
+/* the address in the order window changed */
+function coAddrChanged(){
+  var C = window.__nfCo; if(C.sending) return;
+  var a = document.getElementById('co_addr').value.trim(), c = document.getElementById('co_city').value.trim(), z = document.getElementById('co_zip').value.replace(/\D/g, '').slice(0, 5);
+  var st = nfClean(a).toLowerCase(), ci = nfLet(nfCity(c)), full = nfClean(a) + (c ? ', ' + nfCity(c) : '') + ', ' + CONFIG.STATE + (z ? ' ' + z : '');
+  var same = C.by && C.street && (st === C.street || st.indexOf(C.street + ' ') === 0) && (!C.city || !ci || ci === C.city) && (!C.zip || z.length < 5 || z === C.zip);
+  if(same){
+    C.seq++; C.pending = null;                       /* back on (or still on) the confirmed address */
+    if(!C.ok){ coMode(true, document.getElementById('co_plan').value); coStatus('yes', '&#10003; Fidium is available at this address.'); }
+    return;
+  }
+  if(C.ok){ coMode(false, document.getElementById('co_plan').value); }
+  if(!nfFullAddr(a) || !c || z.length < 5){ C.seq++; C.pending = null; coStatus('', ''); return; }
+  var key = nfKey(a, c, z);
+  coSetAddr(full);
+  if(C.good[key]){ coYes(key, st, ci, z, full); return; }
+  if(C.tried[key]){ C.seq++; C.pending = null; coStatus('no', 'We could not confirm this address yet. You can still send it and we will check it by hand.'); return; }
+  if(C.pending && C.pendingKey === key) return;
+  var my = ++C.seq; C.pendingKey = key; coStatus('wait', 'Checking this address with ' + esc(CONFIG.CARRIER) + '&hellip;');
+  C.pending = coAsk(nfClean(a), nfCity(c), z).then(function(r){
+    if(r === 'yes') C.good[key] = 1; else if(r === 'no') C.tried[key] = 1;
+    if(my !== C.seq) return;
+    C.pending = null;
+    if(r === 'yes') coYes(key, st, ci, z, full);
+    else coStatus(r === 'no' ? 'no' : '', r === 'no' ? 'We could not confirm this address yet. You can still send it and we will check it by hand.' : '');
+  });
+}
+function coYes(key, st, ci, z, full){
+  var C = window.__nfCo; C.seq++; C.pending = null; C.by = 'form'; C.street = st; C.city = ci; C.zip = z;
+  coMode(true, document.getElementById('co_plan').value);
+  coSetAddr(full);
+  coStatus('yes', '&#10003; Great news, Fidium is available at this address. Your prices are ready.');
+}
+/* the same live check the address box uses. Answers 'yes', 'no' or 'err', never throws */
+function coAsk(addr, city, zip){
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  return (async function(){
+    try{
+      if(!CONFIG.API_BASE) return 'err';
+      var r = await fetch(CONFIG.API_BASE + '/api/availability', {method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({address:addr, unit:'', city:city, state:CONFIG.STATE, zip:zip, carrier:CONFIG.CARRIER, source:'sacramento-fidium-lp-v2-form'})});
+      var d = await r.json();
+      if(d && d.pricing) window.__nfPricing = d.pricing;
+      if(d && d.signable) return 'yes';
+      if(!d || !d.live || !d.live.id) return 'no';
+      for(var i = 0; i < 12; i++){
+        await wait(2000);
+        try{
+          var q = await fetch(CONFIG.API_BASE + '/api/availability-live?id=' + encodeURIComponent(d.live.id) + '&sig=' + encodeURIComponent(d.live.sig)
+            + '&carrier=' + encodeURIComponent(CONFIG.CARRIER) + '&state=' + encodeURIComponent(CONFIG.STATE || ''));
+          var x = await q.json();
+          if(x && x.status === 'available'){ if(x.pricing) window.__nfPricing = x.pricing; return 'yes'; }
+          if(x && x.status === 'no') return 'no';
+        }catch(e){}
+      }
+      return 'err';
+    }catch(e){ return 'err'; }
+  })();
+}
+document.addEventListener('change', function(e){ if(e.target && /^co_(addr|city|zip)$/.test(e.target.id || '')) coAddrChanged(); });
+(function(){ var t; document.addEventListener('input', function(e){ if(!e.target || !/^co_(addr|city|zip)$/.test(e.target.id || '')) return; clearTimeout(t); t = setTimeout(coAddrChanged, 1100); }); })();
+
+/* ===== checkout overlay ===== */
+function openCheckout(planName){
+  var ov = document.getElementById('checkoutOverlay');
+
+  /* populate address */
+  var typed = val('av_addr'), addr = val('av_street'), city = val('av_city'), zip = val('av_zip');
+  if(!typed){
+    document.getElementById('checker').scrollIntoView({behavior:'smooth', block:'start'});
+    document.getElementById('av_addr').focus({preventScroll:true});
+    return;
+  }
+  if(!addr){
+    var parts = typed.split(',').map(function(x){ return x.trim(); }).filter(Boolean);
+    addr = parts[0] || '';
+    var z = parts.slice(1).join(' ').match(/\b\d{5}\b/);
+    if(!zip && z) zip = z[0];
+    if(!city) city = (parts[1] || '').replace(/\b\d{5}(-\d{4})?\b/, '').replace(new RegExp('\b' + CONFIG.STATE + '\b', 'i'), '').trim();
+  }
+  if(!val('av_street') && !nfFullAddr(typed)){ addr = ''; city = ''; zip = ''; }   /* #form-check: half an address is not prefilled */
+  var full = !addr ? 'Enter your address below' : addr + (city ? ', ' + city : '') + (CONFIG.STATE ? ', ' + CONFIG.STATE : '') + (zip ? ' ' + zip : '');
+  var ok = !!(window.__nfConfirmed && window.__nfConfirmedFor === typed);
+  document.querySelector('#coStep2 .co-num').textContent = '2';
+  document.querySelector('#coStep3 .co-num').textContent = '3';
+  document.getElementById('coAddr').textContent = full;
+
+  /* pre-fill address fields */
+  if(addr || !document.getElementById('co_addr').value){
+  document.getElementById('co_addr').value = addr || '';
+  document.getElementById('co_city').value = city || '';
+  document.getElementById('co_zip').value = zip || '';
+  }
+  var C = window.__nfCo; C.seq++; C.pending = null; C.sending = false; C.by = ok ? 'check' : ''; C.street = ok ? nfClean(addr).toLowerCase() : ''; C.city = ok ? nfLet(nfCity(city)) : ''; C.zip = ok ? String(zip || '').slice(0, 5) : '';
+  if(!ok && addr && window.__nfConfirmedFor === typed) C.tried[nfKey(addr, city, zip)] = 1;
+  coStatus('', '');
+
+  coMode(ok, planName);
 
   /* reset form state */
   document.getElementById('coFormBody').style.display = '';
@@ -1154,6 +1267,7 @@ function openCheckout(planName){
   document.getElementById('co_err').classList.remove('show');
   document.getElementById('co_btn').disabled = false;
   document.getElementById('co_btn').innerHTML = ok ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
+  if(!ok && document.getElementById('co_addr').value) coAddrChanged();
   document.getElementById('coStep2').className = 'co-step active';
   document.getElementById('coStep3').className = 'co-step';
 
@@ -1190,6 +1304,16 @@ async function submitCheckout(e){
   }
   document.getElementById('co_err').classList.remove('show');
 
+  /* #form-check: if the address is still being checked, give it a moment. Never blocks the send. */
+  var C = window.__nfCo, btn = document.getElementById('co_btn'), sawPrices = !!C.ok;
+  coAddrChanged(); sawPrices = sawPrices && !!C.ok;
+  if(C.pending){
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Checking your address...'; C.sending = true;
+    var lim = new Promise(function(r){ setTimeout(r, 8000); }); await Promise.race([C.pending, lim]); C.seq++; C.pending = null;
+  }
+  C.sending = true;
+  var nowOk = !!C.ok, okd = nowOk && sawPrices;
+
   /* map the plan speed to the select option text format */
   var speed = document.getElementById('co_plan').value || '';
   var planText = speed;
@@ -1220,13 +1344,14 @@ async function submitCheckout(e){
     })()
   };
   Object.assign(payload, clickIds());
-  payload.address_confirmed = !!window.__nfOrderConfirmed;
-  if(!payload.address_confirmed) payload.plan = 'REQUEST, address NOT confirmed. Interested in: ' + (speed || 'not sure');
+  payload.address_confirmed = nowOk;
+  if(nowOk){ payload.address_confirmed_by = C.by; payload.city_checked = nfCity(payload.city); }
+  if(!nowOk) payload.plan = 'REQUEST, address NOT confirmed. Interested in: ' + (speed || 'not sure');
+  else if(!okd) payload.plan = 'REQUEST, address confirmed live, price not shown yet. Interested in: ' + (speed || 'not sure');
   if(window.__nfTest){ payload.test = true; payload.last = (payload.last || '') + ' (TEST)'; payload.plan = 'TEST, ignore. ' + (payload.plan || ''); }
 
-  var btn = document.getElementById('co_btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> ' + (window.__nfOrderConfirmed ? 'Processing your order...' : 'Sending your request...');
+  btn.innerHTML = '<span class="spinner"></span> ' + (okd ? 'Processing your order...' : 'Sending your request...');
 
   try{
     var _ok = true;
@@ -1239,15 +1364,14 @@ async function submitCheckout(e){
   }catch(e){ var _net = true; _ok = false; }
 
   if(!_ok){
-    btn.disabled = false;
-    btn.innerHTML = window.__nfOrderConfirmed ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
+    btn.disabled = false; C.sending = false;
+    btn.innerHTML = C.ok ? 'PLACE YOUR ORDER &rarr;' : 'SEND MY REQUEST &rarr;';
     document.getElementById('co_err').textContent = _net ? 'We could not reach our server, so this was not sent. Please try again, or call (916) 619-0975.' : 'Something didn\u2019t look right. Please check your phone number and email and try again.';
     document.getElementById('co_err').classList.add('show');
     document.getElementById('co_err').scrollIntoView({block:'center'});
     return;
   }
 
-  var okd = !!window.__nfOrderConfirmed;
   document.getElementById('coDoneTitle').textContent = okd ? 'Order Received!' : 'Request received!';
   document.getElementById('coDoneText').textContent = okd ? 'A Fidium specialist will contact you shortly to confirm your plan, finalize pricing, and schedule your professional installation.' : 'We will check this address by hand and contact you either way. Nothing has been ordered yet.';
   document.getElementById('coDoneList').innerHTML = (okd ? ['A specialist calls to confirm your order', 'We schedule your installation at a time that works for you', 'Professional installation', 'You&rsquo;re online with Fidium Fiber!']
@@ -1268,6 +1392,7 @@ async function submitCheckout(e){
 
   /* fire Google Ads conversion: only for a confirmed address */
   if(!okd) return;
+  if(C.by === 'form' && !NF_FORM_CHECK_COUNTS) return;   /* #form-check: Chad's call */
   if (typeof gtag === 'function') {
     var ud = {};
     if (payload.email) { ud.email = payload.email; }
@@ -1659,6 +1784,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
             <input id="co_zip" inputmode="numeric" required autocomplete="postal-code">
           </div>
         </div>
+        <p id="coAddrStatus" aria-live="polite" style="margin:0 0 14px;font-size:14px;line-height:1.45;border-radius:10px;padding:10px 12px;min-height:62px;box-sizing:border-box;display:flex;align-items:center;gap:6px"></p>
         <div class="co-field">
           <label for="co_phone">Phone Number</label>
           <input id="co_phone" type="tel" placeholder="(555) 555-5555" required autocomplete="tel">
