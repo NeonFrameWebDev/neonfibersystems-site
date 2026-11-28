@@ -871,12 +871,18 @@ function nfLiveWatch(data, addrLabel, state, done){
 async function checkAvailability(){
   // single search box: av_street/av_city are filled when the user picks a suggestion;
   // if they typed freely without picking, fall back to the raw text (city blank -> backend soft-matches).
-  const typed = val('av_addr'), street = val('av_street') || typed,
+  const typed = val('av_addr'), street = val('av_street') || nfPlaceFix(typed),   /* #need-city: tidy town + comma for the server */
         city = val('av_city'), state = val('av_state')||CONFIG.STATE;
   if(!typed){ alert('Please enter your address.'); return; }
   if(!val('av_street') && !nfFullAddr(typed) && (/^\s*\d/.test(typed) || typed.trim().length < 5)){   /* #form-check */
     window.__nfLiveSeq = (window.__nfLiveSeq || 0) + 1; window.__nfConfirmed = false;
     nfNeedNumber('Please enter your full street address', 'We check every address live, so we need the whole thing, like <strong>123 Main St</strong>. Add the rest and check again.');
+    document.getElementById('av_addr').focus({preventScroll:true}); return;
+  }
+  if(!val('av_street') && !val('av_city') && !nfHasPlace(typed)){   /* #need-city 2026-11-27 */
+    window.__nfLiveSeq = (window.__nfLiveSeq || 0) + 1; window.__nfConfirmed = false;
+    if(/^\s*\d/.test(typed)){ nfNeedNumber('Add your city or ZIP', 'We check every address live with Fidium, so we need the city or ZIP too, like <strong>1234 Main St, Elk Grove</strong>. Add it and check again.'); }
+    else { nfNeedNumber('Add your house number and city', 'We check every address live with Fidium, so we need the whole address, like <strong>1234 Main St, Elk Grove</strong>. Add it and check again.'); }
     document.getElementById('av_addr').focus({preventScroll:true}); return;
   }
   const btn = document.getElementById('av_btn');
@@ -1089,6 +1095,37 @@ var NF_AREA = ['Sacramento','West Sacramento','Citrus Heights','Elk Grove','Rose
 window.__nfCo = {ok:false, by:'', street:'', city:'', zip:'', seq:0, tried:{}, good:{}, pending:null, sending:false};
 function nfClean(t){ return String(t || '').replace(/[^A-Za-z0-9#\/\- ]/g, ' ').replace(/\s+/g, ' ').trim(); }
 function nfLet(t){ return String(t || '').toLowerCase().replace(/[^a-z]/g, ''); }
+function nfHasPlace(t){   /* #need-city 2026-11-27: a ZIP, a comma then a place, or an area town at the end (typos ok) */
+  t = String(t || '');
+  if(/\b\d{5}\b/.test(t.replace(/^\s*\d+/, ''))) return true;
+  if(/,\s*[A-Za-z]{3,}/.test(t)) return true;
+  var w = nfClean(t).replace(/(\s+(ca|calif|california|usa|us))+$/i, '').split(' ');
+  for(var n = 1; n <= 3 && n < w.length; n++){
+    if(NF_AREA.indexOf(nfCity(w.slice(w.length - n).join(' '))) >= 0) return true;
+  }
+  return false;
+}
+function nfPlaceFix(t){   /* #need-city 2026-11-27: "1234 Main St Sacramneto CA" -> "1234 Main St, Sacramento". The server splits on the comma. */
+  var raw = String(t || '').trim();
+  if(/\b\d{5}\b/.test(raw.replace(/^\s*\d+/, ''))) return raw;            /* a ZIP carries the place */
+  var strip = function(x){ return nfClean(x).replace(/(\s+(ca|calif|california|usa|us))+$/i, '').trim(); };
+  var ci = raw.indexOf(',');
+  if(ci > 0){
+    var head = raw.slice(0, ci).trim(), rest = strip(raw.slice(ci + 1));
+    var c = nfCity(rest);
+    return (rest && NF_AREA.indexOf(c) >= 0) ? head + ', ' + c : raw;
+  }
+  var w = strip(raw).split(' '), n, k;
+  for(n = Math.min(3, w.length - 1); n >= 1; n--){                                /* exact town name, longest first */
+    k = nfLet(w.slice(w.length - n).join(' '));
+    for(var i = 0; i < NF_AREA.length; i++){ if(nfLet(NF_AREA[i]) === k) return w.slice(0, w.length - n).join(' ') + ', ' + NF_AREA[i]; }
+  }
+  for(n = 1; n <= 3 && n < w.length; n++){                                        /* a small typo, shortest first */
+    var c2 = nfCity(w.slice(w.length - n).join(' '));
+    if(NF_AREA.indexOf(c2) >= 0) return w.slice(0, w.length - n).join(' ') + ', ' + c2;
+  }
+  return raw;
+}
 function nfFullAddr(t){ t = String(t || '').trim(); return t.length >= 5 && /^\d+[\s,.#\-]*\d*[A-Za-z]/.test(t) && (t.match(/[A-Za-z]/g) || []).length >= 2; }
 function nfDist(a, b){
   var p = [], i, j; for(j = 0; j <= b.length; j++) p[j] = j;
